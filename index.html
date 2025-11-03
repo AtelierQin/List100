@@ -1,90 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List100</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>FutureCast List100</title>
+    <meta http-equiv="refresh" content="0; url=landing.html">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #1a1a1a;
+        }
+        .redirect-message {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .redirect-message h1 {
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .redirect-message p {
+            margin: 0 0 1.5rem 0;
+            color: #666;
+        }
+        .redirect-message a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .redirect-message a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="landing.html" class="logo">FutureCast</a>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link active">List 100</a>
-                <a href="database.html" class="nav-link">Links</a>
-                <a href="travel-map.html" class="nav-link">World</a>
-                <a href="china-map.html" class="nav-link">China</a>
-                <a href="landing.html#about" class="nav-link">About</a>
-            </div>
-        </div>
-    </nav>
-
-    <section class="motto-section">
-        <div class="container">
-            <div class="motto-content">
-                <p class="motto-text">Life is like a box of chocolates, and I've chosen 100 to taste.</p>
-            </div>
-        </div>
-    </section>
-
-    <main class="main-content has-motto">
-        <div class="container">
-            <div class="layout">
-                <aside class="sidebar">
-                    <section class="hero">
-                        <h1>Life List</h1>
-                        <p class="hero-subtitle">100 things I want to do before I die.<br />
-                        Progress as of Nov 1, 2025</p>
-                    </section>
-
-                    <section class="controls-section">
-                        <button id="addItemBtn" class="btn btn-primary hover-lift">
-                            <span class="btn-icon">+</span>
-                            Add Goal
-                        </button>
-                        
-                        <div class="filter-section">
-                            <h3>Status</h3>
-                            <div class="filter-tabs">
-                                <button class="filter-tab active" data-filter="all">All</button>
-                                <button class="filter-tab" data-filter="pending">Active</button>
-                                <button class="filter-tab" data-filter="completed">Done</button>
-                            </div>
-                        </div>
-
-                        <div class="tag-filter-section">
-                            <h3>Tags</h3>
-                            <div id="tagFilterList" class="tag-filter-list">
-                                <button class="tag-filter-item active" data-tag="">All Tags</button>
-                            </div>
-                        </div>
-
-                        <div class="sync-section">
-                            <h3>Backup & Sync</h3>
-                            <div class="backup-status" id="backupStatus">
-                                <small>Last saved: <span id="lastSaveTime">Never</span></small>
-                            </div>
-                            <input type="file" id="fileInput" accept=".json" style="display: none;">
-                            <button id="importBtn" class="btn btn-secondary">Import Data</button>
-                            <button id="exportBtn" class="btn btn-secondary">Export Backup</button>
-                            <button id="recoverBtn" class="btn btn-secondary">Recover Data</button>
-                        </div>
-                    </section>
-                </aside>
-
-                <section class="content">
-                    <div class="list-container">
-                        <ul id="todoList" class="todo-list"></ul>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </main>
-
-    <script src="script.js"></script>
+    <div class="redirect-message">
+        <h1>FutureCast List100</h1>
+        <p>Redirecting to the main application...</p>
+        <p>If you are not redirected automatically, <a href="landing.html">click here</a>.</p>
+    </div>
 </body>
 </html>

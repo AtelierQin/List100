@@ -17,14 +17,14 @@ class GoalDetail {
     async init() {
         if (!this.goalId) {
             alert('Goal not found');
-            window.location.href = 'index.html';
+            window.location.href = 'list100.html';
             return;
         }
 
         await this.loadGoal();
         if (!this.goal) {
             alert('Goal not found');
-            window.location.href = 'index.html';
+            window.location.href = 'list100.html';
             return;
         }
 
@@ -740,7 +740,7 @@ class GoalDetail {
                         }
                         
                         alert('Goal deleted successfully!');
-                        window.location.href = 'index.html';
+                        window.location.href = 'list100.html';
                     }
                 } catch (error) {
                     console.error('Error deleting goal:', error);

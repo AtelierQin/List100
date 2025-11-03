@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Map - List100</title>
+    <title>China - List100</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="travel-map.css">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/china.css">
 </head>
 <body>
     <nav class="nav">
         <div class="nav-container">
             <a href="landing.html" class="logo">FutureCast</a>
             <div class="nav-links">
-                <a href="index.html" class="nav-link">List 100</a>
-                <a href="database.html" class="nav-link">Links</a>
-                <a href="travel-map.html" class="nav-link active">World</a>
-                <a href="china-map.html" class="nav-link">China</a>
+                <a href="list100.html" class="nav-link">List100</a>
+                <a href="links.html" class="nav-link">Links</a>
+                <a href="world.html" class="nav-link">World</a>
+                <a href="china.html" class="nav-link active">China</a>
                 <a href="landing.html#about" class="nav-link">About</a>
             </div>
         </div>
@@ -27,7 +27,7 @@
     <section class="motto-section">
         <div class="container">
             <div class="motto-content">
-                <p class="motto-text">The world is a book, and those who do not travel read only one page.</p>
+                <p class="motto-text">读万卷书，行万里路。</p>
             </div>
         </div>
     </section>
@@ -35,24 +35,24 @@
     <main class="main-content has-motto">
         <div class="container">
             <div class="travel-layout">
-                <!-- 左侧国家列表区域 -->
-                <div class="countries-section">
-                    <div class="countries-container">
+                <!-- 左侧省份城市列表区域 -->
+                <div class="provinces-section">
+                    <div class="provinces-container">
                         <div class="section-header">
-                            <h2>Countries by Continent</h2>
+                            <h2>各省份主要城市</h2>
                             <div class="legend">
                                 <div class="legend-item">
                                     <div class="legend-color unvisited"></div>
-                                    <span>Not Visited</span>
+                                    <span>未访问</span>
                                 </div>
                                 <div class="legend-item">
                                     <div class="legend-color visited"></div>
-                                    <span>Visited</span>
+                                    <span>已访问</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="continents-list" id="continentsList">
-                            <!-- 大洲和国家列表将通过JavaScript生成 -->
+                        <div class="provinces-list" id="provincesList">
+                            <!-- 省份和城市列表将通过JavaScript生成 -->
                         </div>
                     </div>
                 </div>
@@ -60,59 +60,57 @@
                 <!-- 右侧信息面板 -->
                 <div class="info-panel">
                     <div class="panel-card">
-                        <h3>Travel Progress</h3>
+                        <h3>旅行进度</h3>
                         <div class="travel-stats-panel">
                             <div class="stat-item">
                                 <span class="stat-number" id="visitedCount">0</span>
-                                <span class="stat-label">Countries Visited</span>
+                                <span class="stat-label">已访问城市</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number" id="visitedPercentage">0%</span>
-                                <span class="stat-label">World Coverage</span>
+                                <span class="stat-label">覆盖率</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>Quick Actions</h3>
+                        <h3>快速操作</h3>
                         <div class="quick-actions">
-                            <button class="action-btn btn-primary" id="addCountryBtn">
-                                <span class="btn-icon">✈️</span>
-                                Add Country
+                            <button class="action-btn btn-primary" id="addCityBtn">
+                                <span class="btn-icon">🏙️</span>
+                                添加城市
                             </button>
                             <button class="action-btn btn-ghost" id="clearAllBtn">
                                 <span class="btn-icon">🗑️</span>
-                                Clear All
+                                清空所有
                             </button>
                             <button class="action-btn btn-ghost" id="exportMapBtn">
                                 <span class="btn-icon">💾</span>
-                                Export Data
+                                导出数据
                             </button>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>Visited Countries</h3>
-                        <div class="countries-list" id="visitedCountriesList">
+                        <h3>已访问城市</h3>
+                        <div class="cities-list" id="visitedCitiesList">
                             <div class="empty-state">
-                                <p>No countries visited yet</p>
-                                <small>Click on countries to mark them as visited</small>
+                                <p>还没有访问过任何城市</p>
+                                <small>点击城市来标记为已访问</small>
                             </div>
                         </div>
                     </div>
 
-
-
                     <div class="panel-card">
-                        <h3>Travel Statistics</h3>
+                        <h3>旅行统计</h3>
                         <div class="stats-grid">
                             <div class="stat-box">
-                                <div class="stat-value" id="totalCountries">195</div>
-                                <div class="stat-label">Total</div>
+                                <div class="stat-value" id="totalCities">0</div>
+                                <div class="stat-label">总城市</div>
                             </div>
                             <div class="stat-box">
-                                <div class="stat-value" id="continentsVisited">0</div>
-                                <div class="stat-label">Continents</div>
+                                <div class="stat-value" id="provincesVisited">0</div>
+                                <div class="stat-label">省份</div>
                             </div>
                         </div>
                     </div>
@@ -121,36 +119,36 @@
         </div>
     </main>
 
-    <!-- 国家详情模态框 -->
-    <div class="modal hidden" id="countryModal">
+    <!-- 城市详情模态框 -->
+    <div class="modal hidden" id="cityModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="countryName">Country Name</h3>
+                <h3 id="cityName">城市名称</h3>
                 <button class="modal-close" id="closeModal">×</button>
             </div>
             <div class="modal-body">
-                <div class="country-info">
-                    <div class="country-flag" id="countryFlag">🏳️</div>
-                    <div class="country-details">
-                        <p><strong>Capital:</strong> <span id="countryCapital">-</span></p>
-                        <p><strong>Continent:</strong> <span id="countryContinent">-</span></p>
-                        <p><strong>Status:</strong> <span id="countryStatus">Not Visited</span></p>
+                <div class="city-info">
+                    <div class="city-icon" id="cityIcon">🏙️</div>
+                    <div class="city-details">
+                        <p><strong>所属省份：</strong> <span id="cityProvince">-</span></p>
+                        <p><strong>城市级别：</strong> <span id="cityLevel">-</span></p>
+                        <p><strong>状态：</strong> <span id="cityStatus">未访问</span></p>
                     </div>
                 </div>
                 <div class="visit-info" id="visitInfo" style="display: none;">
-                    <label for="visitDate">Visit Month:</label>
+                    <label for="visitDate">访问月份：</label>
                     <input type="month" id="visitDate" class="visit-date-input">
-                    <label for="visitNotes">Notes:</label>
-                    <textarea id="visitNotes" class="visit-notes" placeholder="Add notes about your visit..."></textarea>
+                    <label for="visitNotes">备注：</label>
+                    <textarea id="visitNotes" class="visit-notes" placeholder="添加关于这次访问的备注..."></textarea>
                 </div>
                 <div class="modal-actions">
-                    <button class="modal-btn btn-primary" id="markVisitedBtn">Mark as Visited</button>
-                    <button class="modal-btn btn-danger" id="removeCountryBtn" style="display: none;">Remove</button>
+                    <button class="modal-btn btn-primary" id="markVisitedBtn">标记为已访问</button>
+                    <button class="modal-btn btn-danger" id="removeCityBtn" style="display: none;">移除</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="travel-map-new.js"></script>
+    <script src="assets/js/china.js"></script>
 </body>
 </html>

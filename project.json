@@ -1,0 +1,75 @@
+{
+  "name": "FutureCast List100",
+  "version": "1.0.0",
+  "description": "A contemplative approach to life design—curate one hundred meaningful aspirations with intention and purpose.",
+  "author": "Your Name",
+  "license": "Personal Use",
+  "structure": {
+    "pages": [
+      {
+        "name": "Landing",
+        "file": "landing.html",
+        "css": "assets/css/landing.css",
+        "js": null,
+        "description": "Main landing page and project introduction"
+      },
+      {
+        "name": "List100",
+        "file": "list100.html",
+        "css": "assets/css/global.css",
+        "js": "assets/js/list100.js",
+        "description": "Main application for managing 100 life goals"
+      },
+      {
+        "name": "Links",
+        "file": "links.html",
+        "css": "assets/css/links.css",
+        "js": "assets/js/links.js",
+        "description": "Curated collection of useful resources"
+      },
+      {
+        "name": "World",
+        "file": "world.html",
+        "css": "assets/css/world.css",
+        "js": "assets/js/world.js",
+        "description": "World travel tracking map"
+      },
+      {
+        "name": "China",
+        "file": "china.html",
+        "css": "assets/css/china.css",
+        "js": "assets/js/china.js",
+        "description": "China travel tracking map"
+      },
+      {
+        "name": "Goal Detail",
+        "file": "goal-detail.html",
+        "css": "assets/css/goal-detail.css",
+        "js": "assets/js/goal-detail.js",
+        "description": "Individual goal detail and management"
+      }
+    ],
+    "assets": {
+      "css": "assets/css/",
+      "js": "assets/js/",
+      "data": "assets/data/"
+    },
+    "docs": "docs/"
+  },
+  "features": [
+    "Goal Management",
+    "Progress Tracking",
+    "Resource Collection",
+    "Travel Mapping",
+    "Data Export/Import",
+    "Auto-save",
+    "Responsive Design"
+  ],
+  "technologies": [
+    "HTML5",
+    "CSS3",
+    "Vanilla JavaScript",
+    "Local Storage",
+    "JSON"
+  ]
+}

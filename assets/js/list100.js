@@ -801,7 +801,7 @@ class List100 {
         // 如果localStorage为空或无效，尝试从JSON文件加载
         console.log('Loading from data.json...');
         try {
-            const response = await fetch('./data.json');
+            const response = await fetch('./assets/data/list100-data.json');
             if (response.ok) {
                 const data = await response.json();
                 if (data.items && Array.isArray(data.items)) {
