@@ -1,0 +1,835 @@
+/* 中国城市地图特定样式 */
+
+.travel-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    align-items: start;
+}
+
+.provinces-section {
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-base);
+}
+
+.provinces-section:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+.provinces-container {
+    height: 85vh;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--color-border-light);
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    flex-shrink: 0;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 12px;
+}
+
+.legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.provinces-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 0;
+}
+
+/* 当有省份展开时，优化空间利用 */
+.provinces-list:has(.province-section:not(.collapsed)) {
+    padding: 2px 0;
+}
+
+.province-section {
+    margin: 0 6px 4px 6px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    overflow: visible;
+    background: var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.province-section:not(.collapsed) {
+    margin: 0 2px 4px 2px;
+}
+
+/* 展开的省份占用更多空间 */
+.province-section:not(.collapsed) .cities-list {
+    max-height: 65vh;
+}
+
+.province-section:not(.collapsed) .cities-grid {
+    max-height: 63vh;
+}
+
+/* 为城市较多的省份提供更好的滚动体验 */
+.province-section:not(.collapsed) .cities-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.province-section:not(.collapsed) .cities-grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.province-section:not(.collapsed) .cities-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.province-section:not(.collapsed) .cities-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.province-section:last-child {
+    margin-bottom: 8px;
+}
+
+.province-header {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid var(--color-border-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    user-select: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.province-section.transitioning .province-header {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.province-header:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.province-section:not(.collapsed) .province-header {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-bottom: 2px solid var(--color-accent);
+    position: relative;
+}
+
+.province-section:not(.collapsed) .province-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 0 2px 2px 0;
+}
+
+.province-section:not(.collapsed) .province-title {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+.province-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.province-emoji {
+    font-size: 18px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.province-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.province-stats {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.province-toggle {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.2s ease,
+                opacity 0.2s ease;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.province-header:hover .province-toggle {
+    opacity: 1;
+}
+
+.province-section.collapsed .province-toggle {
+    transform: rotate(-90deg);
+    color: var(--color-text-muted);
+}
+
+.province-section:not(.collapsed) .province-toggle {
+    color: var(--color-accent);
+    transform: rotate(0deg);
+    opacity: 1;
+}
+
+.cities-list {
+    padding: 8px;
+    max-height: 60vh;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                opacity 0.2s ease,
+                padding 0.2s ease;
+    opacity: 1;
+    background: var(--color-surface);
+}
+
+.province-section.collapsed .cities-list {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 8px;
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    max-height: 72vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px;
+}
+
+.cities-grid::-webkit-scrollbar {
+    width: 4px;
+}
+
+.cities-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cities-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+
+.cities-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.city-item-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 6px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--color-surface);
+    position: relative;
+    text-align: center;
+    min-height: 70px;
+    justify-content: center;
+}
+
+.city-item-row:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--color-accent);
+}
+
+.city-item-row.visited {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border-color: #10b981;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+}
+
+.city-item-row.visited::before {
+    content: '✓';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    color: #10b981;
+    font-weight: bold;
+    font-size: 12px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.city-icon-large {
+    font-size: 20px;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    line-height: 1;
+}
+
+.city-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+.city-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    min-width: 0;
+}
+
+.city-name-zh {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    line-height: 1.2;
+}
+
+.city-level {
+    font-size: 9px;
+    color: var(--color-text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    line-height: 1.1;
+}
+
+/* 信息面板 */
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 76px;
+}
+
+.panel-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-card h3 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: -0.1px;
+    text-transform: uppercase;
+}
+
+.travel-stats-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.travel-stats-panel .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.travel-stats-panel .stat-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.travel-stats-panel .stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 1px;
+}
+
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-align: left;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.cities-list {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.city-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+    font-size: 13px;
+}
+
+.city-item:last-child {
+    border-bottom: none;
+}
+
+.city-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.city-icon-small {
+    font-size: 16px;
+}
+
+.city-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 12px;
+    color: var(--color-text-muted);
+}
+
+.empty-state p {
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.empty-state small {
+    font-size: 10px;
+    color: var(--color-text-muted);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.stat-box .stat-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-box .stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 1px;
+}
+
+
+
+/* 模态框 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-xl);
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: var(--color-border-light);
+    color: var(--color-text-primary);
+}
+
+.modal-body {
+    padding: 20px 24px 24px;
+}
+
+.city-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.city-icon {
+    font-size: 48px;
+    line-height: 1;
+}
+
+.city-details {
+    flex: 1;
+}
+
+.city-details p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.city-details strong {
+    color: var(--color-text-primary);
+}
+
+.visit-info {
+    margin-bottom: 20px;
+}
+
+.visit-info label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+    margin-top: 12px;
+}
+
+.visit-info label:first-child {
+    margin-top: 0;
+}
+
+.visit-date-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.visit-date-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.visit-notes {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    outline: none;
+    transition: all 0.2s ease;
+    resize: vertical;
+}
+
+.visit-notes:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-align: center;
+}
+
+.modal-btn.btn-primary {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+.modal-btn.btn-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+}
+
+.modal-btn.btn-ghost {
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.modal-btn.btn-ghost:hover {
+    background: var(--color-accent-light);
+    transform: translateY(-1px);
+}
+
+.modal-btn.btn-danger {
+    background: rgba(245, 101, 101, 0.1);
+    color: var(--color-danger);
+    border-color: rgba(245, 101, 101, 0.2);
+}
+
+.modal-btn.btn-danger:hover {
+    background: rgba(245, 101, 101, 0.15);
+    transform: translateY(-1px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .travel-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-top: 12px;
+    }
+    
+    .info-panel {
+        position: static;
+        order: -1;
+    }
+    
+    .provinces-container {
+        height: 70vh;
+        min-height: 600px;
+    }
+    
+    .section-header {
+        padding: 16px 20px 12px;
+    }
+    
+    .section-header h2 {
+        font-size: 16px;
+    }
+    
+    .legend {
+        gap: 12px;
+    }
+    
+    .province-section {
+        margin: 0 4px 6px 4px;
+        border-radius: 8px;
+    }
+    
+    .province-header {
+        padding: 12px 16px;
+    }
+    
+    .province-title {
+        font-size: 15px;
+        gap: 8px;
+    }
+    
+    .province-emoji {
+        font-size: 18px;
+    }
+    
+    .province-stats {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+    
+    .cities-list {
+        padding: 6px;
+        max-height: 65vh;
+    }
+    
+    .cities-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 4px;
+        max-height: 62vh;
+    }
+    
+    .province-section:not(.collapsed) .cities-list {
+        max-height: 68vh;
+    }
+    
+    .province-section:not(.collapsed) .cities-grid {
+        max-height: 66vh;
+    }
+    
+    .city-item-row {
+        padding: 6px 4px;
+        min-height: 60px;
+    }
+    
+    .city-icon-large {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+    
+    .city-name-zh {
+        font-size: 10px;
+    }
+    
+    .city-level {
+        font-size: 9px;
+    }
+    
+    .panel-card {
+        padding: 10px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .travel-stats-panel {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    
+    .travel-stats-panel .stat-item {
+        padding: 8px;
+    }
+    
+    .travel-stats-panel .stat-number {
+        font-size: 14px;
+    }
+}
+
+/* 调整main-content高度以适应motto section */
+.main-content {
+    min-height: calc(100vh - 56px - 72px);
+}

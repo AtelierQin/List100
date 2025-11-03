@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database - List100</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="database.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="landing.html" class="logo">FutureCast</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">List 100</a>
+                <a href="travel-map.html" class="nav-link">World</a>
+                <a href="china-map.html" class="nav-link">China</a>
+                <a href="database.html" class="nav-link active">Database</a>
+                <a href="landing.html#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="motto-section">
+        <div class="container">
+            <div class="motto-content">
+                <p class="motto-text">Knowledge is a treasure, but practice is the key to it.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content has-motto">
+        <div class="container">
+            <div class="layout">
+                <aside class="sidebar">
+                    <section class="hero">
+                        <h1>Resource Vault</h1>
+                        <p class="hero-subtitle">Curated collection of useful websites and resources.<br />
+                        Updated regularly</p>
+                    </section>
+
+                    <section class="controls-section">
+                        <button id="addResourceBtn" class="btn btn-primary hover-lift">
+                            <span class="btn-icon">+</span>
+                            Add Resource
+                        </button>
+                        
+                        <div class="filter-section">
+                            <h3>Category</h3>
+                            <div class="filter-tabs">
+                                <button class="filter-tab active" data-filter="all">All</button>
+                                <button class="filter-tab" data-filter="development">Development</button>
+                                <button class="filter-tab" data-filter="design">Design</button>
+                                <button class="filter-tab" data-filter="productivity">Productivity</button>
+                                <button class="filter-tab" data-filter="learning">Learning</button>
+                                <button class="filter-tab" data-filter="tools">Tools</button>
+                            </div>
+                        </div>
+
+                        <div class="tag-filter-section">
+                            <h3>Tags</h3>
+                            <div id="tagFilterList" class="tag-filter-list">
+                                <button class="tag-filter-item active" data-tag="">All Tags</button>
+                            </div>
+                        </div>
+
+                        <div class="sync-section">
+                            <h3>Data Management</h3>
+                            <input type="file" id="fileInput" accept=".json" style="display: none;">
+                            <button id="importBtn" class="btn btn-secondary">Import Data</button>
+                            <button id="exportBtn" class="btn btn-secondary">Export Backup</button>
+                        </div>
+                    </section>
+                </aside>
+
+                <section class="content">
+                    <div class="search-section">
+                        <div class="search-container">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search resources...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="resources-container">
+                        <div id="resourcesList" class="resources-grid"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="database.js"></script>
+</body>
+</html>

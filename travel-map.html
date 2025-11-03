@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Map - List100</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="travel-map.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="landing.html" class="logo">FutureCast</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">List 100</a>
+                <a href="travel-map.html" class="nav-link active">World</a>
+                <a href="china-map.html" class="nav-link">China</a>
+                <a href="database.html" class="nav-link">Database</a>
+                <a href="landing.html#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="motto-section">
+        <div class="container">
+            <div class="motto-content">
+                <p class="motto-text">The world is a book, and those who do not travel read only one page.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content has-motto">
+        <div class="container">
+            <div class="travel-layout">
+                <!-- 左侧国家列表区域 -->
+                <div class="countries-section">
+                    <div class="countries-container">
+                        <div class="section-header">
+                            <h2>Countries by Continent</h2>
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="legend-color unvisited"></div>
+                                    <span>Not Visited</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color visited"></div>
+                                    <span>Visited</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="continents-list" id="continentsList">
+                            <!-- 大洲和国家列表将通过JavaScript生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧信息面板 -->
+                <div class="info-panel">
+                    <div class="panel-card">
+                        <h3>Travel Progress</h3>
+                        <div class="travel-stats-panel">
+                            <div class="stat-item">
+                                <span class="stat-number" id="visitedCount">0</span>
+                                <span class="stat-label">Countries Visited</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="visitedPercentage">0%</span>
+                                <span class="stat-label">World Coverage</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn btn-primary" id="addCountryBtn">
+                                <span class="btn-icon">✈️</span>
+                                Add Country
+                            </button>
+                            <button class="action-btn btn-ghost" id="clearAllBtn">
+                                <span class="btn-icon">🗑️</span>
+                                Clear All
+                            </button>
+                            <button class="action-btn btn-ghost" id="exportMapBtn">
+                                <span class="btn-icon">💾</span>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>Visited Countries</h3>
+                        <div class="countries-list" id="visitedCountriesList">
+                            <div class="empty-state">
+                                <p>No countries visited yet</p>
+                                <small>Click on countries to mark them as visited</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="panel-card">
+                        <h3>Travel Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value" id="totalCountries">195</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="continentsVisited">0</div>
+                                <div class="stat-label">Continents</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 国家详情模态框 -->
+    <div class="modal hidden" id="countryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="countryName">Country Name</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="country-info">
+                    <div class="country-flag" id="countryFlag">🏳️</div>
+                    <div class="country-details">
+                        <p><strong>Capital:</strong> <span id="countryCapital">-</span></p>
+                        <p><strong>Continent:</strong> <span id="countryContinent">-</span></p>
+                        <p><strong>Status:</strong> <span id="countryStatus">Not Visited</span></p>
+                    </div>
+                </div>
+                <div class="visit-info" id="visitInfo" style="display: none;">
+                    <label for="visitDate">Visit Month:</label>
+                    <input type="month" id="visitDate" class="visit-date-input">
+                    <label for="visitNotes">Notes:</label>
+                    <textarea id="visitNotes" class="visit-notes" placeholder="Add notes about your visit..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn btn-primary" id="markVisitedBtn">Mark as Visited</button>
+                    <button class="modal-btn btn-danger" id="removeCountryBtn" style="display: none;">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="travel-map-new.js"></script>
+</body>
+</html>
