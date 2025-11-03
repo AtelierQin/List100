@@ -46,6 +46,7 @@ class LandingGoals {
 
         if (validGoals.length === 0) {
             goalsList.innerHTML = '<li>No goals yet. <a href="list100.html">Start adding goals</a></li>';
+            this.updateProgress(0, 0);
             return;
         }
 
@@ -56,6 +57,21 @@ class LandingGoals {
                 return `<li${completedClass} data-number="${number}">${goal.text}</li>`;
             })
             .join('');
+
+        // 更新进度条
+        const completedCount = validGoals.filter(goal => goal.completed).length;
+        this.updateProgress(completedCount, validGoals.length);
+    }
+
+    updateProgress(completed, total) {
+        const progressFill = document.getElementById('landingProgressFill');
+        const progressText = document.getElementById('landingProgressText');
+        
+        if (progressFill && progressText) {
+            const percentage = total > 0 ? (completed / total) * 100 : 0;
+            progressFill.style.width = `${percentage}%`;
+            progressText.textContent = `${completed}/${total}`;
+        }
     }
 
     setupStorageListener() {

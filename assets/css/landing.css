@@ -114,13 +114,33 @@ body {
     padding-top: 64px;
 }
 
+/* Section spacing */
+section {
+    position: relative;
+    z-index: 1;
+    clear: both;
+}
+
+/* Ensure proper stacking context */
+.hero {
+    z-index: 1;
+}
+
+.about-section {
+    z-index: 2;
+}
+
+.footer {
+    z-index: 3;
+}
+
 /* Hero section */
 .hero {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     position: relative;
     overflow: hidden;
-    padding: var(--spacing-3xl) 0;
-    min-height: 80vh;
+    padding: var(--spacing-4xl) 0 var(--spacing-3xl) 0;
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
 }
@@ -139,7 +159,7 @@ body {
 
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     text-align: center;
     max-width: 700px;
     margin: 0 auto;
@@ -215,12 +235,17 @@ body {
 
 /* About section */
 .about-section {
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-2xl) 0;
     background: var(--color-surface);
+    margin-top: 0;
 }
 
 .about-content {
-    text-align: center;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .about-title {
@@ -228,8 +253,40 @@ body {
     font-size: 2rem;
     font-weight: 400;
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-sm);
+    margin: 0 0 var(--spacing-sm) 0;
     line-height: 1.2;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-bar {
+    width: 120px;
+    height: 8px;
+    background: var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    min-width: 40px;
+    text-align: right;
 }
 
 .about-description {
@@ -272,6 +329,8 @@ body {
     padding: var(--spacing-xl) 0;
     text-align: center;
     border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+    margin-top: 0;
 }
 
 .footer p {
@@ -290,8 +349,8 @@ body {
     }
     
     .hero {
-        padding: var(--spacing-2xl) 0;
-        min-height: 70vh;
+        padding: var(--spacing-3xl) 0 var(--spacing-2xl) 0;
+        min-height: calc(100vh - 64px);
     }
     
     .hero-title {
@@ -313,11 +372,20 @@ body {
     }
     
     .about-section {
-        padding: var(--spacing-2xl) 0;
+        padding: var(--spacing-xl) 0;
     }
     
     .about-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .progress-container {
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .progress-bar {
+        width: 150px;
     }
     
     .features-grid {
@@ -374,7 +442,7 @@ html {
  Goals list styles - compact layout */
 .goals-list {
     max-width: 700px;
-    margin: 0 auto;
+    margin: 0;
     text-align: left;
 }
 
@@ -391,7 +459,7 @@ html {
     color: var(--color-text-primary);
     transition: var(--transition);
     position: relative;
-    padding-left: 35px;
+    padding-left: 30px;
     line-height: 1.2;
 }
 
@@ -403,7 +471,7 @@ html {
     font-weight: 500;
     font-size: 13px;
     top: 3px;
-    width: 30px;
+    width: 25px;
     text-align: left;
 }
 
@@ -420,7 +488,7 @@ html {
 
 .goals-list li:hover {
     color: var(--color-accent);
-    padding-left: 37px;
+    padding-left: 32px;
 }
 
 .goals-list li.completed:hover {
@@ -441,18 +509,16 @@ html {
     .goals-list li {
         font-size: 13px;
         padding: 2px 0;
-        padding-left: 30px;
+        padding-left: 25px;
     }
     
     .goals-list li:before {
         top: 2px;
         font-size: 12px;
-        width: 25px;
+        width: 20px;
     }
     
-
-    
     .goals-list li:hover {
-        padding-left: 32px;
+        padding-left: 27px;
     }
 }
