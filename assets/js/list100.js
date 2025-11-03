@@ -120,6 +120,8 @@ class List100 {
                 this.saveToStorage();
             }
         });
+
+
     }
 
     addItem() {
@@ -185,7 +187,9 @@ class List100 {
         const item = this.items.find(item => item.id === id);
         if (item) {
             item.text = text;
+            item.lastModified = new Date().toISOString();
             this.saveToStorage();
+            this.dispatchDataUpdateEvent(id, 'text');
         }
     }
 
@@ -193,7 +197,9 @@ class List100 {
         const item = this.items.find(item => item.id === id);
         if (item) {
             item.description = description;
+            item.lastModified = new Date().toISOString();
             this.saveToStorage();
+            this.dispatchDataUpdateEvent(id, 'description');
         }
     }
 
@@ -204,8 +210,15 @@ class List100 {
                 .split(/[,\s]+/)
                 .map(tag => tag.trim())
                 .filter(tag => tag.length > 0);
+            
+            // 添加最后修改时间戳，确保数据同步
+            item.lastModified = new Date().toISOString();
+            
             this.saveToStorage();
             this.updateTagFilter();
+            
+            // 触发自定义事件，通知其他页面数据已更新
+            this.dispatchDataUpdateEvent(id, 'tags');
         }
     }
 
@@ -700,6 +713,27 @@ class List100 {
         }
     }
 
+    // 分发数据更新事件，通知其他页面
+    dispatchDataUpdateEvent(itemId, updateType) {
+        const event = new CustomEvent('list100DataUpdate', {
+            detail: {
+                itemId: itemId,
+                updateType: updateType,
+                timestamp: new Date().toISOString()
+            }
+        });
+        window.dispatchEvent(event);
+        
+        // 同时触发storage事件（用于跨标签页通信）
+        const storageEvent = new StorageEvent('storage', {
+            key: 'list100-items',
+            newValue: localStorage.getItem('list100-items'),
+            oldValue: null,
+            storageArea: localStorage
+        });
+        window.dispatchEvent(storageEvent);
+    }
+
     saveToStorage() {
         console.log(`=== Saving ${this.items.length} items to localStorage ===`);
         
@@ -786,7 +820,7 @@ class List100 {
                     if (items.length > 0) {
                         return items;
                     } else {
-                        console.log('localStorage has empty array, trying data.json');
+                        console.log('localStorage has empty array, trying list100-data.json');
                     }
                 } else {
                     console.log('localStorage data is not an array');
@@ -799,17 +833,17 @@ class List100 {
         }
         
         // 如果localStorage为空或无效，尝试从JSON文件加载
-        console.log('Loading from data.json...');
+        console.log('Loading from list100-data.json...');
         try {
             const response = await fetch('./assets/data/list100-data.json');
             if (response.ok) {
                 const data = await response.json();
                 if (data.items && Array.isArray(data.items)) {
-                    console.log(`Loaded ${data.items.length} items from data.json`);
+                    console.log(`Loaded ${data.items.length} items from list100-data.json`);
                     return data.items;
                 }
             } else {
-                console.error('Failed to fetch data.json:', response.status);
+                console.error('Failed to fetch list100-data.json:', response.status);
             }
         } catch (error) {
             console.error('Loading from JSON file failed:', error);
@@ -941,7 +975,7 @@ class List100 {
         }
         
         // 如果没有找到任何备份，提供重置选项
-        if (confirm('No recoverable data found in any backup location. Would you like to reset and load sample data from data.json?')) {
+        if (confirm('No recoverable data found in any backup location. Would you like to reset and load sample data from list100-data.json?')) {
             // 清除所有localStorage数据
             const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
@@ -963,13 +997,15 @@ class List100 {
                 this.updateProgress();
                 this.updateTagFilter();
                 if (items.length > 0) {
-                    alert(`Successfully loaded ${items.length} sample items from data.json!`);
+                    alert(`Successfully loaded ${items.length} sample items from list100-data.json!`);
                 } else {
                     alert('Data reset complete. You can now start adding new goals.');
                 }
             });
         }
     }
+
+
 
 
 

@@ -215,7 +215,7 @@ body {
 
 /* About section */
 .about-section {
-    padding: var(--spacing-3xl) 0;
+    padding: var(--spacing-xl) 0;
     background: var(--color-surface);
 }
 
@@ -225,10 +225,10 @@ body {
 
 .about-title {
     font-family: var(--font-family-serif);
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 400;
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
     line-height: 1.2;
 }
 
@@ -368,4 +368,91 @@ html {
 
 .hero-actions {
     animation-delay: 0.4s;
+}
+
+/*
+ Goals list styles - compact layout */
+.goals-list {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.goals-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+.goals-list li {
+    padding: 3px 0;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    transition: var(--transition);
+    position: relative;
+    padding-left: 35px;
+    line-height: 1.2;
+}
+
+.goals-list li:before {
+    content: attr(data-number) '.';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 13px;
+    top: 3px;
+    width: 30px;
+    text-align: left;
+}
+
+.goals-list li.completed {
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+}
+
+.goals-list li.completed:before {
+    content: attr(data-number) '.';
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+.goals-list li:hover {
+    color: var(--color-accent);
+    padding-left: 37px;
+}
+
+.goals-list li.completed:hover {
+    color: var(--color-text-secondary);
+}
+
+.goals-list a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.goals-list a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .goals-list li {
+        font-size: 13px;
+        padding: 2px 0;
+        padding-left: 30px;
+    }
+    
+    .goals-list li:before {
+        top: 2px;
+        font-size: 12px;
+        width: 25px;
+    }
+    
+
+    
+    .goals-list li:hover {
+        padding-left: 32px;
+    }
 }

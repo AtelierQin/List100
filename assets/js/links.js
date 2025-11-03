@@ -20,28 +20,28 @@ class ResourceDatabase {
                 title: 'GitHub',
                 url: 'https://github.com',
                 description: 'The world\'s leading software development platform',
-                category: 'development',
+                category: 'tool',
                 tags: ['git', 'code', 'collaboration'],
                 favicon: '🐙',
                 dateAdded: new Date().toISOString()
             },
             {
                 id: 2,
-                title: 'Figma',
-                url: 'https://figma.com',
-                description: 'Collaborative interface design tool',
-                category: 'design',
-                tags: ['design', 'ui', 'collaboration'],
-                favicon: '🎨',
+                title: 'TechCrunch',
+                url: 'https://techcrunch.com',
+                description: 'Latest technology news and startup information',
+                category: 'news',
+                tags: ['tech', 'startup', 'news'],
+                favicon: '📰',
                 dateAdded: new Date().toISOString()
             },
             {
                 id: 3,
-                title: 'Notion',
-                url: 'https://notion.so',
-                description: 'All-in-one workspace for notes, docs, and collaboration',
-                category: 'productivity',
-                tags: ['notes', 'productivity', 'workspace'],
+                title: 'Medium',
+                url: 'https://medium.com',
+                description: 'Platform for reading and writing articles',
+                category: 'article',
+                tags: ['writing', 'reading', 'blog'],
                 favicon: '📝',
                 dateAdded: new Date().toISOString()
             }
@@ -116,11 +116,10 @@ class ResourceDatabase {
                         <div class="form-group">
                             <label class="form-label">Category</label>
                             <select class="form-select" name="category">
-                                <option value="development">Development</option>
-                                <option value="design">Design</option>
-                                <option value="productivity">Productivity</option>
-                                <option value="learning">Learning</option>
-                                <option value="tools">Tools</option>
+                                <option value="news">News</option>
+                                <option value="database">Database</option>
+                                <option value="article">Article</option>
+                                <option value="tool">Tool</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -226,8 +225,8 @@ class ResourceDatabase {
                         </div>
                     </div>
                     <div class="resource-actions">
-                        <button class="action-btn edit" onclick="resourceDB.editResource(${resource.id})" title="Edit">✏️</button>
-                        <button class="action-btn delete" onclick="resourceDB.deleteResource(${resource.id})" title="Delete">🗑️</button>
+                        <button class="action-btn edit" data-action="edit" data-id="${resource.id}" title="Edit">✏️</button>
+                        <button class="action-btn delete" data-action="delete" data-id="${resource.id}" title="Delete">🗑️</button>
                     </div>
                 </div>
                 ${resource.description ? `<div class="resource-description">${resource.description}</div>` : ''}
@@ -243,10 +242,21 @@ class ResourceDatabase {
             </div>
         `).join('');
 
-        // 添加点击事件打开链接
+        // 添加点击事件
         container.querySelectorAll('.resource-card').forEach(card => {
             card.addEventListener('click', (e) => {
-                if (!e.target.closest('.resource-actions') && !e.target.closest('.resource-url')) {
+                const actionBtn = e.target.closest('.action-btn');
+                if (actionBtn) {
+                    e.stopPropagation();
+                    const action = actionBtn.dataset.action;
+                    const id = parseInt(actionBtn.dataset.id);
+                    
+                    if (action === 'edit') {
+                        this.editResource(id);
+                    } else if (action === 'delete') {
+                        this.deleteResource(id);
+                    }
+                } else if (!e.target.closest('.resource-actions') && !e.target.closest('.resource-url')) {
                     const url = card.querySelector('.resource-url').href;
                     window.open(url, '_blank');
                 }
@@ -294,11 +304,19 @@ class ResourceDatabase {
         form.favicon.value = resource.favicon;
 
         // 修改保存逻辑
-        modal.querySelector('.modal-save').onclick = () => {
+        modal.querySelector('.modal-save').addEventListener('click', () => {
             const formData = new FormData(form);
             
-            resource.title = formData.get('title').trim();
-            resource.url = formData.get('url').trim();
+            const title = formData.get('title').trim();
+            const url = formData.get('url').trim();
+            
+            if (!title || !url) {
+                alert('Please fill in required fields');
+                return;
+            }
+            
+            resource.title = title;
+            resource.url = url;
             resource.description = formData.get('description').trim();
             resource.category = formData.get('category');
             resource.tags = formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag);
@@ -308,7 +326,7 @@ class ResourceDatabase {
             this.renderResources();
             this.updateTagFilters();
             this.closeModal(modal);
-        };
+        });
 
         document.body.appendChild(modal);
         modal.classList.add('show');

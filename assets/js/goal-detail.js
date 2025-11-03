@@ -207,8 +207,8 @@ class GoalDetail {
         });
 
         // 操作按钮
-        document.getElementById('duplicateBtn').addEventListener('click', () => {
-            this.duplicateGoal();
+        document.getElementById('backToListBtn').addEventListener('click', () => {
+            this.backToList();
         });
 
         document.getElementById('shareBtn').addEventListener('click', () => {
@@ -631,44 +631,15 @@ class GoalDetail {
         }
     }
 
-    duplicateGoal() {
-        try {
-            const stored = localStorage.getItem('list100-items');
-            if (stored) {
-                const items = JSON.parse(stored);
-                
-                if (items.length >= 100) {
-                    alert('You have reached the limit of 100 goals!');
-                    return;
-                }
-                
-                // 创建相似目标，但重置进度相关信息
-                const newGoal = {
-                    id: Date.now(),
-                    text: this.goal.text.replace(/ \(Copy\)$/, '') + ' (Similar)',
-                    description: this.goal.description || '',
-                    tags: [...(this.goal.tags || [])],
-                    completed: false,
-                    completedAt: null,
-                    progress: 0,
-                    createdAt: new Date().toISOString(),
-                    lastModified: new Date().toISOString()
-                };
-                
-                items.push(newGoal);
-                localStorage.setItem('list100-items', JSON.stringify(items));
-                
-                // 创建备份
-                this.createBackups(items);
-                
-                if (confirm('Similar goal created successfully! Do you want to go to the new goal?')) {
-                    window.location.href = `goal-detail.html?id=${newGoal.id}`;
-                }
-            }
-        } catch (error) {
-            console.error('Error creating similar goal:', error);
-            alert('Error creating similar goal');
+    backToList() {
+        // 保存当前数据
+        this.saveGoal();
+        if (this.notes.length > 0) {
+            this.saveNotes();
         }
+        
+        // 返回到List100页面
+        window.location.href = 'list100.html';
     }
 
     shareGoal() {
@@ -907,17 +878,15 @@ class GoalDetail {
         // 监听localStorage变化，实时同步数据
         window.addEventListener('storage', (e) => {
             if (e.key === 'list100-items' && e.newValue) {
-                try {
-                    const items = JSON.parse(e.newValue);
-                    const updatedGoal = items.find(item => item.id === this.goalId);
-                    if (updatedGoal && JSON.stringify(updatedGoal) !== JSON.stringify(this.goal)) {
-                        this.goal = updatedGoal;
-                        this.updateAllUI();
-                        this.showToast('Goal updated from main page');
-                    }
-                } catch (error) {
-                    console.error('Error syncing data:', error);
-                }
+                this.handleDataSync(e.newValue);
+            }
+        });
+
+        // 监听自定义数据更新事件
+        window.addEventListener('list100DataUpdate', (e) => {
+            if (e.detail.itemId === this.goalId) {
+                console.log(`Received data update for goal ${this.goalId}, type: ${e.detail.updateType}`);
+                this.refreshGoalData();
             }
         });
 
@@ -925,6 +894,69 @@ class GoalDetail {
         window.addEventListener('focus', () => {
             this.refreshGoalData();
         });
+
+        // 定期检查数据同步（每5秒）
+        setInterval(() => {
+            this.checkDataSync();
+        }, 5000);
+    }
+
+    handleDataSync(newValue) {
+        try {
+            const items = JSON.parse(newValue);
+            const updatedGoal = items.find(item => item.id === this.goalId);
+            if (updatedGoal) {
+                // 检查是否有实际变化
+                const hasChanges = this.hasGoalChanged(updatedGoal);
+                if (hasChanges) {
+                    console.log('Goal data changed, updating UI');
+                    this.goal = updatedGoal;
+                    this.updateAllUI();
+                    this.showToast('Goal updated from main page', 'info');
+                }
+            }
+        } catch (error) {
+            console.error('Error syncing data:', error);
+        }
+    }
+
+    hasGoalChanged(newGoal) {
+        if (!this.goal) return true;
+        
+        // 比较关键字段
+        const fieldsToCompare = ['text', 'description', 'tags', 'completed', 'pinned', 'progress', 'lastModified'];
+        
+        for (const field of fieldsToCompare) {
+            if (JSON.stringify(this.goal[field]) !== JSON.stringify(newGoal[field])) {
+                console.log(`Field ${field} changed:`, this.goal[field], '->', newGoal[field]);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    checkDataSync() {
+        // 检查localStorage中的数据是否比当前数据更新
+        try {
+            const stored = localStorage.getItem('list100-items');
+            if (stored) {
+                const items = JSON.parse(stored);
+                const storedGoal = items.find(item => item.id === this.goalId);
+                if (storedGoal && storedGoal.lastModified && this.goal.lastModified) {
+                    const storedTime = new Date(storedGoal.lastModified);
+                    const currentTime = new Date(this.goal.lastModified);
+                    
+                    if (storedTime > currentTime) {
+                        console.log('Detected newer data in localStorage, syncing...');
+                        this.goal = storedGoal;
+                        this.updateAllUI();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error checking data sync:', error);
+        }
     }
 
     refreshGoalData() {
@@ -933,10 +965,14 @@ class GoalDetail {
             if (stored) {
                 const items = JSON.parse(stored);
                 const updatedGoal = items.find(item => item.id === this.goalId);
-                if (updatedGoal && JSON.stringify(updatedGoal) !== JSON.stringify(this.goal)) {
-                    this.goal = updatedGoal;
-                    this.updateAllUI();
-                    console.log('Goal data refreshed');
+                if (updatedGoal) {
+                    const hasChanges = this.hasGoalChanged(updatedGoal);
+                    if (hasChanges) {
+                        console.log('Refreshing goal data with changes');
+                        this.goal = updatedGoal;
+                        this.updateAllUI();
+                        console.log('Goal data refreshed successfully');
+                    }
                 }
             }
         } catch (error) {
@@ -1052,18 +1088,42 @@ class GoalDetail {
 
     updateAllUI() {
         // 统一更新所有UI元素
+        this.updateBasicInfo();
+        this.renderTags();
         this.updateStatus();
         this.updateDates();
         this.updateProgress();
         this.updateStats();
     }
 
-    showToast(message) {
+    updateBasicInfo() {
+        // 更新基本信息
+        const titleElement = document.getElementById('goalTitle');
+        const descriptionElement = document.getElementById('goalDescription');
+        
+        if (titleElement) {
+            titleElement.textContent = this.goal.text || 'Untitled Goal';
+        }
+        
+        if (descriptionElement) {
+            descriptionElement.textContent = this.goal.description || 'No description';
+        }
+    }
+
+    showToast(message, type = 'success') {
         // 移除现有的toast
         const existingToast = document.getElementById('goalToast');
         if (existingToast) {
             existingToast.remove();
         }
+        
+        // 定义不同类型的样式
+        const colors = {
+            success: 'rgba(16, 185, 129, 0.9)',
+            info: 'rgba(59, 130, 246, 0.9)',
+            warning: 'rgba(245, 158, 11, 0.9)',
+            error: 'rgba(239, 68, 68, 0.9)'
+        };
         
         // 创建提示消息
         const toast = document.createElement('div');
@@ -1072,7 +1132,7 @@ class GoalDetail {
             position: fixed;
             top: 80px;
             right: 20px;
-            background: rgba(16, 185, 129, 0.9);
+            background: ${colors[type] || colors.success};
             color: white;
             padding: 12px 16px;
             border-radius: 8px;
@@ -1102,6 +1162,8 @@ class GoalDetail {
             }, 300);
         }, 3000);
     }
+
+
 
     escapeHtml(text) {
         const div = document.createElement('div');

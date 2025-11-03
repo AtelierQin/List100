@@ -704,6 +704,18 @@
     transform: translateY(-1px);
 }
 
+.btn-primary {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    color: #4a5568;
+    border-color: #cbd5e0;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+    color: #2d3748;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
     .goal-layout {
         grid-template-columns: 1fr;
