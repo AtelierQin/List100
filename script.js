@@ -7,7 +7,17 @@ class List100 {
     }
 
     async init() {
+        console.log('Initializing List100...');
         this.items = await this.loadFromStorage();
+        console.log(`Loaded ${this.items.length} items`);
+        
+        // 如果有数据但localStorage为空，保存数据
+        const stored = localStorage.getItem('list100-items');
+        if (this.items.length > 0 && (!stored || JSON.parse(stored).length === 0)) {
+            console.log('Saving loaded data to localStorage...');
+            this.saveToStorage();
+        }
+        
         this.bindEvents();
         this.updateTagFilter();
         this.render();
@@ -16,6 +26,11 @@ class List100 {
         
         // 检查是否需要提醒备份
         this.checkBackupReminder();
+        
+        // 启动定期自动保存（每30秒）
+        this.startAutoSave();
+        
+        console.log('List100 initialization complete');
     }
     
     checkBackupReminder() {
@@ -87,6 +102,22 @@ class List100 {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.ctrlKey) {
                 this.addItem();
+            }
+        });
+
+        // 页面卸载时保存数据
+        window.addEventListener('beforeunload', () => {
+            if (this.items.length > 0) {
+                console.log('Page unloading, saving data...');
+                this.saveToStorage();
+            }
+        });
+
+        // 页面隐藏时也保存数据（用于页面切换）
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && this.items.length > 0) {
+                console.log('Page hidden, saving data...');
+                this.saveToStorage();
             }
         });
     }
@@ -670,31 +701,52 @@ class List100 {
     }
 
     saveToStorage() {
-        // 保存到localStorage
-        localStorage.setItem('list100-items', JSON.stringify(this.items));
+        console.log(`=== Saving ${this.items.length} items to localStorage ===`);
         
-        // 同时保存到多个备份位置
-        localStorage.setItem('list100-backup-1', JSON.stringify(this.items));
-        localStorage.setItem('list100-backup-2', JSON.stringify(this.items));
-        
-        // 保存带时间戳的版本
-        const timestamp = new Date().toISOString();
-        localStorage.setItem('list100-last-save', timestamp);
-        
-        // 每10次保存创建一个历史备份
-        const saveCount = parseInt(localStorage.getItem('list100-save-count') || '0') + 1;
-        localStorage.setItem('list100-save-count', saveCount.toString());
-        
-        if (saveCount % 10 === 0) {
-            localStorage.setItem(`list100-history-${saveCount}`, JSON.stringify({
-                items: this.items,
-                timestamp: timestamp,
-                count: this.items.length
-            }));
+        try {
+            // 保存到localStorage
+            const dataString = JSON.stringify(this.items);
+            localStorage.setItem('list100-items', dataString);
+            console.log('Saved to list100-items');
+            
+            // 同时保存到多个备份位置
+            localStorage.setItem('list100-backup-1', dataString);
+            localStorage.setItem('list100-backup-2', dataString);
+            console.log('Saved to backup locations');
+            
+            // 保存带时间戳的版本
+            const timestamp = new Date().toISOString();
+            localStorage.setItem('list100-last-save', timestamp);
+            
+            // 每10次保存创建一个历史备份
+            const saveCount = parseInt(localStorage.getItem('list100-save-count') || '0') + 1;
+            localStorage.setItem('list100-save-count', saveCount.toString());
+            
+            if (saveCount % 10 === 0) {
+                localStorage.setItem(`list100-history-${saveCount}`, JSON.stringify({
+                    items: this.items,
+                    timestamp: timestamp,
+                    count: this.items.length
+                }));
+                console.log(`Created history backup #${saveCount}`);
+            }
+            
+            // 更新保存时间显示
+            this.updateSaveStatus();
+            
+            // 验证保存是否成功
+            const verification = localStorage.getItem('list100-items');
+            if (verification) {
+                const parsed = JSON.parse(verification);
+                console.log(`Save verification: ${parsed.length} items saved successfully`);
+            } else {
+                console.error('Save verification failed: no data found after save');
+            }
+            
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+            this.showToast('Error saving data!', 'error');
         }
-        
-        // 更新保存时间显示
-        this.updateSaveStatus();
     }
     
     updateSaveStatus() {
@@ -720,33 +772,50 @@ class List100 {
     }
 
     async loadFromStorage() {
+        console.log('=== Loading data ===');
+        
         // 优先从localStorage加载
         const stored = localStorage.getItem('list100-items');
+        console.log('localStorage raw data:', stored ? stored.substring(0, 100) + '...' : 'null');
+        
         if (stored) {
             try {
                 const items = JSON.parse(stored);
-                if (Array.isArray(items) && items.length > 0) {
+                if (Array.isArray(items)) {
                     console.log(`Found ${items.length} items in localStorage`);
-                    return items;
+                    if (items.length > 0) {
+                        return items;
+                    } else {
+                        console.log('localStorage has empty array, trying data.json');
+                    }
+                } else {
+                    console.log('localStorage data is not an array');
                 }
             } catch (error) {
                 console.error('Error parsing localStorage data:', error);
             }
+        } else {
+            console.log('No data in localStorage');
         }
         
-        // 尝试从JSON文件加载
+        // 如果localStorage为空或无效，尝试从JSON文件加载
+        console.log('Loading from data.json...');
         try {
             const response = await fetch('./data.json');
             if (response.ok) {
                 const data = await response.json();
                 if (data.items && Array.isArray(data.items)) {
+                    console.log(`Loaded ${data.items.length} items from data.json`);
                     return data.items;
                 }
+            } else {
+                console.error('Failed to fetch data.json:', response.status);
             }
         } catch (error) {
-            console.log('Loading from JSON file failed');
+            console.error('Loading from JSON file failed:', error);
         }
         
+        console.log('No data found anywhere, returning empty array');
         return [];
     }
 
@@ -871,7 +940,47 @@ class List100 {
             }
         }
         
-        alert('No recoverable data found in any backup location.');
+        // 如果没有找到任何备份，提供重置选项
+        if (confirm('No recoverable data found in any backup location. Would you like to reset and load sample data from data.json?')) {
+            // 清除所有localStorage数据
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('list100-')) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            // 重新加载数据
+            this.loadFromStorage().then(items => {
+                this.items = items;
+                // 重要：保存数据到localStorage
+                if (items.length > 0) {
+                    this.saveToStorage();
+                }
+                this.render();
+                this.updateProgress();
+                this.updateTagFilter();
+                if (items.length > 0) {
+                    alert(`Successfully loaded ${items.length} sample items from data.json!`);
+                } else {
+                    alert('Data reset complete. You can now start adding new goals.');
+                }
+            });
+        }
+    }
+
+
+
+    startAutoSave() {
+        // 每30秒自动保存一次
+        setInterval(() => {
+            if (this.items.length > 0) {
+                console.log('Auto-saving data...');
+                this.saveToStorage();
+            }
+        }, 30000);
     }
 }
 

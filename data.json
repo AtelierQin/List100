@@ -1,4 +1,61 @@
 {
-  "items": [],
-  "lastUpdated": null
+  "items": [
+    {
+      "id": 1699123456789,
+      "text": "Learn a new language",
+      "description": "Master conversational Spanish through daily practice and immersion",
+      "tags": ["learning", "personal-growth", "language"],
+      "completed": false,
+      "pinned": false,
+      "customOrder": 0,
+      "createdAt": "2024-11-01T10:30:00.000Z",
+      "progress": 25
+    },
+    {
+      "id": 1699123456790,
+      "text": "Visit 10 countries",
+      "description": "Explore different cultures and expand my worldview",
+      "tags": ["travel", "adventure", "culture"],
+      "completed": false,
+      "pinned": true,
+      "customOrder": 1699123456790,
+      "createdAt": "2024-11-01T11:15:00.000Z",
+      "progress": 40
+    },
+    {
+      "id": 1699123456791,
+      "text": "Read 50 books this year",
+      "description": "Expand knowledge through diverse reading materials",
+      "tags": ["reading", "learning", "personal-growth"],
+      "completed": true,
+      "pinned": false,
+      "customOrder": 1,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "completedAt": "2024-10-15T14:30:00.000Z",
+      "progress": 100
+    },
+    {
+      "id": 1699123456792,
+      "text": "Run a marathon",
+      "description": "Complete a full 42.2km marathon race",
+      "tags": ["fitness", "challenge", "health"],
+      "completed": false,
+      "pinned": false,
+      "customOrder": 2,
+      "createdAt": "2024-11-01T12:00:00.000Z",
+      "progress": 60
+    },
+    {
+      "id": 1699123456793,
+      "text": "Learn to cook 20 new recipes",
+      "description": "Master cooking techniques from different cuisines",
+      "tags": ["cooking", "skill", "creativity"],
+      "completed": false,
+      "pinned": false,
+      "customOrder": 3,
+      "createdAt": "2024-11-01T13:45:00.000Z",
+      "progress": 35
+    }
+  ],
+  "lastUpdated": "2024-11-03T10:00:00.000Z"
 }
