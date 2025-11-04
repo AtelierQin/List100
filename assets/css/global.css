@@ -1595,3 +1595,131 @@ st通知系统 */
 
 
 
+/* 导航样式 - 从landing.css复制 */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+    transition: var(--transition);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: var(--transition);
+}
+
+.logo:hover {
+    color: var(--color-accent);
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+}
+
+.nav-link.active {
+    color: var(--color-accent);
+    background: var(--color-accent-light);
+}
+
+/* Motto Section样式 */
+.motto-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid var(--color-border-light);
+    padding: 24px 0;
+    position: relative;
+    overflow: hidden;
+    margin-top: 64px; /* 为固定导航栏留出空间 */
+}
+
+.motto-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.motto-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.motto-text {
+    font-family: var(--font-family-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    font-style: italic;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    animation: mottoFadeIn 1.8s ease-out 0.2s forwards;
+    transform: translateY(12px);
+}
+
+.motto-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+
+@keyframes mottoFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 0.85;
+        transform: translateY(0);
+    }
+}
+
+.main-content.has-motto {
+    padding-top: 0;
+}
