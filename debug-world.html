@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug World</title>
+    <style>
+        .country-flag-large {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        .country-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug World Page</h1>
+    <div id="test-container"></div>
+    
+    <script>
+        // 测试国旗显示
+        const testCountries = {
+            'CN': { name: 'China', flag: '🇨🇳' },
+            'US': { name: 'United States', flag: '🇺🇸' },
+            'JP': { name: 'Japan', flag: '🇯🇵' },
+            'GB': { name: 'United Kingdom', flag: '🇬🇧' }
+        };
+        
+        const container = document.getElementById('test-container');
+        
+        Object.entries(testCountries).forEach(([code, country]) => {
+            const div = document.createElement('div');
+            div.className = 'country-item';
+            div.innerHTML = `
+                <div class="country-flag-large">${country.flag}</div>
+                <div>${country.name}</div>
+                <div>Code: ${code}</div>
+            `;
+            container.appendChild(div);
+        });
+        
+        console.log('Test countries:', testCountries);
+        console.log('China flag directly:', '🇨🇳');
+    </script>
+</body>
+</html>

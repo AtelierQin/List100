@@ -9,6 +9,8 @@ class TravelMap {
         await this.loadData();
         this.createCountriesList();
         this.bindEvents();
+        // 检查emoji支持并应用备用方案
+        this.checkEmojiSupport();
         // 使用新的同步方法确保初始化时数据一致
         // 添加小延迟确保DOM完全渲染
         setTimeout(() => {
@@ -282,7 +284,7 @@ class TravelMap {
                 
                 return `
                     <div class="country-item-row ${statusClass}" data-country="${code}">
-                        <div class="country-flag-large">${country.flag}</div>
+                        <div class="country-flag-large" data-flag="${country.flag}" data-code="${code}">${country.flag}</div>
                         <div class="country-info">
                             <div class="country-names">
                                 <div class="country-name-en">${country.name}</div>
@@ -628,7 +630,7 @@ class TravelMap {
             return `
                 <div class="country-item">
                     <div class="country-name">
-                        <span class="country-flag-small">${country.flag}</span>
+                        <span class="country-flag-small" data-flag="${country.flag}" data-code="${code}">${country.flag}</span>
                         <span>${country.name}</span>
                     </div>
                     <div class="country-date">${date}</div>
@@ -642,7 +644,7 @@ class TravelMap {
     showAddCountryDialog() {
         const countryList = [...this.countries.entries()]
             .filter(([code]) => !this.visitedCountries.has(code))
-            .map(([code, country]) => `${country.name} (${code})`)
+            .map(([code, country]) => `${country.flag} ${country.name}`)
             .join('\n');
         
         const input = prompt(`Enter country name:\n\nAvailable countries:\n${countryList.slice(0, 500)}...`);
@@ -772,6 +774,49 @@ class TravelMap {
         } catch (error) {
             return dateString; // 如果解析失败，返回原始字符串
         }
+    }
+
+    checkEmojiSupport() {
+        // 创建一个测试元素来检查emoji是否正确渲染
+        const testElement = document.createElement('span');
+        testElement.style.position = 'absolute';
+        testElement.style.left = '-9999px';
+        testElement.style.fontSize = '20px';
+        testElement.textContent = '🇺🇸';
+        document.body.appendChild(testElement);
+        
+        // 检查渲染的宽度，如果emoji不支持，通常宽度会很小
+        const rect = testElement.getBoundingClientRect();
+        const emojiSupported = rect.width > 10;
+        
+        document.body.removeChild(testElement);
+        
+        console.log('Emoji support detected:', emojiSupported);
+        
+        // 如果不支持emoji，使用备用方案
+        if (!emojiSupported) {
+            this.applyFallbackFlags();
+        }
+    }
+    
+    applyFallbackFlags() {
+        console.log('Applying fallback flags...');
+        // 找到所有国旗元素并替换为国家代码
+        document.querySelectorAll('.country-flag-large, .country-flag-small').forEach(flagElement => {
+            const code = flagElement.getAttribute('data-code');
+            if (code) {
+                flagElement.textContent = code;
+                flagElement.style.fontSize = '12px';
+                flagElement.style.fontWeight = 'bold';
+                flagElement.style.color = '#666';
+                flagElement.style.border = '1px solid #ccc';
+                flagElement.style.padding = '2px 4px';
+                flagElement.style.borderRadius = '3px';
+                flagElement.style.backgroundColor = '#f5f5f5';
+            }
+        });
+        
+        this.showToast('Your system doesn\'t support flag emojis. Showing country codes instead.');
     }
 
     showToast(message) {

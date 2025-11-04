@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Flag Test</title>
+</head>
+<body>
+    <h1>Simple Flag Test</h1>
+    <p>China: <span id="china-flag"></span></p>
+    <p>USA: <span id="usa-flag"></span></p>
+    <p>Japan: <span id="japan-flag"></span></p>
+    
+    <script>
+        document.getElementById('china-flag').textContent = '🇨🇳';
+        document.getElementById('usa-flag').textContent = '🇺🇸';
+        document.getElementById('japan-flag').textContent = '🇯🇵';
+        
+        console.log('Flags set via JavaScript');
+    </script>
+</body>
+</html>
