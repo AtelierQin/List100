@@ -975,6 +975,77 @@ const dg120Albums = [
 // 验证专辑总数
 console.log(`Total albums: ${dg120Albums.length}`);
 
+// 重新设计分类映射 - 基于专辑内容创建更合理的分类体系
+const categoryMapping = {
+    "Early Orchestral Recordings": "早期录音",
+    "Symphonic Works": "交响乐",
+    "Concerto Recordings": "协奏曲",
+    "Piano Recordings": "钢琴独奏",
+    "Chamber Music": "室内乐",
+    "Opera & Vocal": "歌剧与声乐",
+    "Contemporary": "当代作品"
+};
+
+// 基于专辑标题和描述添加更细分的音乐类型分类
+function getMusicType(album) {
+    const title = album.title.toLowerCase();
+    const description = album.description.toLowerCase();
+    
+    // 按作曲家分类
+    if (title.includes('beethoven') || description.includes('贝多芬')) return "贝多芬";
+    if (title.includes('mozart') || description.includes('莫扎特')) return "莫扎特";
+    if (title.includes('brahms') || description.includes('勃拉姆斯')) return "勃拉姆斯";
+    if (title.includes('schubert') || description.includes('舒伯特')) return "舒伯特";
+    if (title.includes('bruckner') || description.includes('布鲁克纳')) return "布鲁克纳";
+    if (title.includes('mahler') || description.includes('马勒')) return "马勒";
+    if (title.includes('wagner') || description.includes('瓦格纳')) return "瓦格纳";
+    if (title.includes('tchaikovsky') || description.includes('柴可夫斯基')) return "柴可夫斯基";
+    if (title.includes('dvořák') || description.includes('德沃夏克')) return "德沃夏克";
+    if (title.includes('chopin') || description.includes('肖邦')) return "肖邦";
+    if (title.includes('liszt') || description.includes('李斯特')) return "李斯特";
+    if (title.includes('schumann') || description.includes('舒曼')) return "舒曼";
+    if (title.includes('bach') || description.includes('巴赫')) return "巴赫";
+    if (title.includes('debussy') || description.includes('德彪西')) return "德彪西";
+    if (title.includes('ravel') || description.includes('拉威尔')) return "拉威尔";
+    if (title.includes('stravinsky') || description.includes('斯特拉文斯基')) return "斯特拉文斯基";
+    if (title.includes('prokofiev') || description.includes('普罗科菲耶夫')) return "普罗科菲耶夫";
+    if (title.includes('shostakovich') || description.includes('肖斯塔科维奇')) return "肖斯塔科维奇";
+    
+    // 按乐器分类
+    if (title.includes('violin') || description.includes('小提琴')) return "小提琴";
+    if (title.includes('piano') || description.includes('钢琴')) return "钢琴";
+    if (title.includes('cello') || description.includes('大提琴')) return "大提琴";
+    if (title.includes('clarinet') || description.includes('单簧管')) return "单簧管";
+    if (title.includes('horn') || description.includes('圆号')) return "圆号";
+    if (title.includes('string quartet') || description.includes('弦乐四重奏')) return "弦乐四重奏";
+    if (title.includes('symphony') || description.includes('交响曲')) return "交响曲";
+    
+    // 按音乐时期分类
+    if (title.includes('baroque') || description.includes('巴洛克')) return "巴洛克时期";
+    if (title.includes('classical') || description.includes('古典')) return "古典时期";
+    if (title.includes('romantic') || description.includes('浪漫')) return "浪漫时期";
+    if (title.includes('modern') || description.includes('现代')) return "现代时期";
+    
+    // 按作品类型分类
+    if (title.includes('concerto') || description.includes('协奏曲')) return "协奏曲";
+    if (title.includes('sonata') || description.includes('奏鸣曲')) return "奏鸣曲";
+    if (title.includes('opera') || description.includes('歌剧')) return "歌剧";
+    if (title.includes('requiem') || description.includes('安魂曲')) return "宗教音乐";
+    if (title.includes('lied') || description.includes('艺术歌曲')) return "艺术歌曲";
+    
+    return "其他";
+}
+
+// 为每个专辑添加新的分类属性
+for (let album of dg120Albums) {
+    album.musicType = getMusicType(album);
+    album.originalCategory = album.category;
+}
+
+// 获取所有音乐类型的唯一值
+const allMusicTypes = [...new Set(dg120Albums.map(album => album.musicType))];
+console.log('Music types:', allMusicTypes);
+
 // 全局变量
 let filteredAlbums = [...dg120Albums];
 let listenedAlbums = JSON.parse(localStorage.getItem('dg120ListenedAlbums')) || [];
@@ -982,7 +1053,7 @@ let currentAlbum = null;
 
 // DOM元素
 const albumsList = document.getElementById('albumsList');
-const categoryFilter = document.getElementById('categoryFilter');
+const musicTypeFilter = document.getElementById('musicTypeFilter');
 const periodFilter = document.getElementById('periodFilter');
 const statusFilter = document.getElementById('statusFilter');
 const clearFiltersBtn = document.getElementById('clearFilters');
@@ -1018,7 +1089,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateListenedAlbumsList();
     
     // 事件监听器
-    if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
+    if (musicTypeFilter) musicTypeFilter.addEventListener('change', applyFilters);
     if (periodFilter) periodFilter.addEventListener('change', applyFilters);
     if (statusFilter) statusFilter.addEventListener('change', applyFilters);
     if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
@@ -1061,7 +1132,7 @@ function renderAlbums() {
                 <div class="album-title">${album.title}</div>
                 <div class="album-artists">${album.mainArtists.join(', ')}</div>
                 <div class="album-meta">
-                    <span class="album-category">${album.category}</span>
+                    <span class="album-category">${album.musicType}</span>
                     <span class="album-period">${album.recordingPeriod}</span>
                 </div>
                 <div class="album-description-preview">${descriptionPreview}</div>
@@ -1078,12 +1149,12 @@ function renderAlbums() {
 
 // 应用筛选器
 function applyFilters() {
-    const categoryValue = categoryFilter ? categoryFilter.value : '';
+    const musicTypeValue = musicTypeFilter ? musicTypeFilter.value : '';
     const periodValue = periodFilter ? periodFilter.value : '';
     const statusValue = statusFilter ? statusFilter.value : '';
     
     filteredAlbums = dg120Albums.filter(album => {
-        const categoryMatch = !categoryValue || album.category === categoryValue;
+        const musicTypeMatch = !musicTypeValue || album.musicType === musicTypeValue;
         
         let periodMatch = true;
         if (periodValue) {
@@ -1117,7 +1188,7 @@ function applyFilters() {
                          (statusValue === 'unlistened' && !isListened);
         }
         
-        return categoryMatch && periodMatch && statusMatch;
+        return musicTypeMatch && periodMatch && statusMatch;
     });
     
     renderAlbums();
@@ -1125,7 +1196,7 @@ function applyFilters() {
 
 // 清除筛选器
 function clearFilters() {
-    if (categoryFilter) categoryFilter.value = '';
+    if (musicTypeFilter) musicTypeFilter.value = '';
     if (periodFilter) periodFilter.value = '';
     if (statusFilter) statusFilter.value = '';
     filteredAlbums = [...dg120Albums];
