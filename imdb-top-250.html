@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media - IMDb Top 250</title>
+    <title>IMDb Top 250</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/media.css">
+    <link rel="stylesheet" href="assets/css/imdb-top-250.css">
 </head>
 <body>
     <nav class="nav">
@@ -17,10 +17,20 @@
             <div class="nav-links">
                 <a href="list100.html" class="nav-link">List100</a>
                 <a href="links.html" class="nav-link">Links</a>
-                <a href="world.html" class="nav-link">World</a>
-                <a href="china.html" class="nav-link">China</a>
-                <a href="media.html" class="nav-link active">Media</a>
-                <a href="dg120.html" class="nav-link">DG 120</a>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Landscape</button>
+                    <div class="dropdown-menu">
+                        <a href="world.html" class="dropdown-item">World</a>
+                        <a href="china.html" class="dropdown-item">China</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle active">Collections</button>
+                    <div class="dropdown-menu">
+                        <a href="imdb-top-250.html" class="dropdown-item active">IMDb Top 250</a>
+                        <a href="dg120.html" class="dropdown-item">DG 120</a>
+                    </div>
+                </div>
                 <a href="landing.html#about" class="nav-link">About</a>
             </div>
         </div>
@@ -220,6 +230,7 @@
         </div>
     </div>
 
-    <script src="assets/js/media.js"></script>
+    <script src="assets/js/imdb-top-250.js"></script>
+    <script src="assets/js/dropdown.js"></script>
 </body>
 </html>
