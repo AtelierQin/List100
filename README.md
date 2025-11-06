@@ -5,7 +5,7 @@ A contemplative approach to life design—curate one hundred meaningful aspirati
 ## 🌟 Features
 
 - **List100**: Manage your 100 life goals with progress tracking
-- **Links**: Curated collection of useful resources and websites
+- **OS**: Curated collection of useful resources and websites
 - **World**: Track countries you've visited around the globe
 - **China**: Explore and track cities visited within China
 - **Goal Details**: Detailed view and management of individual goals
@@ -36,7 +36,7 @@ FutureCast-List100/
 │   └── DESIGN_SYSTEM.md   # Design system documentation
 ├── landing.html       # Landing page
 ├── list100.html       # Main List100 application
-├── links.html         # Resource links page
+├── OS.html            # Resource links page
 ├── world.html         # World travel map
 ├── china.html         # China travel map
 ├── goal-detail.html   # Individual goal details

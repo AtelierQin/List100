@@ -21,8 +21,8 @@
         "description": "Main application for managing 100 life goals"
       },
       {
-        "name": "Links",
-        "file": "links.html",
+        "name": "OS",
+        "file": "OS.html",
         "css": "assets/css/links.css",
         "js": "assets/js/links.js",
         "description": "Curated collection of useful resources"

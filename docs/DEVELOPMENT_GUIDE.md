@@ -32,7 +32,7 @@ FutureCast List100 is a web application for managing life goals, resources, and 
 Each page is self-contained with its own CSS and JavaScript:
 - `landing.html` - Project introduction and navigation
 - `list100.html` - Main goal management application
-- `links.html` - Resource collection and management
+- `OS.html` - Resource collection and management
 - `world.html` - World travel tracking
 - `china.html` - China travel tracking
 - `goal-detail.html` - Individual goal details

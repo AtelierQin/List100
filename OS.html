@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS - List100</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/links.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="landing.html" class="logo">FutureCast</a>
+            <div class="nav-links">
+                <a href="list100.html" class="nav-link">List100</a>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Tours</button>
+                    <div class="dropdown-menu">
+                        <a href="world.html" class="dropdown-item">World</a>
+                        <a href="china.html" class="dropdown-item">China</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Collections</button>
+                    <div class="dropdown-menu">
+                        <a href="imdb-top-250.html" class="dropdown-item">IMDb Top 250</a>
+                        <a href="dg120.html" class="dropdown-item">DG 120</a>
+                    </div>
+                </div>
+                <a href="OS.html" class="nav-link active">OS</a>
+                <a href="landing.html#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="motto-section">
+        <div class="container">
+            <div class="motto-content">
+                <p class="motto-text">Knowledge is a treasure, but practice is the key to it.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content has-motto">
+        <div class="container">
+            <div class="layout">
+                <aside class="sidebar">
+                    <section class="hero">
+                        <h1>Master Database</h1>
+                        <p class="hero-subtitle">Curated collection of useful websites and resources.<br />
+                        Updated regularly</p>
+                    </section>
+
+                    <section class="controls-section">
+                        <button id="addResourceBtn" class="btn btn-primary hover-lift">
+                            <span class="btn-icon">+</span>
+                            Add Resource
+                        </button>
+                        
+                        <div class="filter-section">
+                            <h3>Category</h3>
+                            <div class="filter-tabs">
+                                <button class="filter-tab active" data-filter="all">All</button>
+                                <button class="filter-tab" data-filter="news">News</button>
+                                <button class="filter-tab" data-filter="database">Database</button>
+                                <button class="filter-tab" data-filter="article">Article</button>
+                                <button class="filter-tab" data-filter="tool">Tool</button>
+                            </div>
+                        </div>
+
+                        <div class="tag-filter-section">
+                            <h3>Tags</h3>
+                            <div id="tagFilterList" class="tag-filter-list">
+                                <button class="tag-filter-item active" data-tag="">All Tags</button>
+                            </div>
+                        </div>
+
+                        <div class="sync-section">
+                            <h3>Data Management</h3>
+                            <input type="file" id="fileInput" accept=".json" style="display: none;">
+                            <button id="importBtn" class="btn btn-secondary">Import Data</button>
+                            <button id="exportBtn" class="btn btn-secondary">Export Backup</button>
+                        </div>
+                    </section>
+                </aside>
+
+                <section class="content">
+                    <div class="search-section">
+                        <div class="search-container">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search resources...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="resources-container">
+                        <div id="resourcesList" class="resources-grid"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/links.js"></script>
+    <script src="assets/js/dropdown.js"></script>
+</body>
+</html>

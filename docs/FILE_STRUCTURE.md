@@ -36,7 +36,7 @@ Contains all static resources organized by type.
 ### Root HTML Files
 - `landing.html` - Main landing page
 - `list100.html` - List100 application
-- `links.html` - Resource links collection
+- `OS.html` - Resource links collection
 - `world.html` - World travel tracking
 - `china.html` - China travel tracking
 - `goal-detail.html` - Individual goal details
