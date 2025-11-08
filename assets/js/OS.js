@@ -346,23 +346,47 @@ class ResourceDatabase {
 
     updateTagFilters() {
         // 合并资源标签和List100目标标签
-        const resourceTags = this.resources.flatMap(resource => resource.tags);
+        const resourceTags = this.resources.flatMap(resource => resource.tags || []);
         const goalTags = this.list100Items.flatMap(item => item.tags || []);
-        const allTags = [...new Set([...resourceTags, ...goalTags])].sort();
+        const allTags = [...new Set([...resourceTags, ...goalTags])];
+        
+        console.log('Updating tag filters...');
+        console.log('Resource tags:', resourceTags);
+        console.log('Goal tags:', goalTags);
+        console.log('All unique tags:', allTags);
         
         const tagFilterList = document.getElementById('tagFilterList');
         
+        // All Tags 只统计目标数量（与 List100 页面一致）
+        const totalGoals = this.list100Items.length;
+        
+        // 创建 tags 数组，包含 tag 名称和数量（只统计目标）
+        const tagsWithCounts = allTags.map(tag => {
+            const goalCount = this.list100Items.filter(item => 
+                item.tags && item.tags.includes(tag)
+            ).length;
+            
+            return {
+                name: tag,
+                count: goalCount
+            };
+        });
+        
+        // 按数量从高到低排序（与 List100 页面一致）
+        tagsWithCounts.sort((a, b) => b.count - a.count);
+        
+        console.log('Tags sorted by count:', tagsWithCounts);
+        
         tagFilterList.innerHTML = `
-            <button class="tag-filter-item active" data-tag="">
+            <button class="tag-filter-item ${!this.currentTag ? 'active' : ''}" data-tag="">
                 <span class="tag-name">All Tags</span>
-                <span class="tag-count">${this.resources.length}</span>
+                <span class="tag-count">${totalGoals}</span>
             </button>
-            ${allTags.map(tag => {
-                const count = this.resources.filter(resource => resource.tags.includes(tag)).length;
+            ${tagsWithCounts.map(tagData => {
                 return `
-                    <button class="tag-filter-item" data-tag="${tag}">
-                        <span class="tag-name">${tag}</span>
-                        <span class="tag-count">${count}</span>
+                    <button class="tag-filter-item ${this.currentTag === tagData.name ? 'active' : ''}" data-tag="${tagData.name}">
+                        <span class="tag-name">${tagData.name}</span>
+                        <span class="tag-count">${tagData.count}</span>
                     </button>
                 `;
             }).join('')}
@@ -374,6 +398,7 @@ class ResourceDatabase {
                 tagFilterList.querySelectorAll('.tag-filter-item').forEach(i => i.classList.remove('active'));
                 e.currentTarget.classList.add('active');
                 this.currentTag = e.currentTarget.dataset.tag;
+                console.log('Tag filter changed to:', this.currentTag || 'All');
                 this.renderResources();
                 this.renderGoals();
             });
@@ -442,6 +467,8 @@ class ResourceDatabase {
 
     // 加载List100数据
     async loadList100Data() {
+        console.log('Loading List100 data...');
+        
         try {
             // 首先尝试从localStorage加载
             const stored = localStorage.getItem('list100-items');
@@ -449,6 +476,7 @@ class ResourceDatabase {
                 const items = JSON.parse(stored);
                 if (Array.isArray(items) && items.length > 0) {
                     this.list100Items = items;
+                    console.log('Loaded', items.length, 'items from localStorage');
                     this.renderGoals();
                     this.updateTagFilters();
                     return;
@@ -461,6 +489,7 @@ class ResourceDatabase {
                 const data = await response.json();
                 if (data.items && Array.isArray(data.items)) {
                     this.list100Items = data.items;
+                    console.log('Loaded', data.items.length, 'items from JSON file');
                     this.renderGoals();
                     this.updateTagFilters();
                 }
@@ -469,10 +498,11 @@ class ResourceDatabase {
             console.error('Error loading List100 data:', error);
         }
 
-        // 监听List100数据更新
+        // 监听List100数据更新（跨标签页）
         window.addEventListener('storage', (e) => {
             if (e.key === 'list100-items' && e.newValue) {
                 try {
+                    console.log('List100 data updated from another tab');
                     this.list100Items = JSON.parse(e.newValue);
                     this.renderGoals();
                     this.updateTagFilters();
@@ -481,6 +511,40 @@ class ResourceDatabase {
                 }
             }
         });
+        
+        // 监听页面获得焦点时重新加载数据
+        window.addEventListener('focus', () => {
+            console.log('Page focused, reloading List100 data...');
+            this.reloadList100Data();
+        });
+        
+        // 定期检查数据更新（每5秒）
+        setInterval(() => {
+            this.reloadList100Data();
+        }, 5000);
+    }
+    
+    // 重新加载List100数据
+    reloadList100Data() {
+        try {
+            const stored = localStorage.getItem('list100-items');
+            if (stored) {
+                const items = JSON.parse(stored);
+                
+                // 检查数据是否有变化
+                const currentData = JSON.stringify(this.list100Items);
+                const newData = JSON.stringify(items);
+                
+                if (currentData !== newData) {
+                    console.log('List100 data changed, updating...');
+                    this.list100Items = items;
+                    this.renderGoals();
+                    this.updateTagFilters();
+                }
+            }
+        } catch (error) {
+            console.error('Error reloading List100 data:', error);
+        }
     }
 
     // 渲染List100目标

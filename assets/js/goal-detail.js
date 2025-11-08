@@ -15,25 +15,71 @@ class GoalDetail {
     }
 
     async init() {
+        console.log('=== Initializing GoalDetail ===');
+        console.log('Goal ID:', this.goalId);
+        
+        // 测试 localStorage 是否可用
+        if (!this.testLocalStorage()) {
+            alert('LocalStorage is not available. Notes cannot be saved. Please check your browser settings.');
+            return;
+        }
+
         if (!this.goalId) {
             alert('Goal not found');
             window.location.href = 'list100.html';
             return;
         }
 
+        console.log('Loading goal...');
         await this.loadGoal();
         if (!this.goal) {
             alert('Goal not found');
             window.location.href = 'list100.html';
             return;
         }
+        console.log('Goal loaded:', this.goal.text);
 
+        console.log('Loading notes...');
         this.loadNotes();
+        console.log('Notes loaded, count:', this.notes.length);
+        
+        console.log('Binding events...');
         this.bindEvents();
+        
+        console.log('Rendering UI...');
         this.render();
+        
+        console.log('Setting up auto-save...');
         this.setupAutoSave();
+        
+        console.log('Adding save status indicator...');
         this.addSaveStatusIndicator();
+        
+        console.log('Setting up data sync...');
         this.setupDataSync();
+        
+        console.log('=== Initialization complete ===');
+    }
+
+    testLocalStorage() {
+        try {
+            const testKey = 'list100-test';
+            const testValue = 'test-value-' + Date.now();
+            localStorage.setItem(testKey, testValue);
+            const retrieved = localStorage.getItem(testKey);
+            localStorage.removeItem(testKey);
+            
+            if (retrieved === testValue) {
+                console.log('✓ LocalStorage is working correctly');
+                return true;
+            } else {
+                console.error('✗ LocalStorage test failed: value mismatch');
+                return false;
+            }
+        } catch (error) {
+            console.error('✗ LocalStorage is not available:', error);
+            return false;
+        }
     }
 
     async loadGoal() {
@@ -71,13 +117,35 @@ class GoalDetail {
 
     loadNotes() {
         try {
-            const stored = localStorage.getItem(`list100-notes-${this.goalId}`);
+            const key = `list100-notes-${this.goalId}`;
+            console.log('Loading notes with key:', key);
+            const stored = localStorage.getItem(key);
+            console.log('Stored notes data:', stored);
+            
             if (stored) {
                 this.notes = JSON.parse(stored);
+                console.log('Loaded notes:', this.notes.length, 'notes');
+            } else {
+                console.log('No stored notes found');
+                this.notes = [];
             }
         } catch (error) {
             console.error('Error loading notes:', error);
             this.notes = [];
+            
+            // 尝试从备份恢复
+            try {
+                const backupKey = `list100-notes-backup-${this.goalId}`;
+                const backup = localStorage.getItem(backupKey);
+                if (backup) {
+                    this.notes = JSON.parse(backup);
+                    console.log('Restored notes from backup:', this.notes.length, 'notes');
+                    // 重新保存到主存储
+                    this.saveNotes();
+                }
+            } catch (backupError) {
+                console.error('Error loading backup notes:', backupError);
+            }
         }
     }
 
@@ -113,11 +181,28 @@ class GoalDetail {
 
     saveNotes() {
         try {
+            const key = `list100-notes-${this.goalId}`;
+            const notesData = JSON.stringify(this.notes);
+            
+            console.log('Saving notes with key:', key);
+            console.log('Notes count:', this.notes.length);
+            console.log('Notes data size:', notesData.length, 'characters');
+            
             // 主要存储
-            localStorage.setItem(`list100-notes-${this.goalId}`, JSON.stringify(this.notes));
+            localStorage.setItem(key, notesData);
+            console.log('Notes saved to main storage');
+            
+            // 验证保存
+            const verification = localStorage.getItem(key);
+            if (verification === notesData) {
+                console.log('✓ Notes save verified successfully');
+            } else {
+                console.error('✗ Notes save verification failed!');
+                throw new Error('Save verification failed');
+            }
             
             // 备份存储
-            localStorage.setItem(`list100-notes-backup-${this.goalId}`, JSON.stringify(this.notes));
+            localStorage.setItem(`list100-notes-backup-${this.goalId}`, notesData);
             
             // 带时间戳的历史备份
             const timestamp = new Date().toISOString();
@@ -134,9 +219,11 @@ class GoalDetail {
             this.updateSaveStatus();
             
             console.log('Notes saved successfully at', this.lastSaveTime.toLocaleTimeString());
+            this.showToast('Notes saved successfully', 'success');
         } catch (error) {
             console.error('Error saving notes:', error);
-            this.showSaveError('Failed to save notes');
+            this.showSaveError('Failed to save notes: ' + error.message);
+            alert('Failed to save notes. Please check browser console for details.');
         }
     }
 
@@ -219,6 +306,10 @@ class GoalDetail {
     }
 
     render() {
+        console.log('render() called');
+        console.log('Goal:', this.goal);
+        console.log('Notes count:', this.notes.length);
+        
         // 更新目标编号
         const goalNumber = this.getGoalNumber();
         document.getElementById('goalNumber').textContent = `#${goalNumber}`;
@@ -239,10 +330,13 @@ class GoalDetail {
         this.renderTags();
 
         // 更新笔记
+        console.log('About to call renderNotes()...');
         this.renderNotes();
 
         // 更新统计
         this.updateStats();
+        
+        console.log('render() completed');
     }
 
     getGoalNumber() {
@@ -263,18 +357,29 @@ class GoalDetail {
         const statusIndicator = document.getElementById('statusIndicator');
         const statusText = document.getElementById('statusText');
         const completeToggle = document.getElementById('completeToggle');
-        const toggleText = completeToggle.querySelector('.toggle-text');
-
-        if (this.goal.completed) {
-            statusIndicator.classList.add('completed');
-            statusText.textContent = 'Completed';
-            completeToggle.classList.add('completed');
-            toggleText.textContent = 'Mark Incomplete';
-        } else {
-            statusIndicator.classList.remove('completed');
-            statusText.textContent = 'In Progress';
-            completeToggle.classList.remove('completed');
-            toggleText.textContent = 'Mark Complete';
+        
+        // 这些元素在当前 HTML 中不存在，添加空值检查
+        if (statusIndicator) {
+            if (this.goal.completed) {
+                statusIndicator.classList.add('completed');
+            } else {
+                statusIndicator.classList.remove('completed');
+            }
+        }
+        
+        if (statusText) {
+            statusText.textContent = this.goal.completed ? 'Completed' : 'In Progress';
+        }
+        
+        if (completeToggle) {
+            const toggleText = completeToggle.querySelector('.toggle-text');
+            if (this.goal.completed) {
+                completeToggle.classList.add('completed');
+                if (toggleText) toggleText.textContent = 'Mark Incomplete';
+            } else {
+                completeToggle.classList.remove('completed');
+                if (toggleText) toggleText.textContent = 'Mark Complete';
+            }
         }
     }
 
@@ -283,28 +388,35 @@ class GoalDetail {
         const completionDateSection = document.getElementById('completionDateSection');
         const completionDateInput = document.getElementById('completionDateInput');
 
-        if (this.goal.createdAt) {
+        if (createdDate && this.goal.createdAt) {
             const date = new Date(this.goal.createdAt);
             createdDate.textContent = `Created on ${date.toLocaleDateString()}`;
         }
 
-        if (this.goal.completed) {
-            completionDateSection.classList.remove('hidden');
-            if (this.goal.completedAt) {
-                const date = new Date(this.goal.completedAt);
-                completionDateInput.value = date.toISOString().split('T')[0];
+        if (completionDateSection && completionDateInput) {
+            if (this.goal.completed) {
+                completionDateSection.classList.remove('hidden');
+                if (this.goal.completedAt) {
+                    const date = new Date(this.goal.completedAt);
+                    completionDateInput.value = date.toISOString().split('T')[0];
+                } else {
+                    // 如果没有完成日期，设置为今天，但不自动保存
+                    const today = new Date();
+                    completionDateInput.value = today.toISOString().split('T')[0];
+                }
             } else {
-                // 如果没有完成日期，设置为今天，但不自动保存
-                const today = new Date();
-                completionDateInput.value = today.toISOString().split('T')[0];
+                completionDateSection.classList.add('hidden');
             }
-        } else {
-            completionDateSection.classList.add('hidden');
         }
     }
 
     renderTags() {
         const tagsDisplay = document.getElementById('tagsDisplay');
+        
+        if (!tagsDisplay) {
+            console.warn('tagsDisplay element not found');
+            return;
+        }
         
         if (this.goal.tags && this.goal.tags.length > 0) {
             tagsDisplay.innerHTML = this.goal.tags.map(tag => 
@@ -377,12 +489,24 @@ class GoalDetail {
     }
 
     renderNotes() {
+        console.log('renderNotes() called');
+        console.log('Notes to render:', this.notes.length);
+        console.log('Notes data:', this.notes);
+        
         const notesList = document.getElementById('notesList');
         
+        if (!notesList) {
+            console.error('notesList element not found!');
+            return;
+        }
+        
         if (this.notes.length === 0) {
+            console.log('No notes to display');
             notesList.innerHTML = '<p style="color: var(--color-text-muted); font-size: 14px; text-align: center; padding: 20px;">No notes yet. Add your first note below.</p>';
             return;
         }
+        
+        console.log('Rendering', this.notes.length, 'notes...');
 
         notesList.innerHTML = this.notes.map((note, index) => {
             const photosHtml = note.photos && note.photos.length > 0 
@@ -428,7 +552,14 @@ class GoalDetail {
         const noteInput = document.getElementById('noteInput');
         const content = noteInput.value.trim();
         
-        if (!content && this.pendingAttachments.length === 0) return;
+        console.log('addNote() called');
+        console.log('Note content:', content);
+        console.log('Pending attachments:', this.pendingAttachments.length);
+        
+        if (!content && this.pendingAttachments.length === 0) {
+            console.log('No content or attachments, skipping');
+            return;
+        }
 
         const note = {
             id: Date.now(),
@@ -437,14 +568,27 @@ class GoalDetail {
             createdAt: new Date().toISOString()
         };
 
+        console.log('Created note:', note);
+        console.log('Current notes count before add:', this.notes.length);
+        
         this.notes.unshift(note);
+        
+        console.log('Current notes count after add:', this.notes.length);
+        console.log('Calling saveNotes()...');
+        
         this.saveNotes();
+        
+        console.log('Calling renderNotes()...');
         this.renderNotes();
+        
+        console.log('Updating stats...');
         this.updateStats();
         
         noteInput.value = '';
         this.pendingAttachments = [];
         this.renderAttachmentPreviews();
+        
+        console.log('addNote() completed');
     }
 
     editNote(index) {
@@ -553,12 +697,16 @@ class GoalDetail {
         const now = new Date();
         const daysActive = Math.ceil((now - createdDate) / (1000 * 60 * 60 * 24));
         
-        document.getElementById('daysActive').textContent = daysActive;
-        document.getElementById('notesCount').textContent = this.notes.length;
+        const daysActiveEl = document.getElementById('daysActive');
+        const notesCountEl = document.getElementById('notesCount');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+        
+        if (daysActiveEl) daysActiveEl.textContent = daysActive;
+        if (notesCountEl) notesCountEl.textContent = this.notes.length;
         
         // 最后更新时间
         const lastUpdated = this.getLastUpdatedTime();
-        document.getElementById('lastUpdated').textContent = lastUpdated;
+        if (lastUpdatedEl) lastUpdatedEl.textContent = lastUpdated;
     }
 
     getLastUpdatedTime() {
@@ -970,6 +1118,60 @@ class GoalDetail {
         `;
         statusIndicator.textContent = 'Saved';
         document.body.appendChild(statusIndicator);
+        
+        // 添加调试面板
+        const debugPanel = document.createElement('div');
+        debugPanel.id = 'debugPanel';
+        debugPanel.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #00ff00;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: monospace;
+            z-index: 1000;
+            max-width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+            line-height: 1.4;
+        `;
+        debugPanel.innerHTML = `
+            <div style="color: #fff; font-weight: bold; margin-bottom: 8px;">Debug Info</div>
+            <div id="debugInfo">Initializing...</div>
+        `;
+        document.body.appendChild(debugPanel);
+        
+        // 定期更新调试信息
+        setInterval(() => {
+            this.updateDebugInfo();
+        }, 1000);
+    }
+    
+    updateDebugInfo() {
+        const debugInfo = document.getElementById('debugInfo');
+        if (!debugInfo) return;
+        
+        try {
+            const key = `list100-notes-${this.goalId}`;
+            const stored = localStorage.getItem(key);
+            const storedNotes = stored ? JSON.parse(stored) : [];
+            
+            debugInfo.innerHTML = `
+                Goal ID: ${this.goalId}<br>
+                Memory Notes: ${this.notes.length}<br>
+                Stored Notes: ${storedNotes.length}<br>
+                Storage Key: ${key}<br>
+                Last Save: ${this.lastSaveTime ? this.lastSaveTime.toLocaleTimeString() : 'Never'}<br>
+                <span style="color: ${this.notes.length === storedNotes.length ? '#00ff00' : '#ff0000'}">
+                    Status: ${this.notes.length === storedNotes.length ? '✓ Synced' : '✗ Out of Sync'}
+                </span>
+            `;
+        } catch (error) {
+            debugInfo.innerHTML = `<span style="color: #ff0000;">Error: ${error.message}</span>`;
+        }
     }
 
     updateSaveStatus() {
@@ -1058,11 +1260,11 @@ class GoalDetail {
         const descriptionElement = document.getElementById('goalDescription');
         
         if (titleElement) {
-            titleElement.textContent = this.goal.text || 'Untitled Goal';
+            titleElement.value = this.goal.text || '';
         }
         
         if (descriptionElement) {
-            descriptionElement.textContent = this.goal.description || 'No description';
+            descriptionElement.value = this.goal.description || '';
         }
     }
 
