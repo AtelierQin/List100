@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
-    <link rel="stylesheet" href="assets/css/links.css">
+    <link rel="stylesheet" href="assets/css/OS.css">
 </head>
 <body>
     <nav class="nav">
@@ -64,11 +64,13 @@
                             <h3>Category</h3>
                             <div class="filter-tabs">
                                 <button class="filter-tab active" data-filter="all">All</button>
-                                <button class="filter-tab" data-filter="news">News</button>
-                                <button class="filter-tab" data-filter="database">Database</button>
-                                <button class="filter-tab" data-filter="article">Article</button>
+                                <button class="filter-tab" data-filter="learning">Learning</button>
+                                <button class="filter-tab" data-filter="travel">Travel</button>
+                                <button class="filter-tab" data-filter="fitness">Fitness</button>
                                 <button class="filter-tab" data-filter="tool">Tool</button>
+                                <button class="filter-tab" data-filter="news">News</button>
                             </div>
+                            <p class="filter-note">Categories filter both resources and List100 goals by matching tags</p>
                         </div>
 
                         <div class="tag-filter-section">
@@ -98,12 +100,18 @@
                     <div class="resources-container">
                         <div id="resourcesList" class="resources-grid"></div>
                     </div>
+
+                    <!-- List100 Goals Section -->
+                    <div class="goals-section">
+                        <h2 class="section-title">My Goals from List100</h2>
+                        <div id="goalsList" class="goals-container"></div>
+                    </div>
                 </section>
             </div>
         </div>
     </main>
 
-    <script src="assets/js/links.js"></script>
+    <script src="assets/js/OS.js"></script>
     <script src="assets/js/dropdown.js"></script>
 </body>
 </html>

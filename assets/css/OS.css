@@ -1,4 +1,4 @@
-/* Database页面特定样式 */
+/* OS页面特定样式 */
 
 .nav-link.active {
     background: var(--color-accent-light);
@@ -195,29 +195,39 @@
     letter-spacing: 0.5px;
 }
 
-.category-development {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.category-design {
-    background: #fce7f3;
-    color: #be185d;
-}
-
-.category-productivity {
-    background: #d1fae5;
-    color: #065f46;
-}
-
 .category-learning {
     background: #fef3c7;
     color: #92400e;
 }
 
-.category-tools {
+.category-travel {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.category-fitness {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.category-tool {
     background: #e0e7ff;
     color: #3730a3;
+}
+
+.category-news {
+    background: #fce7f3;
+    color: #be185d;
+}
+
+.category-database {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+.category-article {
+    background: #fed7aa;
+    color: #9a3412;
 }
 
 .resource-date {
@@ -424,3 +434,165 @@
     }
 }
 
+
+/* List100 Goals Section */
+.goals-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 2px solid var(--color-border-light);
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.goals-container {
+    min-height: 200px;
+}
+
+.goals-group {
+    margin-bottom: 32px;
+}
+
+.goals-group:last-child {
+    margin-bottom: 0;
+}
+
+.goals-group-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.goal-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    transition: all var(--transition-base);
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.goal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.goal-card.completed {
+    opacity: 0.7;
+    background: var(--color-surface-hover);
+}
+
+.goal-card.completed:hover {
+    opacity: 0.85;
+}
+
+.goal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.goal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.goal-card.completed .goal-title {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+}
+
+.goal-pin {
+    font-size: 14px;
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.goal-description {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin: 0 0 12px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.goal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.goal-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 12px;
+    font-weight: 500;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.goal-completed-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 4px 8px;
+    background: var(--color-success-light);
+    color: var(--color-success);
+    border-radius: var(--border-radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.completed-icon {
+    font-size: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .goals-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-title {
+        font-size: 20px;
+    }
+}
+
+.filter-note {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 8px;
+    line-height: 1.4;
+}

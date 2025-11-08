@@ -32,10 +32,12 @@ FutureCast List100 is a web application for managing life goals, resources, and 
 Each page is self-contained with its own CSS and JavaScript:
 - `landing.html` - Project introduction and navigation
 - `list100.html` - Main goal management application
-- `OS.html` - Resource collection and management
+- `OS.html` - Resource management with List100 goals integration
 - `world.html` - World travel tracking
 - `china.html` - China travel tracking
 - `goal-detail.html` - Individual goal details
+- `imdb-top-250.html` - IMDb Top 250 collection tracking
+- `dg120.html` - DG 120 collection tracking
 
 ### CSS Architecture
 - `global.css` - Base styles, design system, and shared components
@@ -43,10 +45,12 @@ Each page is self-contained with its own CSS and JavaScript:
 - Modular approach for maintainability
 
 ### JavaScript Modules
-- Each page has its own JavaScript file
-- No external dependencies
-- ES6+ features used throughout
-- Local storage for data persistence
+- Each page has its own JavaScript file matching the page name
+- No external dependencies - pure vanilla JavaScript
+- ES6+ features used throughout (classes, async/await, arrow functions)
+- Local storage for data persistence with multiple backup strategies
+- Shared components (e.g., `dropdown.js`) for reusable functionality
+- Cross-page data synchronization via storage events
 
 ## Coding Standards
 
@@ -78,6 +82,8 @@ Each page is self-contained with its own CSS and JavaScript:
 - Import: File upload and parsing
 
 ### Data Structure
+
+#### List100 Goals
 ```javascript
 {
   "items": [
@@ -91,7 +97,27 @@ Each page is self-contained with its own CSS and JavaScript:
       "customOrder": 0,
       "createdAt": "ISO date string",
       "completedAt": "ISO date string",
-      "progress": 0-100
+      "lastModified": "ISO date string",
+      "progress": 0-100  // Stored but not displayed in UI
+    }
+  ],
+  "lastUpdated": "ISO date string"
+}
+```
+
+#### OS Resources
+```javascript
+{
+  "resources": [
+    {
+      "id": timestamp,
+      "title": "Resource title",
+      "url": "https://example.com",
+      "description": "Resource description",
+      "category": "tool|news|article|database",
+      "tags": ["tag1", "tag2"],
+      "favicon": "🌐",
+      "dateAdded": "ISO date string"
     }
   ]
 }
@@ -100,17 +126,27 @@ Each page is self-contained with its own CSS and JavaScript:
 ## Adding New Features
 
 ### New Page
-1. Create HTML file in root directory
-2. Create corresponding CSS in `assets/css/`
-3. Create corresponding JS in `assets/js/`
-4. Update navigation in all existing pages
-5. Update documentation
+1. Create HTML file in root directory (e.g., `newpage.html`)
+2. Create corresponding CSS in `assets/css/` (e.g., `newpage.css`)
+3. Create corresponding JS in `assets/js/` (e.g., `newpage.js`)
+4. Update navigation dropdown in all existing pages
+5. Update documentation (README.md, FILE_STRUCTURE.md)
+6. Test across all browsers and devices
 
 ### New Component
-1. Add styles to appropriate CSS file
-2. Create JavaScript class or functions
+1. Add styles to appropriate CSS file or create shared component CSS
+2. Create JavaScript class or functions (consider reusable components like `dropdown.js`)
 3. Bind events and interactions
 4. Test across all browsers
+5. Document component usage if reusable
+
+### Data Synchronization
+When adding features that share data:
+1. Use consistent localStorage keys
+2. Implement storage event listeners for cross-page sync
+3. Handle data conflicts and merging
+4. Provide backup and recovery mechanisms
+5. Test data flow between pages
 
 ## Performance Considerations
 
@@ -168,30 +204,88 @@ No build process required - pure HTML/CSS/JavaScript:
 2. Ensure proper MIME types for JSON files
 3. Configure server for SPA routing if needed
 
+## Recent Updates and Changes
+
+### File Naming Standardization (Latest)
+- Renamed `links.css` → `OS.css`
+- Renamed `links.js` → `OS.js`
+- All page files now follow consistent naming: `pagename.html` + `pagename.css` + `pagename.js`
+
+### UI Simplification
+- Removed progress bars from goal detail page
+- Removed progress percentages from OS page goal cards
+- Cleaner, more focused interface
+- Progress data still stored for potential future use
+
+### OS and List100 Integration
+- OS page now displays List100 goals alongside resources
+- Unified tag and category filtering system
+- Real-time synchronization via localStorage events
+- Single search box for both resources and goals
+- Goals grouped by status: Pinned, Active, Completed
+
+### Component Architecture
+- Added reusable `dropdown.js` component
+- Consistent navigation across all pages
+- Modular CSS with shared design system
+
 ## Maintenance
 
 ### Regular Tasks
-- Update documentation
+- Update documentation when adding features
 - Review and optimize performance
 - Test new browser versions
 - Backup user data strategies
+- Clean up old localStorage backups periodically
 
 ### Version Control
 - Use semantic versioning
 - Tag releases
 - Maintain changelog
 - Document breaking changes
+- Keep README.md and docs up to date
+
+## Key Features Implementation
+
+### OS and List100 Synchronization
+The OS page displays List100 goals alongside resources:
+- **Data Loading**: Loads from localStorage first, falls back to JSON file
+- **Real-time Sync**: Uses storage events to detect changes
+- **Unified Filtering**: Category and tag filters work across both resources and goals
+- **Search Integration**: Single search box searches both resources and goals
+
+### Progress Tracking (Removed from UI)
+- Progress values are still stored in data for future use
+- UI no longer displays progress bars or percentages
+- Simplified design focuses on completion status only
+
+### File Naming Convention
+All page-related files use consistent naming:
+- HTML: `pagename.html` or `page-name.html`
+- CSS: `pagename.css` or `page-name.css`
+- JS: `pagename.js` or `page-name.js`
+
+Example: `OS.html` → `OS.css` → `OS.js`
 
 ## Troubleshooting
 
 ### Common Issues
-1. **Data not saving**: Check localStorage availability
-2. **Styles not loading**: Verify CSS file paths
-3. **JavaScript errors**: Check browser console
-4. **Import/export issues**: Verify JSON format
+1. **Data not saving**: Check localStorage availability and quota
+2. **Styles not loading**: Verify CSS file paths and names match exactly
+3. **JavaScript errors**: Check browser console for detailed error messages
+4. **Import/export issues**: Verify JSON format and file structure
+5. **Cross-page sync not working**: Check storage event listeners and localStorage keys
+6. **File not found (404)**: Ensure file names match exactly (case-sensitive)
 
 ### Debug Mode
 Enable debug logging by adding to localStorage:
 ```javascript
 localStorage.setItem('debug', 'true');
 ```
+
+### Data Recovery
+If data is lost or corrupted:
+1. Check `list100-backup-1` and `list100-backup-2` in localStorage
+2. Look for historical backups (`list100-history-*`)
+3. Use the "Recover Data" button in List100 page
+4. Import from previously exported JSON files

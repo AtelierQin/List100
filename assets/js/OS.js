@@ -1,13 +1,15 @@
-// Database页面的JavaScript功能
+// OS页面的JavaScript功能
 class ResourceDatabase {
     constructor() {
         this.resources = [];
+        this.list100Items = [];
         this.currentFilter = 'all';
         this.currentTag = '';
         this.searchQuery = '';
         
         this.init();
         this.loadData();
+        this.loadList100Data();
         this.bindEvents();
         this.updateResourceCount();
     }
@@ -58,6 +60,7 @@ class ResourceDatabase {
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.searchQuery = e.target.value.toLowerCase();
             this.renderResources();
+            this.renderGoals();
         });
 
         // 分类过滤
@@ -67,6 +70,7 @@ class ResourceDatabase {
                 e.target.classList.add('active');
                 this.currentFilter = e.target.dataset.filter;
                 this.renderResources();
+                this.renderGoals();
             });
         });
 
@@ -333,12 +337,19 @@ class ResourceDatabase {
     }
 
     updateResourceCount() {
-        const count = this.resources.length;
-        document.getElementById('resourceCount').textContent = `${count} resource${count !== 1 ? 's' : ''}`;
+        const resourceCountElement = document.getElementById('resourceCount');
+        if (resourceCountElement) {
+            const count = this.resources.length;
+            resourceCountElement.textContent = `${count} resource${count !== 1 ? 's' : ''}`;
+        }
     }
 
     updateTagFilters() {
-        const allTags = [...new Set(this.resources.flatMap(resource => resource.tags))].sort();
+        // 合并资源标签和List100目标标签
+        const resourceTags = this.resources.flatMap(resource => resource.tags);
+        const goalTags = this.list100Items.flatMap(item => item.tags || []);
+        const allTags = [...new Set([...resourceTags, ...goalTags])].sort();
+        
         const tagFilterList = document.getElementById('tagFilterList');
         
         tagFilterList.innerHTML = `
@@ -364,6 +375,7 @@ class ResourceDatabase {
                 e.currentTarget.classList.add('active');
                 this.currentTag = e.currentTarget.dataset.tag;
                 this.renderResources();
+                this.renderGoals();
             });
         });
     }
@@ -426,6 +438,158 @@ class ResourceDatabase {
             }
         };
         reader.readAsText(file);
+    }
+
+    // 加载List100数据
+    async loadList100Data() {
+        try {
+            // 首先尝试从localStorage加载
+            const stored = localStorage.getItem('list100-items');
+            if (stored) {
+                const items = JSON.parse(stored);
+                if (Array.isArray(items) && items.length > 0) {
+                    this.list100Items = items;
+                    this.renderGoals();
+                    this.updateTagFilters();
+                    return;
+                }
+            }
+
+            // 如果localStorage为空，从JSON文件加载
+            const response = await fetch('./assets/data/list100-data.json');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.items && Array.isArray(data.items)) {
+                    this.list100Items = data.items;
+                    this.renderGoals();
+                    this.updateTagFilters();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading List100 data:', error);
+        }
+
+        // 监听List100数据更新
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'list100-items' && e.newValue) {
+                try {
+                    this.list100Items = JSON.parse(e.newValue);
+                    this.renderGoals();
+                    this.updateTagFilters();
+                } catch (error) {
+                    console.error('Error parsing updated List100 data:', error);
+                }
+            }
+        });
+    }
+
+    // 渲染List100目标
+    renderGoals() {
+        const goalsContainer = document.getElementById('goalsList');
+        if (!goalsContainer) return;
+
+        // 根据当前标签过滤目标
+        let filteredGoals = this.list100Items;
+        if (this.currentTag) {
+            filteredGoals = this.list100Items.filter(item => 
+                item.tags && item.tags.includes(this.currentTag)
+            );
+        }
+
+        // 根据category过滤器过滤目标（通过匹配tags）
+        // 如果category不是'all'，则只显示包含该category作为tag的目标
+        if (this.currentFilter !== 'all') {
+            filteredGoals = filteredGoals.filter(item =>
+                item.tags && item.tags.some(tag => 
+                    tag.toLowerCase() === this.currentFilter.toLowerCase()
+                )
+            );
+        }
+
+        // 根据搜索查询过滤
+        if (this.searchQuery) {
+            filteredGoals = filteredGoals.filter(item =>
+                item.text.toLowerCase().includes(this.searchQuery) ||
+                (item.description && item.description.toLowerCase().includes(this.searchQuery)) ||
+                (item.tags && item.tags.some(tag => tag.toLowerCase().includes(this.searchQuery)))
+            );
+        }
+
+        if (filteredGoals.length === 0) {
+            goalsContainer.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🎯</div>
+                    <h3>No goals found</h3>
+                    <p>Visit <a href="list100.html">List100</a> to add your goals.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // 按状态分组：置顶、进行中、已完成
+        const pinnedGoals = filteredGoals.filter(item => item.pinned && !item.completed);
+        const activeGoals = filteredGoals.filter(item => !item.pinned && !item.completed);
+        const completedGoals = filteredGoals.filter(item => item.completed);
+
+        goalsContainer.innerHTML = `
+            ${pinnedGoals.length > 0 ? `
+                <div class="goals-group">
+                    <h3 class="goals-group-title">📌 Pinned Goals</h3>
+                    <div class="goals-grid">
+                        ${pinnedGoals.map(item => this.createGoalCard(item)).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            ${activeGoals.length > 0 ? `
+                <div class="goals-group">
+                    <h3 class="goals-group-title">🎯 Active Goals</h3>
+                    <div class="goals-grid">
+                        ${activeGoals.map(item => this.createGoalCard(item)).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            ${completedGoals.length > 0 ? `
+                <div class="goals-group">
+                    <h3 class="goals-group-title">✅ Completed Goals</h3>
+                    <div class="goals-grid">
+                        ${completedGoals.map(item => this.createGoalCard(item)).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        // 绑定点击事件
+        goalsContainer.querySelectorAll('.goal-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.dataset.id;
+                window.location.href = `goal-detail.html?id=${id}`;
+            });
+        });
+    }
+
+    createGoalCard(item) {
+        const tagsHTML = item.tags && item.tags.length > 0 
+            ? item.tags.map(tag => `<span class="goal-tag">${tag}</span>`).join('')
+            : '';
+
+        return `
+            <div class="goal-card ${item.completed ? 'completed' : ''}" data-id="${item.id}">
+                <div class="goal-header">
+                    <h4 class="goal-title">${item.text || 'Untitled Goal'}</h4>
+                    ${item.pinned ? '<span class="goal-pin">📌</span>' : ''}
+                </div>
+                ${item.description ? `<p class="goal-description">${item.description}</p>` : ''}
+                ${tagsHTML ? `<div class="goal-tags">${tagsHTML}</div>` : ''}
+                ${item.completed ? `
+                    <div class="goal-completed-badge">
+                        <span class="completed-icon">✓</span>
+                        Completed
+                    </div>
+                ` : ''}
+            </div>
+        `;
     }
 }
 

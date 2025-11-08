@@ -31,7 +31,6 @@ class GoalDetail {
         this.loadNotes();
         this.bindEvents();
         this.render();
-        this.updateProgress();
         this.setupAutoSave();
         this.addSaveStatusIndicator();
         this.setupDataSync();
@@ -162,11 +161,6 @@ class GoalDetail {
         // 完成日期输入
         document.getElementById('completionDateInput').addEventListener('change', (e) => {
             this.updateCompletionDate(e.target.value);
-        });
-
-        // 进度滑块
-        document.getElementById('progressSlider').addEventListener('input', (e) => {
-            this.updateProgressValue(parseInt(e.target.value));
         });
 
         // 标签管理
@@ -551,44 +545,7 @@ class GoalDetail {
         this.showToast('Completion date updated');
     }
 
-    updateProgress() {
-        const progress = this.goal.progress || 0;
-        const progressValue = document.getElementById('progressValue');
-        const progressSlider = document.getElementById('progressSlider');
-        const progressCircle = document.getElementById('progressCircle');
-        
-        progressValue.textContent = `${progress}%`;
-        progressSlider.value = progress;
-        
-        // 更新圆形进度条
-        const angle = (progress / 100) * 360;
-        progressCircle.style.background = `conic-gradient(var(--color-success) ${angle}deg, var(--color-border) ${angle}deg)`;
-    }
 
-    updateProgressValue(value) {
-        const oldProgress = this.goal.progress || 0;
-        this.goal.progress = value;
-        
-        // 自动完成逻辑：只有当用户拖动到100%时才自动标记完成
-        if (value === 100 && !this.goal.completed && oldProgress < 100) {
-            this.goal.completed = true;
-            this.goal.completedAt = new Date().toISOString();
-            this.showToast('Congratulations! Goal completed! 🎉');
-        } else if (value < 100 && this.goal.completed) {
-            // 如果用户将进度从100%降低，询问是否要取消完成状态
-            if (confirm('Progress is less than 100%. Do you want to mark this goal as incomplete?')) {
-                this.goal.completed = false;
-                this.goal.completedAt = null;
-                this.showToast('Goal marked as in progress');
-            } else {
-                // 用户选择保持完成状态，进度保持100%
-                this.goal.progress = 100;
-            }
-        }
-        
-        this.saveGoal();
-        this.updateAllUI();
-    }
 
     updateStats() {
         // 计算活跃天数
@@ -643,7 +600,7 @@ class GoalDetail {
     }
 
     shareGoal() {
-        const shareText = `${this.goal.text}${this.goal.description ? `\n\n${this.goal.description}` : ''}${this.goal.tags && this.goal.tags.length > 0 ? `\n\nTags: ${this.goal.tags.join(', ')}` : ''}\n\nProgress: ${this.goal.progress || 0}%`;
+        const shareText = `${this.goal.text}${this.goal.description ? `\n\n${this.goal.description}` : ''}${this.goal.tags && this.goal.tags.length > 0 ? `\n\nTags: ${this.goal.tags.join(', ')}` : ''}`;
         
         navigator.clipboard.writeText(shareText).then(() => {
             // 显示成功提示
@@ -1092,7 +1049,6 @@ class GoalDetail {
         this.renderTags();
         this.updateStatus();
         this.updateDates();
-        this.updateProgress();
         this.updateStats();
     }
 
