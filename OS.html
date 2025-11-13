@@ -49,17 +49,12 @@
             <div class="layout">
                 <aside class="sidebar">
                     <section class="hero">
-                        <h1>Master Database</h1>
-                        <p class="hero-subtitle">Curated collection of useful websites and resources.<br />
-                        Updated regularly</p>
+                        <h1>Goals Dashboard</h1>
+                        <p class="hero-subtitle">Track and manage your goals from List100.<br />
+                        Filter and organize your objectives</p>
                     </section>
 
                     <section class="controls-section">
-                        <button id="addResourceBtn" class="btn btn-primary hover-lift">
-                            <span class="btn-icon">+</span>
-                            Add Resource
-                        </button>
-                        
                         <div class="filter-section">
                             <h3>Category</h3>
                             <div class="filter-tabs">
@@ -70,7 +65,7 @@
                                 <button class="filter-tab" data-filter="tool">Tool</button>
                                 <button class="filter-tab" data-filter="news">News</button>
                             </div>
-                            <p class="filter-note">Categories filter both resources and List100 goals by matching tags</p>
+                            <p class="filter-note">Categories filter List100 goals by matching tags</p>
                         </div>
 
                         <div class="tag-filter-section">
@@ -79,31 +74,19 @@
                                 <button class="tag-filter-item active" data-tag="">All Tags</button>
                             </div>
                         </div>
-
-                        <div class="sync-section">
-                            <h3>Data Management</h3>
-                            <input type="file" id="fileInput" accept=".json" style="display: none;">
-                            <button id="importBtn" class="btn btn-secondary">Import Data</button>
-                            <button id="exportBtn" class="btn btn-secondary">Export Backup</button>
-                        </div>
                     </section>
                 </aside>
 
                 <section class="content">
                     <div class="search-section">
                         <div class="search-container">
-                            <input type="text" id="searchInput" class="search-input" placeholder="Search resources...">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search goals...">
                             <span class="search-icon">🔍</span>
                         </div>
-                    </div>
-                    
-                    <div class="resources-container">
-                        <div id="resourcesList" class="resources-grid"></div>
                     </div>
 
                     <!-- List100 Goals Section -->
                     <div class="goals-section">
-                        <h2 class="section-title">My Goals from List100</h2>
                         <div id="goalsList" class="goals-container"></div>
                     </div>
                 </section>
