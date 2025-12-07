@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THU Book List - Tsinghua University Recommended Reading</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/thu-book-list.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="landing.html" class="logo">FutureCast</a>
+            <div class="nav-links">
+                <a href="list100.html" class="nav-link">List100</a>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Tours</button>
+                    <div class="dropdown-menu">
+                        <a href="world.html" class="dropdown-item">World</a>
+                        <a href="china.html" class="dropdown-item">China</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle active">Collections</button>
+                    <div class="dropdown-menu">
+                        <a href="imdb-top-250.html" class="dropdown-item">IMDb Top 250</a>
+                        <a href="dg120.html" class="dropdown-item">DG 120</a>
+                        <a href="thu-book-list.html" class="dropdown-item active">THU Book List</a>
+                    </div>
+                </div>
+                <a href="OS.html" class="nav-link">OS</a>
+                <a href="landing.html#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="motto-section">
+        <div class="container">
+            <div class="motto-content">
+                <p class="motto-text">Reading is to the mind what exercise is to the body.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content has-motto">
+        <div class="container">
+            <div class="books-layout">
+                <!-- Left side: Books list -->
+                <div class="books-section">
+                    <div class="books-container">
+                        <div class="section-header">
+                            <h2>THU Book List</h2>
+                            <p class="collection-info">Tsinghua University Recommended Reading · 120 Books</p>
+                            
+                            <!-- Filters -->
+                            <div class="filters-container">
+                                <div class="filter-group">
+                                    <label for="categoryFilter">Category:</label>
+                                    <select id="categoryFilter" class="filter-select">
+                                        <option value="">All Categories</option>
+                                        <option value="Philosophy">Philosophy</option>
+                                        <option value="History">History</option>
+                                        <option value="Literature">Literature</option>
+                                        <option value="Science">Science</option>
+                                        <option value="Economics">Economics</option>
+                                        <option value="Politics">Politics</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label for="statusFilter">Reading Status:</label>
+                                    <select id="statusFilter" class="filter-select">
+                                        <option value="">All Books</option>
+                                        <option value="read">Read</option>
+                                        <option value="unread">Not Read</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-actions">
+                                    <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+                                </div>
+                            </div>
+                            
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="legend-color unread"></div>
+                                    <span>Not Read</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color read"></div>
+                                    <span>Read</span>
+                                </div>
+                                <div class="results-count">
+                                    <span id="resultsCount">121 books</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="books-list" id="booksList">
+                            <!-- Books list will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side: Info panel -->
+                <div class="info-panel">
+                    <div class="panel-card">
+                        <h3>Reading Progress</h3>
+                        <div class="reading-stats-panel">
+                            <div class="stat-item">
+                                <span class="stat-number" id="readCount">0</span>
+                                <span class="stat-label">Books Read</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="readPercentage">0%</span>
+                                <span class="stat-label">Progress</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn btn-primary" id="importDataBtn">
+                                <span class="btn-icon">📥</span>
+                                Import Data
+                            </button>
+                            <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                            <button class="action-btn btn-ghost" id="clearAllBtn">
+                                <span class="btn-icon">🗑️</span>
+                                Clear All
+                            </button>
+                            <button class="action-btn btn-ghost" id="exportDataBtn">
+                                <span class="btn-icon">💾</span>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>Read Books <span class="read-books-count" id="readBooksCount">0</span></h3>
+                        <div class="read-books-list" id="readBooksList">
+                            <div class="empty-state">
+                                <p>No books read yet</p>
+                                <small>Click on books to mark them as read</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value" id="totalBooks">121</div>
+                                <div class="stat-label">Total Books</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="uniqueAuthors">0</div>
+                                <div class="stat-label">Authors</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Book details modal -->
+    <div class="modal hidden" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="bookTitle">Book Title</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="book-info">
+                    <div class="book-details">
+                        <p><strong>Number:</strong> <span id="bookNumber">-</span></p>
+                        <p><strong>Author:</strong> <span id="bookAuthor">-</span></p>
+                        <p><strong>Publisher:</strong> <span id="bookPublisher">-</span></p>
+                        <p><strong>Description:</strong> <span id="bookDescription">-</span></p>
+                        <p><strong>Status:</strong> <span id="bookStatus">Not Read</span></p>
+                    </div>
+                </div>
+                <div class="read-info" id="readInfo" style="display: none;">
+                    <label for="readDate">Read Date:</label>
+                    <input type="date" id="readDate" class="read-date-input">
+                    <label for="personalRating">Personal Rating (1-10):</label>
+                    <input type="number" id="personalRating" class="personal-rating" min="1" max="10" step="0.1">
+                    <label for="readNotes">Reading Notes:</label>
+                    <textarea id="readNotes" class="read-notes" placeholder="Add your thoughts about this book..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn btn-primary" id="markReadBtn">Mark as Read</button>
+                    <button class="modal-btn btn-danger" id="removeBookBtn" style="display: none;">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/thu-book-list.js"></script>
+    <script src="assets/js/dropdown.js"></script>
+</body>
+</html>
