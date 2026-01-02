@@ -12,7 +12,7 @@ const dg120Albums = [
     },
     {
         discNumber: 2,
-        category: "Early Orchestral Recordings", 
+        category: "Early Orchestral Recordings",
         title: "Early Orchestral Recordings 2 (1924-1928)",
         mainArtists: ["Various Artists"],
         recordingPeriod: "1924-1928",
@@ -21,7 +21,7 @@ const dg120Albums = [
     {
         discNumber: 3,
         category: "Early Orchestral Recordings",
-        title: "Early Orchestral Recordings 3 (1928-1935)", 
+        title: "Early Orchestral Recordings 3 (1928-1935)",
         mainArtists: ["Various Artists"],
         recordingPeriod: "1928-1935",
         description: "收录了布鲁克纳、贝多芬、巴赫、瓦格纳、舒曼、普菲茨纳、韦伯等作曲家的作品，记录了1928-1935年间DG的录音成就。"
@@ -31,7 +31,7 @@ const dg120Albums = [
         category: "Early Orchestral Recordings",
         title: "Early Orchestral Recordings 4 (1931-1943)",
         mainArtists: ["Various Artists"],
-        recordingPeriod: "1931-1943", 
+        recordingPeriod: "1931-1943",
         description: "战时及战前的珍贵录音，包括勃拉姆斯、尼古拉、斯美塔那、约翰·施特劳斯、普特、海顿、穆索尔斯基、雷斯庇基、理查·施特劳斯等作曲家的作品。"
     },
     {
@@ -44,7 +44,7 @@ const dg120Albums = [
     },
     {
         discNumber: 6,
-        category: "Symphonic Works", 
+        category: "Symphonic Works",
         title: "Anton Bruckner – Symphony Nr. 9 D-Moll",
         mainArtists: ["Eugen Jochum", "Symphonie-Orchester Des Bayerischen Rundfunks"],
         recordingPeriod: "1954",
@@ -53,7 +53,7 @@ const dg120Albums = [
     {
         discNumber: 7,
         category: "Symphonic Works",
-        title: "Dvořák – Symphony No. 9 'From The New World' / Smetana – The Moldau / Liszt – Les Préludes", 
+        title: "Dvořák – Symphony No. 9 'From The New World' / Smetana – The Moldau / Liszt – Les Préludes",
         mainArtists: ["Ferenc Fricsay", "Berliner Philharmoniker"],
         recordingPeriod: "1959-1960",
         description: "弗里乔伊指挥柏林爱乐演绎德沃夏克《新世界》交响曲、斯美塔那《伏尔塔瓦河》和李斯特《前奏曲》。"
@@ -63,7 +63,7 @@ const dg120Albums = [
         category: "Symphonic Works",
         title: "Tschaikowsky – Symphonie Nr. 6 'Pathétique'",
         mainArtists: ["Evgeny Mravinsky", "Leningrad Philharmonic Orchestra"],
-        recordingPeriod: "1960", 
+        recordingPeriod: "1960",
         description: "穆拉文斯基指挥列宁格勒爱乐演绎柴可夫斯基第六交响曲《悲怆》，是这部作品的传奇版本。"
     },
     {
@@ -990,7 +990,7 @@ const categoryMapping = {
 function getMusicType(album) {
     const title = album.title.toLowerCase();
     const description = album.description.toLowerCase();
-    
+
     // 按作曲家分类
     if (title.includes('beethoven') || description.includes('贝多芬')) return "贝多芬";
     if (title.includes('mozart') || description.includes('莫扎特')) return "莫扎特";
@@ -1010,7 +1010,7 @@ function getMusicType(album) {
     if (title.includes('stravinsky') || description.includes('斯特拉文斯基')) return "斯特拉文斯基";
     if (title.includes('prokofiev') || description.includes('普罗科菲耶夫')) return "普罗科菲耶夫";
     if (title.includes('shostakovich') || description.includes('肖斯塔科维奇')) return "肖斯塔科维奇";
-    
+
     // 按乐器分类
     if (title.includes('violin') || description.includes('小提琴')) return "小提琴";
     if (title.includes('piano') || description.includes('钢琴')) return "钢琴";
@@ -1019,20 +1019,20 @@ function getMusicType(album) {
     if (title.includes('horn') || description.includes('圆号')) return "圆号";
     if (title.includes('string quartet') || description.includes('弦乐四重奏')) return "弦乐四重奏";
     if (title.includes('symphony') || description.includes('交响曲')) return "交响曲";
-    
+
     // 按音乐时期分类
     if (title.includes('baroque') || description.includes('巴洛克')) return "巴洛克时期";
     if (title.includes('classical') || description.includes('古典')) return "古典时期";
     if (title.includes('romantic') || description.includes('浪漫')) return "浪漫时期";
     if (title.includes('modern') || description.includes('现代')) return "现代时期";
-    
+
     // 按作品类型分类
     if (title.includes('concerto') || description.includes('协奏曲')) return "协奏曲";
     if (title.includes('sonata') || description.includes('奏鸣曲')) return "奏鸣曲";
     if (title.includes('opera') || description.includes('歌剧')) return "歌剧";
     if (title.includes('requiem') || description.includes('安魂曲')) return "宗教音乐";
     if (title.includes('lied') || description.includes('艺术歌曲')) return "艺术歌曲";
-    
+
     return "其他";
 }
 
@@ -1083,26 +1083,44 @@ const markListenedBtn = document.getElementById('markListenedBtn');
 const removeAlbumBtn = document.getElementById('removeAlbumBtn');
 
 // 初始化
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Filter toggle
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const filtersContainer = document.getElementById('filtersContainer');
+    if (toggleFiltersBtn && filtersContainer) {
+        toggleFiltersBtn.addEventListener('click', () => {
+            filtersContainer.classList.toggle('hidden');
+            const isHidden = filtersContainer.classList.contains('hidden');
+
+            if (isHidden) {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">⚙️</span> Filters';
+                toggleFiltersBtn.classList.remove('active');
+            } else {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">✖️</span> Close';
+                toggleFiltersBtn.classList.add('active');
+            }
+        });
+    }
+
     renderAlbums();
     updateStats();
     updateListenedAlbumsList();
-    
+
     // 事件监听器
     if (musicTypeFilter) musicTypeFilter.addEventListener('change', applyFilters);
     if (periodFilter) periodFilter.addEventListener('change', applyFilters);
     if (statusFilter) statusFilter.addEventListener('change', applyFilters);
     if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
-    
+
     if (closeModal) closeModal.addEventListener('click', hideModal);
     if (albumModal) {
-        albumModal.addEventListener('click', function(e) {
+        albumModal.addEventListener('click', function (e) {
             if (e.target === albumModal) {
                 hideModal();
             }
         });
     }
-    
+
     if (markListenedBtn) markListenedBtn.addEventListener('click', toggleListenedStatus);
     if (removeAlbumBtn) removeAlbumBtn.addEventListener('click', removeFromListened);
 });
@@ -1112,20 +1130,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // 渲染专辑列表
 function renderAlbums() {
     if (!albumsList) return;
-    
+
     albumsList.innerHTML = '';
-    
+
     filteredAlbums.forEach(album => {
         const isListened = listenedAlbums.some(listened => listened.discNumber === album.discNumber);
-        
+
         const albumElement = document.createElement('div');
         albumElement.className = `album-item ${isListened ? 'listened' : ''}`;
         albumElement.onclick = () => showAlbumModal(album);
-        
-        const descriptionPreview = album.description.length > 100 
-            ? album.description.substring(0, 100) + '...' 
+
+        const descriptionPreview = album.description.length > 100
+            ? album.description.substring(0, 100) + '...'
             : album.description;
-        
+
         albumElement.innerHTML = `
             <div class="album-disc-number">CD ${album.discNumber}</div>
             <div class="album-content">
@@ -1138,10 +1156,10 @@ function renderAlbums() {
                 <div class="album-description-preview">${descriptionPreview}</div>
             </div>
         `;
-        
+
         albumsList.appendChild(albumElement);
     });
-    
+
     if (resultsCount) {
         resultsCount.textContent = `${filteredAlbums.length} 张专辑`;
     }
@@ -1152,10 +1170,10 @@ function applyFilters() {
     const musicTypeValue = musicTypeFilter ? musicTypeFilter.value : '';
     const periodValue = periodFilter ? periodFilter.value : '';
     const statusValue = statusFilter ? statusFilter.value : '';
-    
+
     filteredAlbums = dg120Albums.filter(album => {
         const musicTypeMatch = !musicTypeValue || album.musicType === musicTypeValue;
-        
+
         let periodMatch = true;
         if (periodValue) {
             const period = album.recordingPeriod;
@@ -1180,17 +1198,17 @@ function applyFilters() {
                     break;
             }
         }
-        
+
         let statusMatch = true;
         if (statusValue) {
             const isListened = listenedAlbums.some(listened => listened.discNumber === album.discNumber);
-            statusMatch = (statusValue === 'listened' && isListened) || 
-                         (statusValue === 'unlistened' && !isListened);
+            statusMatch = (statusValue === 'listened' && isListened) ||
+                (statusValue === 'unlistened' && !isListened);
         }
-        
+
         return musicTypeMatch && periodMatch && statusMatch;
     });
-    
+
     renderAlbums();
 }
 
@@ -1206,11 +1224,11 @@ function clearFilters() {
 // 显示专辑模态框
 function showAlbumModal(album) {
     if (!albumModal) return;
-    
+
     currentAlbum = album;
     const isListened = listenedAlbums.some(listened => listened.discNumber === album.discNumber);
     const listenedData = listenedAlbums.find(listened => listened.discNumber === album.discNumber);
-    
+
     if (albumTitle) albumTitle.textContent = album.title;
     if (albumDiscNumber) albumDiscNumber.textContent = `CD ${album.discNumber}`;
     if (albumCategory) albumCategory.textContent = album.category;
@@ -1218,7 +1236,7 @@ function showAlbumModal(album) {
     if (albumPeriod) albumPeriod.textContent = album.recordingPeriod;
     if (albumStatus) albumStatus.textContent = isListened ? '已聆听' : '未聆听';
     if (albumDescriptionText) albumDescriptionText.textContent = album.description;
-    
+
     if (isListened && listenedData) {
         if (listenInfo) listenInfo.style.display = 'block';
         if (listenDate) listenDate.value = listenedData.listenDate || '';
@@ -1234,7 +1252,7 @@ function showAlbumModal(album) {
         if (markListenedBtn) markListenedBtn.textContent = '标记为已聆听';
         if (removeAlbumBtn) removeAlbumBtn.style.display = 'none';
     }
-    
+
     albumModal.classList.remove('hidden');
 }
 
@@ -1249,9 +1267,9 @@ function hideModal() {
 // 切换聆听状态
 function toggleListenedStatus() {
     if (!currentAlbum) return;
-    
+
     const existingIndex = listenedAlbums.findIndex(listened => listened.discNumber === currentAlbum.discNumber);
-    
+
     if (existingIndex >= 0) {
         // 更新现有记录
         listenedAlbums[existingIndex] = {
@@ -1270,18 +1288,18 @@ function toggleListenedStatus() {
             rating: personalRating && personalRating.value ? parseFloat(personalRating.value) : null,
             notes: listenNotes ? listenNotes.value : ''
         };
-        
+
         listenedAlbums.push(newListenedAlbum);
         if (listenInfo) listenInfo.style.display = 'block';
         if (markListenedBtn) markListenedBtn.textContent = '更新聆听信息';
         if (removeAlbumBtn) removeAlbumBtn.style.display = 'inline-block';
     }
-    
+
     localStorage.setItem('dg120ListenedAlbums', JSON.stringify(listenedAlbums));
     updateStats();
     updateListenedAlbumsList();
     renderAlbums();
-    
+
     // 更新模态框状态显示
     if (albumStatus) albumStatus.textContent = '已聆听';
 }
@@ -1289,10 +1307,10 @@ function toggleListenedStatus() {
 // 从已聆听列表中移除
 function removeFromListened() {
     if (!currentAlbum) return;
-    
+
     listenedAlbums = listenedAlbums.filter(listened => listened.discNumber !== currentAlbum.discNumber);
     localStorage.setItem('dg120ListenedAlbums', JSON.stringify(listenedAlbums));
-    
+
     updateStats();
     updateListenedAlbumsList();
     renderAlbums();
@@ -1306,7 +1324,7 @@ function updateStats() {
     const totalCount = dg120Albums.length;
     const listenedCount_value = listenedAlbums.length;
     const percentage = totalCount > 0 ? Math.round((listenedCount_value / totalCount) * 100) : 0;
-    
+
     if (listenedCount) listenedCount.textContent = listenedCount_value;
     if (listenedPercentage) listenedPercentage.textContent = `${percentage}%`;
     if (listenedAlbumsCount) listenedAlbumsCount.textContent = `${listenedCount_value}/${totalCount}`;
@@ -1317,13 +1335,13 @@ function updateStats() {
 // 更新已聆听专辑列表
 function updateListenedAlbumsList() {
     if (!listenedAlbumsList) return;
-    
+
     listenedAlbumsList.innerHTML = '';
-    
+
     listenedAlbums.forEach(listened => {
         const listItem = document.createElement('li');
         listItem.className = 'listened-item';
-        
+
         listItem.innerHTML = `
             <div class="listened-info">
                 <span class="listened-disc">CD ${listened.discNumber}</span>
@@ -1332,7 +1350,7 @@ function updateListenedAlbumsList() {
                 <span class="listened-rating">${listened.rating ? '⭐'.repeat(listened.rating) : '未评分'}</span>
             </div>
         `;
-        
+
         listenedAlbumsList.appendChild(listItem);
     });
 }

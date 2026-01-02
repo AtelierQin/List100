@@ -274,7 +274,7 @@ let watchedMoviesList, movieModal, closeModal, markWatchedBtn, removeMovieBtn;
 let clearAllBtn, exportDataBtn, importDataBtn, importFileInput;
 
 // 初始化
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 获取DOM元素
     moviesList = document.getElementById('moviesList');
     watchedCount = document.getElementById('watchedCount');
@@ -290,15 +290,15 @@ document.addEventListener('DOMContentLoaded', function() {
     exportDataBtn = document.getElementById('exportDataBtn');
     importDataBtn = document.getElementById('importDataBtn');
     importFileInput = document.getElementById('importFileInput');
-    
+
     // 初始化筛选后的电影列表
     filteredMovies = [...top250Movies];
-    
+
     // 渲染电影列表
     renderMovies();
     updateStats();
     updateWatchedMoviesList();
-    
+
     // 绑定事件监听器
     bindEventListeners();
 });// 绑定事
@@ -310,38 +310,57 @@ function bindEventListeners() {
     document.getElementById('ratingFilter').addEventListener('change', handleFilterChange);
     document.getElementById('statusFilter').addEventListener('change', handleFilterChange);
     document.getElementById('clearFilters').addEventListener('click', clearFilters);
-    
+
     // 模态框事件
     closeModal.addEventListener('click', closeMovieModal);
     markWatchedBtn.addEventListener('click', toggleWatchedStatus);
     removeMovieBtn.addEventListener('click', removeFromWatched);
-    
+
     // 数据管理事件
     clearAllBtn.addEventListener('click', clearAllData);
     exportDataBtn.addEventListener('click', exportData);
     importDataBtn.addEventListener('click', () => importFileInput.click());
     importFileInput.addEventListener('change', importData);
-    
+
     // 点击模态框外部关闭
-    movieModal.addEventListener('click', function(e) {
+    movieModal.addEventListener('click', function (e) {
         if (e.target === movieModal) {
             closeMovieModal();
         }
     });
+
+    // 筛选器开关
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const filtersContainer = document.getElementById('filtersContainer');
+    if (toggleFiltersBtn && filtersContainer) {
+        toggleFiltersBtn.addEventListener('click', function () {
+            filtersContainer.classList.toggle('hidden');
+            const isHidden = filtersContainer.classList.contains('hidden');
+
+            // 更新按钮状态和文本
+            if (isHidden) {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">⚙️</span> Filters';
+                toggleFiltersBtn.classList.remove('active');
+            } else {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">✖️</span> Close';
+                toggleFiltersBtn.classList.add('active');
+            }
+        });
+    }
 }
 
 // 渲染电影列表
 function renderMovies() {
     if (!moviesList) return;
-    
+
     moviesList.innerHTML = '';
-    
+
     filteredMovies.forEach(movie => {
         const isWatched = watchedMovies.some(w => w.rank === movie.rank);
         const movieCard = createMovieCard(movie, isWatched);
         moviesList.appendChild(movieCard);
     });
-    
+
     // 更新结果计数
     const resultsCount = document.getElementById('resultsCount');
     if (resultsCount) {
@@ -354,7 +373,7 @@ function createMovieCard(movie, isWatched) {
     const card = document.createElement('div');
     card.className = `movie-item ${isWatched ? 'watched' : 'unwatched'}`;
     card.addEventListener('click', () => openMovieModal(movie));
-    
+
     card.innerHTML = `
         <div class="movie-rank">#${movie.rank}</div>
         <div class="movie-content">
@@ -372,7 +391,7 @@ function createMovieCard(movie, isWatched) {
             </div>
         </div>
     `;
-    
+
     return card;
 }
 
@@ -382,7 +401,7 @@ function handleFilterChange() {
     currentFilters.year = document.getElementById('yearFilter').value;
     currentFilters.rating = document.getElementById('ratingFilter').value;
     currentFilters.status = document.getElementById('statusFilter').value;
-    
+
     applyFilters();
 }
 
@@ -393,7 +412,7 @@ function applyFilters() {
         if (currentFilters.genre && !movie.genres.includes(currentFilters.genre)) {
             return false;
         }
-        
+
         // 年代筛选
         if (currentFilters.year) {
             const decade = getDecade(movie.year);
@@ -401,14 +420,14 @@ function applyFilters() {
                 return false;
             }
         }
-        
+
         // 评分筛选
         if (currentFilters.rating) {
             if (!isInRatingRange(movie.rating, currentFilters.rating)) {
                 return false;
             }
         }
-        
+
         // 观看状态筛选
         if (currentFilters.status) {
             const isWatched = watchedMovies.some(w => w.rank === movie.rank);
@@ -419,10 +438,10 @@ function applyFilters() {
                 return false;
             }
         }
-        
+
         return true;
     });
-    
+
     renderMovies();
 }
 
@@ -467,12 +486,12 @@ function clearFilters() {
         rating: '',
         status: ''
     };
-    
+
     document.getElementById('genreFilter').value = '';
     document.getElementById('yearFilter').value = '';
     document.getElementById('ratingFilter').value = '';
     document.getElementById('statusFilter').value = '';
-    
+
     filteredMovies = [...top250Movies];
     renderMovies();
 }
@@ -482,18 +501,18 @@ function openMovieModal(movie) {
     currentMovie = movie;
     const isWatched = watchedMovies.some(w => w.rank === movie.rank);
     const watchedMovie = watchedMovies.find(w => w.rank === movie.rank);
-    
+
     document.getElementById('movieTitle').textContent = movie.titleEn;
     document.getElementById('movieYear').textContent = movie.year;
     document.getElementById('movieDirector').textContent = movie.director;
     document.getElementById('movieRating').textContent = movie.rating;
     document.getElementById('movieStatus').textContent = isWatched ? 'Watched' : 'Not Watched';
-    
+
     // 更新按钮状态
     markWatchedBtn.textContent = isWatched ? 'Mark as Unwatched' : 'Mark as Watched';
     markWatchedBtn.className = isWatched ? 'modal-btn btn-secondary' : 'modal-btn btn-primary';
     removeMovieBtn.style.display = isWatched ? 'inline-block' : 'none';
-    
+
     // 显示/隐藏观看信息
     const watchInfo = document.getElementById('watchInfo');
     if (isWatched && watchedMovie) {
@@ -504,7 +523,7 @@ function openMovieModal(movie) {
     } else {
         watchInfo.style.display = 'none';
     }
-    
+
     movieModal.classList.remove('hidden');
 }
 
@@ -517,9 +536,9 @@ function closeMovieModal() {
 // 切换观看状态
 function toggleWatchedStatus() {
     if (!currentMovie) return;
-    
+
     const isWatched = watchedMovies.some(w => w.rank === currentMovie.rank);
-    
+
     if (isWatched) {
         // 移除观看记录
         watchedMovies = watchedMovies.filter(w => w.rank !== currentMovie.rank);
@@ -537,10 +556,10 @@ function toggleWatchedStatus() {
         };
         watchedMovies.push(watchedMovie);
     }
-    
+
     // 保存到本地存储
     localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies));
-    
+
     // 更新界面
     renderMovies();
     updateStats();
@@ -551,10 +570,10 @@ function toggleWatchedStatus() {
 // 从观看列表中移除
 function removeFromWatched() {
     if (!currentMovie) return;
-    
+
     watchedMovies = watchedMovies.filter(w => w.rank !== currentMovie.rank);
     localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies));
-    
+
     renderMovies();
     updateStats();
     updateWatchedMoviesList();
@@ -564,15 +583,15 @@ function removeFromWatched() {
 // 更新统计信息
 function updateStats() {
     if (!watchedCount || !watchedPercentage || !totalMovies || !averageRating) return;
-    
+
     const watched = watchedMovies.length;
     const total = top250Movies.length;
     const percentage = Math.round((watched / total) * 100);
-    
+
     watchedCount.textContent = watched;
     watchedPercentage.textContent = `${percentage}%`;
     totalMovies.textContent = total;
-    
+
     // 计算平均评分
     if (watched > 0) {
         const totalRating = watchedMovies.reduce((sum, movie) => {
@@ -589,7 +608,7 @@ function updateStats() {
 // 更新已观看电影列表
 function updateWatchedMoviesList() {
     if (!watchedMoviesList) return;
-    
+
     if (watchedMovies.length === 0) {
         watchedMoviesList.innerHTML = `
             <div class="empty-state">
@@ -600,10 +619,10 @@ function updateWatchedMoviesList() {
         document.getElementById('watchedMoviesCount').textContent = '0';
         return;
     }
-    
+
     // 按排名排序
     const sortedWatched = [...watchedMovies].sort((a, b) => a.rank - b.rank);
-    
+
     watchedMoviesList.innerHTML = sortedWatched.map(movie => `
         <div class="watched-movie-item" onclick="openMovieModalByRank(${movie.rank})">
             <div class="watched-movie-name">
@@ -613,7 +632,7 @@ function updateWatchedMoviesList() {
             <div class="watched-movie-date">${movie.year}</div>
         </div>
     `).join('');
-    
+
     document.getElementById('watchedMoviesCount').textContent = watchedMovies.length;
 }
 
@@ -643,7 +662,7 @@ function exportData() {
         exportDate: new Date().toISOString(),
         version: '1.0'
     };
-    
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -659,9 +678,9 @@ function exportData() {
 function importData(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         try {
             const data = JSON.parse(e.target.result);
             if (data.watchedMovies && Array.isArray(data.watchedMovies)) {
@@ -679,7 +698,7 @@ function importData(event) {
         }
     };
     reader.readAsText(file);
-    
+
     // 清除文件输入
     event.target.value = '';
 }

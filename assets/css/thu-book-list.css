@@ -801,3 +801,46 @@
         flex-direction: column;
     }
 }
+/* CSS Update for Filter Toggle */
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+}
+
+.toggle-filters-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toggle-filters-btn:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.toggle-filters-btn.active {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--color-primary);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.filters-container.hidden {
+    display: none;
+}

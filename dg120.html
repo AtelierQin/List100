@@ -56,11 +56,16 @@
                 <div class="albums-section">
                     <div class="albums-container">
                         <div class="section-header">
-                            <h2>DG 120: The Anniversary Edition</h2>
+                            <div class="header-content">
+                                <h2>DG 120: The Anniversary Edition</h2>
+                                <button id="toggleFiltersBtn" class="toggle-filters-btn">
+                                    <span class="btn-icon">⚙️</span> Filters
+                                </button>
+                            </div>
                             <p class="collection-info">德意志留声机公司成立120周年纪念套装 · 121张CD</p>
 
                             <!-- 筛选器 -->
-                            <div class="filters-container">
+                            <div class="filters-container hidden" id="filtersContainer">
                                 <div class="filter-group">
                                     <label for="musicTypeFilter">音乐类型:</label>
                                     <select id="musicTypeFilter" class="filter-select">

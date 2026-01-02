@@ -56,10 +56,15 @@
                 <div class="movies-section">
                     <div class="movies-container">
                         <div class="section-header">
-                            <h2>IMDb Top 250 Movies</h2>
+                            <div class="header-content">
+                                <h2>IMDb Top 250 Movies</h2>
+                                <button id="toggleFiltersBtn" class="toggle-filters-btn">
+                                    <span class="btn-icon">⚙️</span> Filters
+                                </button>
+                            </div>
 
                             <!-- 筛选器 -->
-                            <div class="filters-container">
+                            <div class="filters-container hidden" id="filtersContainer">
                                 <div class="filter-group">
                                     <label for="genreFilter">Genre:</label>
                                     <select id="genreFilter" class="filter-select">

@@ -180,11 +180,11 @@ function setupEventListeners() {
     document.getElementById('categoryFilter').addEventListener('change', applyFilters);
     document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('clearFilters').addEventListener('click', clearFilters);
-    
+
     // Modal listeners
     document.getElementById('closeModal').addEventListener('click', closeModal);
     document.getElementById('markReadBtn').addEventListener('click', toggleReadStatus);
-    
+
     // Quick action listeners
     document.getElementById('importDataBtn').addEventListener('click', () => {
         document.getElementById('importFileInput').click();
@@ -192,26 +192,43 @@ function setupEventListeners() {
     document.getElementById('importFileInput').addEventListener('change', importData);
     document.getElementById('exportDataBtn').addEventListener('click', exportData);
     document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
-    
-    // Close modal on outside click
+
     document.getElementById('bookModal').addEventListener('click', (e) => {
         if (e.target.id === 'bookModal') closeModal();
     });
+
+    // Filter toggle
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const filtersContainer = document.getElementById('filtersContainer');
+    if (toggleFiltersBtn && filtersContainer) {
+        toggleFiltersBtn.addEventListener('click', () => {
+            filtersContainer.classList.toggle('hidden');
+            const isHidden = filtersContainer.classList.contains('hidden');
+
+            if (isHidden) {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">⚙️</span> Filters';
+                toggleFiltersBtn.classList.remove('active');
+            } else {
+                toggleFiltersBtn.innerHTML = '<span class="btn-icon">✖️</span> Close';
+                toggleFiltersBtn.classList.add('active');
+            }
+        });
+    }
 }
 
 function applyFilters() {
     booksState.filters.category = document.getElementById('categoryFilter').value;
     booksState.filters.status = document.getElementById('statusFilter').value;
-    
+
     booksState.filteredBooks = booksState.allBooks.filter(book => {
         const categoryMatch = !booksState.filters.category || book.category === booksState.filters.category;
-        const statusMatch = !booksState.filters.status || 
+        const statusMatch = !booksState.filters.status ||
             (booksState.filters.status === 'read' && booksState.readBooks.has(book.id)) ||
             (booksState.filters.status === 'unread' && !booksState.readBooks.has(book.id));
-        
+
         return categoryMatch && statusMatch;
     });
-    
+
     renderBooks();
     updateStats();
 }
@@ -228,14 +245,14 @@ function clearFilters() {
 function renderBooks() {
     const container = document.getElementById('booksList');
     const resultsCount = document.getElementById('resultsCount');
-    
+
     resultsCount.textContent = `${booksState.filteredBooks.length} books`;
-    
+
     if (booksState.filteredBooks.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No books found</p><small>Try adjusting your filters</small></div>';
         return;
     }
-    
+
     container.innerHTML = booksState.filteredBooks.map(book => {
         const isRead = booksState.readBooks.has(book.id);
         return `
@@ -252,7 +269,7 @@ function renderBooks() {
             </div>
         `;
     }).join('');
-    
+
     // Add click listeners to book items
     container.querySelectorAll('.book-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -265,20 +282,20 @@ function renderBooks() {
 function openBookModal(bookId) {
     const book = booksState.allBooks.find(b => b.id === bookId);
     if (!book) return;
-    
+
     const isRead = booksState.readBooks.has(bookId);
-    
+
     document.getElementById('bookTitle').textContent = book.title;
     document.getElementById('bookNumber').textContent = book.number;
     document.getElementById('bookAuthor').textContent = book.author;
     document.getElementById('bookPublisher').textContent = book.publisher;
     document.getElementById('bookDescription').textContent = book.description;
     document.getElementById('bookStatus').textContent = isRead ? 'Read' : 'Not Read';
-    
+
     const markReadBtn = document.getElementById('markReadBtn');
     markReadBtn.textContent = isRead ? 'Mark as Unread' : 'Mark as Read';
     markReadBtn.dataset.bookId = bookId;
-    
+
     document.getElementById('bookModal').classList.remove('hidden');
 }
 
@@ -288,13 +305,13 @@ function closeModal() {
 
 function toggleReadStatus() {
     const bookId = document.getElementById('markReadBtn').dataset.bookId;
-    
+
     if (booksState.readBooks.has(bookId)) {
         booksState.readBooks.delete(bookId);
     } else {
         booksState.readBooks.add(bookId);
     }
-    
+
     saveReadBooks();
     renderBooks();
     updateStats();
@@ -306,34 +323,34 @@ function updateStats() {
     const readCount = booksState.readBooks.size;
     const totalBooks = booksState.allBooks.length;
     const percentage = totalBooks > 0 ? Math.round((readCount / totalBooks) * 100) : 0;
-    
+
     document.getElementById('readCount').textContent = readCount;
     document.getElementById('readPercentage').textContent = `${percentage}%`;
     document.getElementById('totalBooks').textContent = totalBooks;
-    
+
     // Calculate unique authors
     const uniqueAuthors = new Set(booksState.allBooks.map(b => b.author)).size;
     document.getElementById('uniqueAuthors').textContent = uniqueAuthors;
-    
+
     updateReadBooksList();
 }
 
 function updateReadBooksList() {
     const container = document.getElementById('readBooksList');
     const countElement = document.getElementById('readBooksCount');
-    
+
     const readBooksArray = Array.from(booksState.readBooks)
         .map(id => booksState.allBooks.find(b => b.id === id))
         .filter(Boolean)
         .sort((a, b) => a.number - b.number);
-    
+
     countElement.textContent = readBooksArray.length;
-    
+
     if (readBooksArray.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No books read yet</p><small>Click on books to mark them as read</small></div>';
         return;
     }
-    
+
     container.innerHTML = readBooksArray.map(book => `
         <div class="read-book-item" data-book-id="${book.id}">
             <div class="read-book-name">
@@ -342,7 +359,7 @@ function updateReadBooksList() {
             </div>
         </div>
     `).join('');
-    
+
     container.querySelectorAll('.read-book-item').forEach(item => {
         item.addEventListener('click', () => {
             openBookModal(item.dataset.bookId);
@@ -366,7 +383,7 @@ function exportData() {
         totalBooks: booksState.allBooks.length,
         readCount: booksState.readBooks.size
     };
-    
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -379,7 +396,7 @@ function exportData() {
 function importData(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
         try {

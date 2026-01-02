@@ -56,11 +56,16 @@
                 <div class="books-section">
                     <div class="books-container">
                         <div class="section-header">
-                            <h2>THU Book List</h2>
+                            <div class="header-content">
+                                <h2>THU Book List</h2>
+                                <button id="toggleFiltersBtn" class="toggle-filters-btn">
+                                    <span class="btn-icon">⚙️</span> Filters
+                                </button>
+                            </div>
                             <p class="collection-info">Tsinghua University Recommended Reading · 120 Books</p>
 
                             <!-- Filters -->
-                            <div class="filters-container">
+                            <div class="filters-container hidden" id="filtersContainer">
                                 <div class="filter-group">
                                     <label for="categoryFilter">Category:</label>
                                     <select id="categoryFilter" class="filter-select">
