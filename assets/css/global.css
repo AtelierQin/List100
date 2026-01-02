@@ -10,24 +10,26 @@
     --color-primary-hover: #5a67d8;
     --color-primary-light: #edf2f7;
     --color-primary-dark: #4c51bf;
-    
+
     /* 背景色系 */
     --color-bg: #fafbfc;
-    --color-surface: #fafafa; /* 与landing.css保持一致 */
+    --color-surface: #fafafa;
+    /* 与landing.css保持一致 */
     --color-surface-elevated: #ffffff;
     --color-surface-hover: #f8fafc;
-    
+
     /* 文字色系 - 与landing.css保持一致 */
     --color-text-primary: #1a1a1a;
     --color-text-secondary: #666666;
     --color-text-muted: #999999;
     --color-text-light: #718096;
-    
+
     /* 边框色系 */
-    --color-border: #e5e5e5; /* 与landing.css保持一致 */
+    --color-border: #e5e5e5;
+    /* 与landing.css保持一致 */
     --color-border-light: #f7fafc;
     --color-border-hover: #cbd5e0;
-    
+
     /* 状态色系 */
     --color-success: #48bb78;
     --color-success-light: #c6f6d5;
@@ -37,17 +39,19 @@
     --color-warning-light: #feebc8;
     --color-info: #4299e1;
     --color-info-light: #bee3f8;
-    
+
     /* 功能色系 */
-    --color-accent: #0066cc; /* 与landing.css保持一致 */
-    --color-accent-hover: #0052a3; /* 与landing.css保持一致 */
+    --color-accent: #0066cc;
+    /* 与landing.css保持一致 */
+    --color-accent-hover: #0052a3;
+    /* 与landing.css保持一致 */
     --color-accent-light: var(--color-primary-light);
     --color-purple: #9f7aea;
     --color-pink: #ed64a6;
     --color-indigo: #667eea;
     --color-teal: #38b2ac;
     --color-orange: #ed8936;
-    
+
     /* 字体系统 - 统一优化 */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-family-serif: 'Playfair Display', 'Georgia', serif;
@@ -60,33 +64,41 @@
     --font-size-3xl: 24px;
     --font-size-4xl: 28px;
     --font-size-5xl: 32px;
-    
+
     /* 圆角系统 */
-    --border-radius: 8px; /* 与landing.css保持一致 */
+    --border-radius: 8px;
+    /* 与landing.css保持一致 */
     --border-radius-sm: 8px;
     --border-radius-lg: 16px;
     --border-radius-xl: 20px;
     --border-radius-full: 9999px;
-    
+
     /* 阴影系统 */
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    
+
     /* 间距系统 */
-    --spacing-xs: 8px; /* 与landing.css保持一致 */
-    --spacing-sm: 16px; /* 与landing.css保持一致 */
-    --spacing-md: 24px; /* 与landing.css保持一致 */
-    --spacing-lg: 32px; /* 与landing.css保持一致 */
-    --spacing-xl: 48px; /* 与landing.css保持一致 */
-    --spacing-2xl: 64px; /* 与landing.css保持一致 */
-    
+    --spacing-xs: 8px;
+    /* 与landing.css保持一致 */
+    --spacing-sm: 16px;
+    /* 与landing.css保持一致 */
+    --spacing-md: 24px;
+    /* 与landing.css保持一致 */
+    --spacing-lg: 32px;
+    /* 与landing.css保持一致 */
+    --spacing-xl: 48px;
+    /* 与landing.css保持一致 */
+    --spacing-2xl: 64px;
+    /* 与landing.css保持一致 */
+
     /* 过渡动画 */
     --transition-fast: 0.15s ease;
     --transition-base: 0.2s ease;
-    --transition: 0.2s ease; /* 与landing.css保持一致 */
+    --transition: 0.2s ease;
+    /* 与landing.css保持一致 */
     --transition-slow: 0.3s ease;
 }
 
@@ -101,7 +113,12 @@ body {
 }
 
 /* 统一的标题系统 */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-family);
     font-weight: 600;
     line-height: 1.3;
@@ -383,7 +400,8 @@ p {
     padding: 24px 0;
     position: relative;
     overflow: hidden;
-    margin-top: 64px; /* 为固定导航栏留出空间 */
+    margin-top: 64px;
+    /* 为固定导航栏留出空间 */
 }
 
 .motto-section::before {
@@ -394,7 +412,7 @@ p {
     right: 0;
     bottom: 0;
     background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.04) 0%, transparent 60%),
-                radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
+        radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -419,7 +437,8 @@ p {
     opacity: 0;
     position: relative;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    animation: mottoFadeIn 1.8s ease-out 0.2s forwards; /* 减少延迟时间 */
+    animation: mottoFadeIn 1.8s ease-out 0.2s forwards;
+    /* 减少延迟时间 */
     transform: translateY(12px);
 }
 
@@ -427,7 +446,8 @@ p {
 
 .main-content {
     min-height: calc(100vh - 64px - 72px);
-    padding-top: 64px; /* 默认为没有motto-section的页面提供导航栏偏移 */
+    padding-top: 64px;
+    /* 默认为没有motto-section的页面提供导航栏偏移 */
 }
 
 /* 有motto-section的页面不需要额外的padding-top */
@@ -682,9 +702,9 @@ p {
     font-size: 11px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: inherit;
     border-radius: var(--border-radius-sm);
     text-align: left;
@@ -717,9 +737,9 @@ p {
     font-size: 11px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.1s ease, 
-                color 0.1s ease,
-                border-color 0.1s ease;
+    transition: background 0.1s ease,
+        color 0.1s ease,
+        border-color 0.1s ease;
     font-family: inherit;
     border-radius: var(--border-radius-sm);
     text-align: left;
@@ -777,10 +797,94 @@ p {
 }
 
 .sync-section,
-.tag-filter-section {
+.tag-filter-section,
+.year-filter-section {
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+/* Year Filter Styles */
+.year-filter-section h3 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: -0.1px;
+}
+
+.year-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.year-filter-item {
+    padding: 5px 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.1s ease,
+        color 0.1s ease,
+        border-color 0.1s ease;
+    font-family: inherit;
+    border-radius: var(--border-radius-sm);
+    text-align: left;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1.3;
+}
+
+.year-name {
+    flex: 1;
+    text-align: left;
+}
+
+.year-count {
+    background: rgba(160, 174, 192, 0.2);
+    color: var(--color-text-muted);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 6px;
+    min-width: 16px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    transition: background 0.1s ease, color 0.1s ease;
+    line-height: 1.3;
+}
+
+.year-filter-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #4a5568;
+}
+
+.year-filter-item:hover .year-count {
+    background: rgba(74, 85, 104, 0.15);
+    color: #4a5568;
+}
+
+.year-filter-item.active {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    color: #2d3748;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #cbd5e0;
+}
+
+.year-filter-item.active .year-count {
+    background: rgba(45, 55, 72, 0.15);
+    color: #2d3748;
+}
+
+.year-filter-item:active {
+    transform: scale(0.98);
+    transition: transform 0.05s ease;
 }
 
 .sync-section .btn {
@@ -1226,8 +1330,13 @@ p {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 错误状态 */
@@ -1249,42 +1358,43 @@ p {
     .container {
         padding: 0 16px;
     }
-    
+
     .nav-container {
         padding: 0 var(--spacing-sm);
     }
-    
+
     .nav-stats {
         margin-left: 0;
         padding-left: 0;
         border-left: none;
         gap: 8px;
     }
-    
+
     .progress-bar {
         width: 80px;
     }
-    
+
     .goal-status {
         padding: 4px 8px;
         font-size: 12px;
     }
-    
+
     .layout {
         grid-template-columns: 1fr;
         gap: 20px;
         padding-top: 16px;
     }
-    
+
     .main-content {
         padding-top: 64px;
     }
-    
+
     .motto-section {
         padding: 16px 0;
-        margin-top: 64px; /* 保持导航栏偏移 */
+        margin-top: 64px;
+        /* 保持导航栏偏移 */
     }
-    
+
     .motto-text {
         font-size: 18px;
         padding: 0 20px;
@@ -1292,120 +1402,147 @@ p {
         animation-duration: 1.5s;
         animation-delay: 0.3s;
     }
-    
 
-    
+
+
     .sidebar {
         position: static;
         padding: 12px;
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     }
-    
+
     .nav-stats {
         margin-left: 0;
         padding-left: 0;
         border-left: none;
         gap: 8px;
     }
-    
+
     .progress-bar {
         width: 80px;
     }
-    
+
     .hero {
         text-align: center;
         margin-bottom: 16px;
     }
-    
+
     .hero h1 {
         font-size: 24px;
     }
-    
+
     .hero-subtitle {
         font-size: 14px;
     }
-    
+
     .controls-section {
         gap: 12px;
     }
-    
+
     .filter-tabs {
         flex-direction: row;
         gap: 8px;
     }
-    
+
     .filter-tab {
         flex: 1;
         text-align: center;
         padding: 10px 12px;
     }
-    
+
     .content {
         padding-top: 0;
     }
-    
+
     .todo-item {
         padding: 10px 16px;
     }
-    
+
     .drag-handle {
         margin-right: 6px;
         font-size: 12px;
     }
-    
+
     .todo-number {
         min-width: 24px;
         margin-right: 12px;
     }
-    
+
     .todo-checkbox {
         margin-right: 12px;
     }
-    
+
     .item-actions {
         gap: 2px;
         margin-left: 6px;
     }
-    
+
     .pin-btn,
     .delete-btn {
         font-size: 13px;
         padding: 3px;
     }
-    
+
     .nav-stats {
         gap: 12px;
     }
-    
+
     .progress-bar {
         width: 80px;
     }
-    
+
     .tag-filter-list {
         max-height: 200px;
         overflow-y: auto;
     }
 }
+
 /* 统一
 的动画系统 */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
 @keyframes scaleIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 @keyframes mottoFadeIn {
@@ -1413,6 +1550,7 @@ p {
         opacity: 0;
         transform: translateY(20px);
     }
+
     100% {
         opacity: 0.85;
         transform: translateY(0);
@@ -1496,7 +1634,7 @@ p {
     .hide-mobile {
         display: none;
     }
-    
+
     .show-mobile {
         display: block;
     }
@@ -1522,26 +1660,79 @@ p {
 }
 
 /* 间距工具类 */
-.mt-0 { margin-top: 0; }
-.mt-1 { margin-top: var(--spacing-xs); }
-.mt-2 { margin-top: var(--spacing-sm); }
-.mt-3 { margin-top: var(--spacing-md); }
-.mt-4 { margin-top: var(--spacing-lg); }
-.mt-5 { margin-top: var(--spacing-xl); }
+.mt-0 {
+    margin-top: 0;
+}
 
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: var(--spacing-xs); }
-.mb-2 { margin-bottom: var(--spacing-sm); }
-.mb-3 { margin-bottom: var(--spacing-md); }
-.mb-4 { margin-bottom: var(--spacing-lg); }
-.mb-5 { margin-bottom: var(--spacing-xl); }
+.mt-1 {
+    margin-top: var(--spacing-xs);
+}
 
-.p-0 { padding: 0; }
-.p-1 { padding: var(--spacing-xs); }
-.p-2 { padding: var(--spacing-sm); }
-.p-3 { padding: var(--spacing-md); }
-.p-4 { padding: var(--spacing-lg); }
-.p-5 { padding: var(--spacing-xl); }/* 统一的Toa
+.mt-2 {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-3 {
+    margin-top: var(--spacing-md);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-lg);
+}
+
+.mt-5 {
+    margin-top: var(--spacing-xl);
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-1 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.mb-2 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.mb-3 {
+    margin-bottom: var(--spacing-md);
+}
+
+.mb-4 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.mb-5 {
+    margin-bottom: var(--spacing-xl);
+}
+
+.p-0 {
+    padding: 0;
+}
+
+.p-1 {
+    padding: var(--spacing-xs);
+}
+
+.p-2 {
+    padding: var(--spacing-sm);
+}
+
+.p-3 {
+    padding: var(--spacing-md);
+}
+
+.p-4 {
+    padding: var(--spacing-lg);
+}
+
+.p-5 {
+    padding: var(--spacing-xl);
+}
+
+/* 统一的Toa
 st通知系统 */
 .toast {
     position: fixed;
@@ -1683,7 +1874,9 @@ st通知系统 */
     display: flex;
     gap: var(--spacing-sm);
     justify-content: flex-end;
-}/* Header
+}
+
+/* Header
 动画增强 */
 .navbar {
     animation: navSlideIn 0.6s ease-out;
@@ -1766,7 +1959,8 @@ st通知系统 */
     padding: 24px 0;
     position: relative;
     overflow: hidden;
-    margin-top: 64px; /* 为固定导航栏留出空间 */
+    margin-top: 64px;
+    /* 为固定导航栏留出空间 */
 }
 
 .motto-section::before {
@@ -1777,7 +1971,7 @@ st通知系统 */
     right: 0;
     bottom: 0;
     background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.04) 0%, transparent 60%),
-                radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
+        radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -1817,6 +2011,7 @@ st通知系统 */
         opacity: 0;
         transform: translateY(20px);
     }
+
     100% {
         opacity: 0.85;
         transform: translateY(0);
@@ -1852,7 +2047,7 @@ st通知系统 */
     .footer {
         padding: 32px 0;
     }
-    
+
     .footer .container {
         padding: 0 16px;
     }

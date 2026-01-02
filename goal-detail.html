@@ -93,6 +93,20 @@
                                         placeholder="Enter tags separated by commas...">
                                 </div>
                             </div>
+
+                            <div class="resources-section">
+                                <div class="section-header">
+                                    <h3>Knowledge & Resources</h3>
+                                    <button class="add-resource-btn" id="addResourceBtn">
+                                        <span class="btn-icon">+</span> Add Resource
+                                    </button>
+                                </div>
+                                <div class="resources-list" id="resourcesList">
+                                    <div class="empty-state-small">
+                                        <p>Link books or tours to this goal.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Plan Tab (New) -->
@@ -132,6 +146,41 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="habits-section-divider"></div>
+
+                            <!-- Habits Section -->
+                            <div class="habits-section">
+                                <div class="section-header">
+                                    <div class="header-left">
+                                        <h3>Habits & Routines</h3>
+                                    </div>
+                                </div>
+
+                                <div class="habits-list" id="habitsList">
+                                    <!-- Habits will be injected here -->
+                                </div>
+
+                                <div class="add-habit-wrapper">
+                                    <button class="add-milestone-btn" id="showAddHabitBtn">
+                                        <span class="icon">+</span> Add Habit
+                                    </button>
+                                    <div class="add-habit-form hidden" id="addHabitForm">
+                                        <div class="form-row">
+                                            <input type="text" class="habit-input" id="newHabitTitle"
+                                                placeholder="Build a habit (e.g., Read 30 mins daily)">
+                                            <select class="habit-frequency" id="newHabitFrequency">
+                                                <option value="daily">Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button class="btn-cancel" id="cancelHabitBtn">Cancel</button>
+                                            <button class="btn-save" id="saveHabitBtn">Add Habit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Journal Tab (Formerly Notes) -->
@@ -151,6 +200,9 @@
                                     <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
                                     <button class="attach-btn" id="attachPhotoBtn">📷 Add Photo</button>
                                     <button class="attach-btn" id="attachLinkBtn">🔗 Add Link</button>
+                                    <button class="attach-btn" id="generateReviewBtn"
+                                        style="color: var(--color-accent); border-color: var(--color-accent);">⚡️ Weekly
+                                        Review</button>
                                     <button class="add-note-btn" id="addNoteBtn">Add Note</button>
                                 </div>
                             </div>
@@ -203,6 +255,30 @@
     </main>
 
 
+    <!-- Resource Selection Modal -->
+    <div class="modal hidden" id="resourceModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Link Resource</h3>
+                <button class="modal-close" id="closeResourceModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="resource-tabs">
+                    <button class="resource-tab active" data-type="books">Books (THU)</button>
+                    <button class="resource-tab" data-type="tours">Tours (World)</button>
+                </div>
+                <div class="resource-search">
+                    <input type="text" placeholder="Search collections..." id="resourceSearchInput"
+                        style="width: 100%; margin-bottom: 12px; padding: 8px; border: 1px solid var(--color-border); border-radius: var(--border-radius-sm);">
+                </div>
+                <div class="resource-results" id="resourceResults" style="max-height: 300px; overflow-y: auto;">
+                    <!-- Results injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/thu-book-list.js"></script>
     <script src="assets/js/goal-detail.js"></script>
     <script src="assets/js/dropdown.js"></script>
 </body>

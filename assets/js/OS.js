@@ -4,6 +4,7 @@ class ResourceDatabase {
         this.list100Items = [];
         this.currentFilter = 'all';
         this.currentTag = '';
+        this.currentYear = '';
         this.searchQuery = '';
         this.timelineYear = new Date().getFullYear();
 
@@ -107,6 +108,64 @@ class ResourceDatabase {
         });
     }
 
+    updateYearFilters() {
+        // Extract years from goals based on createdAt or completedAt
+        const years = new Set();
+
+        this.list100Items.forEach(item => {
+            if (item.createdAt) {
+                const year = new Date(item.createdAt).getFullYear();
+                if (!isNaN(year)) years.add(year);
+            }
+            if (item.completedAt) {
+                const year = new Date(item.completedAt).getFullYear();
+                if (!isNaN(year)) years.add(year);
+            }
+        });
+
+        // Sort years descending (newest first)
+        const sortedYears = Array.from(years).sort((a, b) => b - a);
+
+        console.log('Available years:', sortedYears);
+
+        const yearFilterList = document.getElementById('yearFilterList');
+        if (!yearFilterList) return;
+
+        // Count goals per year
+        const yearCounts = sortedYears.map(year => {
+            const count = this.list100Items.filter(item => {
+                const createdYear = item.createdAt ? new Date(item.createdAt).getFullYear() : null;
+                const completedYear = item.completedAt ? new Date(item.completedAt).getFullYear() : null;
+                return createdYear === year || completedYear === year;
+            }).length;
+            return { year, count };
+        });
+
+        yearFilterList.innerHTML = `
+            <button class="year-filter-item ${!this.currentYear ? 'active' : ''}" data-year="">
+                <span class="year-name">All Years</span>
+                <span class="year-count">${this.list100Items.length}</span>
+            </button>
+            ${yearCounts.map(({ year, count }) => `
+                <button class="year-filter-item ${this.currentYear === String(year) ? 'active' : ''}" data-year="${year}">
+                    <span class="year-name">${year}</span>
+                    <span class="year-count">${count}</span>
+                </button>
+            `).join('')}
+        `;
+
+        // Bind year filter events
+        yearFilterList.querySelectorAll('.year-filter-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                yearFilterList.querySelectorAll('.year-filter-item').forEach(i => i.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                this.currentYear = e.currentTarget.dataset.year;
+                console.log('Year filter changed to:', this.currentYear || 'All');
+                this.renderGoals();
+            });
+        });
+    }
+
     // 加载List100数据
     async loadList100Data() {
         console.log('Loading List100 data...');
@@ -121,6 +180,7 @@ class ResourceDatabase {
                     console.log('Loaded', items.length, 'items from localStorage');
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.updateYearFilters();
                     this.renderDashboard();
                     return;
                 }
@@ -135,6 +195,7 @@ class ResourceDatabase {
                     console.log('Loaded', data.items.length, 'items from JSON file');
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.updateYearFilters();
                     this.renderDashboard();
                 }
             }
@@ -150,6 +211,7 @@ class ResourceDatabase {
                     this.list100Items = JSON.parse(e.newValue);
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.updateYearFilters();
                 } catch (error) {
                     console.error('Error parsing updated List100 data:', error);
                 }
@@ -184,6 +246,7 @@ class ResourceDatabase {
                     this.list100Items = items;
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.updateYearFilters();
                     this.renderDashboard();
                 }
             }
@@ -222,6 +285,16 @@ class ResourceDatabase {
                 (item.description && item.description.toLowerCase().includes(this.searchQuery)) ||
                 (item.tags && item.tags.some(tag => tag.toLowerCase().includes(this.searchQuery)))
             );
+        }
+
+        // 根据年份过滤
+        if (this.currentYear) {
+            const filterYear = parseInt(this.currentYear);
+            filteredGoals = filteredGoals.filter(item => {
+                const createdYear = item.createdAt ? new Date(item.createdAt).getFullYear() : null;
+                const completedYear = item.completedAt ? new Date(item.completedAt).getFullYear() : null;
+                return createdYear === filterYear || completedYear === filterYear;
+            });
         }
 
         if (filteredGoals.length === 0) {

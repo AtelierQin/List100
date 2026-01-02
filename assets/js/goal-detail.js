@@ -6,7 +6,90 @@ class GoalDetail {
         this.pendingAttachments = [];
         this.autoSaveTimer = null;
         this.lastSaveTime = null;
+
+        // Collections data - loaded from full data sources
+        this.mockCollections = this.loadCollections();
+
         this.init();
+    }
+
+    /**
+     * Load collections data from full data sources
+     * Books: From BOOKS_DATA (thu-book-list.js)
+     * Tours: From world countries data (world.js)
+     */
+    loadCollections() {
+        const collections = {
+            books: [],
+            tours: []
+        };
+
+        // Load books from BOOKS_DATA if available (defined in thu-book-list.js)
+        if (typeof BOOKS_DATA !== 'undefined' && Array.isArray(BOOKS_DATA)) {
+            collections.books = BOOKS_DATA.map(book => ({
+                id: `book-${book.number}`,
+                title: book.title,
+                author: book.author,
+                type: 'book',
+                category: book.category || '',
+                description: book.description || ''
+            }));
+            console.log(`Loaded ${collections.books.length} books from THU Book List`);
+        } else {
+            console.warn('BOOKS_DATA not found. Make sure thu-book-list.js is loaded.');
+            // Fallback mock data
+            collections.books = [
+                { id: 'b1', title: '红楼梦', author: '曹雪芹', type: 'book' },
+                { id: 'b2', title: '人类简史', author: '尤瓦尔·赫拉利', type: 'book' }
+            ];
+        }
+
+        // Load world tours from travelMap countries if available (world.js)
+        // Generate tour items from world countries
+        if (typeof travelMap !== 'undefined' && travelMap.countries) {
+            travelMap.countries.forEach((country, code) => {
+                collections.tours.push({
+                    id: `tour-${code}`,
+                    title: `${country.name} (${country.nameCn})`,
+                    location: country.continent,
+                    capital: country.capital,
+                    flag: country.flag,
+                    type: 'tour'
+                });
+            });
+            console.log(`Loaded ${collections.tours.length} tour destinations from World Map`);
+        } else {
+            // Fallback: Try to load from localStorage or use minimal mock
+            const visitedData = localStorage.getItem('travel-visited-countries');
+            if (visitedData) {
+                try {
+                    const visited = JSON.parse(visitedData);
+                    // Use just the country codes as basic tour options
+                    visited.forEach(([code, data]) => {
+                        collections.tours.push({
+                            id: `tour-${code}`,
+                            title: code,
+                            location: 'World',
+                            type: 'tour'
+                        });
+                    });
+                } catch (e) {
+                    console.warn('Could not parse travel data');
+                }
+            }
+
+            // If still empty, add basic fallback tours
+            if (collections.tours.length === 0) {
+                console.warn('World map data not found. Using fallback tours.');
+                collections.tours = [
+                    { id: 't-JP', title: 'Japan (日本)', location: 'Asia', type: 'tour' },
+                    { id: 't-FR', title: 'France (法国)', location: 'Europe', type: 'tour' },
+                    { id: 't-US', title: 'United States (美国)', location: 'North America', type: 'tour' }
+                ];
+            }
+        }
+
+        return collections;
     }
 
     getGoalIdFromURL() {
@@ -326,6 +409,14 @@ class GoalDetail {
             });
         }
 
+        // Generate Review Button
+        const generateReviewBtn = document.getElementById('generateReviewBtn');
+        if (generateReviewBtn) {
+            generateReviewBtn.addEventListener('click', () => {
+                this.generateReview();
+            });
+        }
+
         // Milestone interactions
         const showAddMilestoneBtn = document.getElementById('showAddMilestoneBtn');
         if (showAddMilestoneBtn) {
@@ -352,6 +443,369 @@ class GoalDetail {
                 }
             });
         }
+
+        // Habit interactions
+        const showAddHabitBtn = document.getElementById('showAddHabitBtn');
+        const addHabitForm = document.getElementById('addHabitForm');
+        const cancelHabitBtn = document.getElementById('cancelHabitBtn');
+
+        if (showAddHabitBtn && addHabitForm && cancelHabitBtn) {
+            showAddHabitBtn.addEventListener('click', () => {
+                showAddHabitBtn.classList.add('hidden');
+                addHabitForm.classList.remove('hidden');
+                document.getElementById('newHabitTitle').focus();
+            });
+
+            cancelHabitBtn.addEventListener('click', () => {
+                addHabitForm.classList.add('hidden');
+                showAddHabitBtn.classList.remove('hidden');
+                document.getElementById('newHabitTitle').value = '';
+            });
+
+            document.getElementById('saveHabitBtn').addEventListener('click', () => {
+                this.addHabit();
+            });
+
+            document.getElementById('newHabitTitle').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.addHabit();
+                }
+            });
+        }
+
+        // Phase 6: Resource Modal
+        const addResourceBtn = document.getElementById('addResourceBtn');
+        const resourceModal = document.getElementById('resourceModal');
+        if (addResourceBtn && resourceModal) {
+            addResourceBtn.addEventListener('click', () => {
+                this.openResourceModal();
+            });
+
+            document.getElementById('closeResourceModal').addEventListener('click', () => {
+                resourceModal.classList.add('hidden');
+            });
+
+            // Tab switching
+            document.querySelectorAll('.resource-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    document.querySelectorAll('.resource-tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.renderResourceResults(e.target.dataset.type);
+                });
+            });
+
+            // Search (simple filter)
+            document.getElementById('resourceSearchInput').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const activeType = document.querySelector('.resource-tab.active').dataset.type;
+                this.renderResourceResults(activeType, query);
+            });
+        }
+    }
+
+    renderResources() {
+        const list = document.getElementById('resourcesList');
+        if (!list) return;
+
+        const resources = this.goal.resources || [];
+
+        if (resources.length === 0) {
+            list.innerHTML = `
+                <div class="empty-state-small">
+                    <p>Link books or tours to this goal.</p>
+                </div>
+            `;
+            return;
+        }
+
+        list.innerHTML = resources.map((r, index) => `
+            <div class="resource-item">
+                <div class="resource-icon">${r.type === 'book' ? '📖' : '✈️'}</div>
+                <div class="resource-info">
+                    <div class="resource-title">${this.escapeHtml(r.title)}</div>
+                    <div class="resource-subtitle">${this.escapeHtml(r.author || r.location || '')}</div>
+                </div>
+                <button class="btn-icon-only" onclick="goalDetail.unlinkResource(${index})" title="Unlink">×</button>
+            </div>
+        `).join('');
+    }
+
+    openResourceModal() {
+        document.getElementById('resourceModal').classList.remove('hidden');
+        this.renderResourceResults('books'); // Default tab
+    }
+
+    renderResourceResults(type, query = '') {
+        const resultsContainer = document.getElementById('resourceResults');
+        const items = this.mockCollections[type] || [];
+
+        const filtered = items.filter(item =>
+            item.title.toLowerCase().includes(query) ||
+            (item.author && item.author.toLowerCase().includes(query)) ||
+            (item.location && item.location.toLowerCase().includes(query))
+        );
+
+        resultsContainer.innerHTML = filtered.map(item => `
+            <div class="resource-result-item" onclick='goalDetail.linkResource(${JSON.stringify(item)})'>
+                <div class="result-icon">${item.type === 'book' ? '📖' : '✈️'}</div>
+                <div class="result-info">
+                    <div class="result-title">${this.escapeHtml(item.title)}</div>
+                    <div class="result-sub">${this.escapeHtml(item.author || item.location)}</div>
+                </div>
+                <div class="result-add">+ Link</div>
+            </div>
+        `).join('');
+    }
+
+    linkResource(item) {
+        if (!this.goal.resources) this.goal.resources = [];
+
+        // Check duplicate
+        if (this.goal.resources.some(r => r.id === item.id)) {
+            this.showToast('Resource already linked');
+            return;
+        }
+
+        this.goal.resources.push(item);
+        this.saveGoal();
+        this.renderResources();
+        document.getElementById('resourceModal').classList.add('hidden');
+        this.showToast(`Linked "${item.title}"`);
+    }
+
+    unlinkResource(index) {
+        if (!confirm('Unlink this resource?')) return;
+        this.goal.resources.splice(index, 1);
+        this.saveGoal();
+        this.renderResources();
+    }
+
+    renderHabits() {
+        const list = document.getElementById('habitsList');
+        if (!list) return;
+
+        const habits = this.goal.habits || [];
+
+        if (habits.length === 0) {
+            list.innerHTML = `
+                <div class="empty-state-small" style="margin-top: 20px;">
+                    <p>No habits yet. Set a recurring routine!</p>
+                </div>
+            `;
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+
+        list.innerHTML = habits.map((h, index) => {
+            const isCheckedIn = h.history && h.history.includes(today);
+            const streak = this.calculateStreak(h);
+
+            return `
+            <div class="habit-item" data-index="${index}">
+                <div class="habit-content">
+                    <span class="habit-title">${this.escapeHtml(h.title)}</span>
+                    <span class="habit-meta">
+                        ${h.frequency === 'daily' ? 'Daily' : 'Weekly'} • 
+                        <span class="habit-streak">🔥 ${streak} day streak</span>
+                    </span>
+                </div>
+                <div class="habit-actions">
+                    <button class="habit-checkin-btn ${isCheckedIn ? 'checked' : ''}" 
+                        onclick="goalDetail.toggleHabitCheckin(${index})">
+                        ${isCheckedIn ? '✓ Done Today' : 'Check-in'}
+                    </button>
+                    <button class="btn-icon-only" onclick="goalDetail.deleteHabit(${index})" title="Delete">🗑️</button>
+                </div>
+            </div>
+        `}).join('');
+    }
+
+    addHabit() {
+        const titleInput = document.getElementById('newHabitTitle');
+        const freqInput = document.getElementById('newHabitFrequency');
+        const title = titleInput.value.trim();
+        const freq = freqInput.value;
+
+        if (!title) return;
+
+        if (!this.goal.habits) this.goal.habits = [];
+
+        this.goal.habits.push({
+            id: Date.now(),
+            title: title,
+            frequency: freq,
+            history: [],
+            createdAt: new Date().toISOString()
+        });
+
+        // Clear inputs
+        titleInput.value = '';
+        document.getElementById('addHabitForm').classList.add('hidden');
+        document.getElementById('showAddHabitBtn').classList.remove('hidden');
+
+        this.saveGoal();
+        this.renderHabits();
+    }
+
+    toggleHabitCheckin(index) {
+        if (!this.goal.habits || !this.goal.habits[index]) return;
+
+        const habit = this.goal.habits[index];
+        const today = new Date().toISOString().split('T')[0];
+
+        if (!habit.history) habit.history = [];
+
+        if (habit.history.includes(today)) {
+            // Uncheck
+            habit.history = habit.history.filter(d => d !== today);
+        } else {
+            // Check-in
+            habit.history.push(today);
+            // Trigger confetti or something fun?
+        }
+
+        this.saveGoal();
+        this.renderHabits();
+    }
+
+    deleteHabit(index) {
+        if (!confirm('Delete this habit?')) return;
+
+        this.goal.habits.splice(index, 1);
+        this.saveGoal();
+        this.renderHabits();
+    }
+
+    calculateStreak(habit) {
+        if (!habit.history || habit.history.length === 0) return 0;
+
+        // Simple streak logic: consecutive days ending today or yesterday
+        const dates = [...habit.history].sort().reverse(); // Newest first
+        const today = new Date().toISOString().split('T')[0];
+        // const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+        let streak = 0;
+        let current = new Date();
+
+        // Check if checked in today
+        if (dates.includes(today)) {
+            streak++;
+            current.setDate(current.getDate() - 1);
+        } else {
+            // If not today, check yesterday (streak not broken yet)
+            // But if checking for specific "current streak", maybe we only count consecutive past days?
+            // Let's keep it simple: count backwards from today. If today not done, check if yesterday done.
+            const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            if (dates.includes(yesterdayStr)) {
+                current.setDate(current.getDate() - 1); // Start counting from yesterday
+            } else {
+                return 0;
+            }
+        }
+
+        while (true) {
+            const dateStr = current.toISOString().split('T')[0];
+            if (dates.includes(dateStr)) {
+                streak++;
+                current.setDate(current.getDate() - 1);
+            } else {
+                // If we already counted today (in first block), we don't double count.
+                // Actually my logic above `streak++` handled the start day.
+                // Wait, if I started from yesterday, streak is already 0? No.
+                // Let's refine strict loop.
+                break;
+            }
+        }
+
+        // Refined Logic:
+        // 1. Get unique sorted dates
+        // 2. Iterate backwards from today (or yesterday)
+        const sortedUnique = [...new Set(habit.history)].sort();
+        let currentStreak = 0;
+        let checkDate = new Date();
+
+        // Check today
+        let checkStr = checkDate.toISOString().split('T')[0];
+        if (sortedUnique.includes(checkStr)) {
+            currentStreak++;
+            checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+            // If today missing, check yesterday. If yesterday missing, streak 0.
+            checkDate.setDate(checkDate.getDate() - 1);
+            checkStr = checkDate.toISOString().split('T')[0];
+            if (!sortedUnique.includes(checkStr)) {
+                return 0;
+            }
+        }
+
+        // Loop backwards
+        while (true) {
+            checkStr = checkDate.toISOString().split('T')[0];
+            if (sortedUnique.includes(checkStr)) {
+                currentStreak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+
+        return currentStreak;
+    }
+
+    generateReview() {
+        const today = new Date();
+        const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+        // 1. Calculate Milestones completed in last 7 days
+        // We don't track *when* a milestone was completed explicitly in the current simple model unless we checked 'completedAt' on milestone but we only have 'completed' boolean and maybe we didn't store date.
+        // Wait, looking at addMilestone, we track 'createdAt'. checking toggleMilestone...
+        // We need to update toggleMilestone to save 'completedAt'.
+        // For now, let's just count total completed / total.
+        const milestones = this.goal.milestones || [];
+        const completedMilestones = milestones.filter(m => m.completed).length;
+        const totalMilestones = milestones.length;
+
+        // 2. Calculate Habit consistency (last 7 days)
+        const habits = this.goal.habits || [];
+        let habitSummary = '';
+        if (habits.length > 0) {
+            habitSummary = '\n**Habits Check-in (Last 7 Days):**\n';
+            habits.forEach(h => {
+                // Count check-ins in last 7 days
+                let count = 0;
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+                    const dStr = d.toISOString().split('T')[0];
+                    if (h.history && h.history.includes(dStr)) count++;
+                }
+                habitSummary += `- ${h.title}: ${count}/7 days\n`;
+            });
+        }
+
+        // 3. Construct Template
+        const template = `# ⚡️ Weekly Review (${today.toLocaleDateString()})
+
+**Progress Update:**
+- Milestones: ${completedMilestones}/${totalMilestones} completed
+${habitSummary}
+**Reflection:**
+1. What went well this week?
+- 
+
+2. What obstacles did I face?
+- 
+
+3. Focus for next week:
+- 
+`;
+
+        const noteInput = document.getElementById('noteInput');
+        noteInput.value = template;
+        noteInput.style.height = '300px'; // Expand for writing
+        noteInput.focus();
+
+        this.showToast('Review template generated!');
     }
 
     render() {
@@ -381,8 +835,11 @@ class GoalDetail {
         // 更新笔记
         console.log('About to call renderNotes()...');
         this.populateMilestoneSelect();
+        this.populateMilestoneSelect();
         this.renderNotes();
         this.renderMilestones();
+        this.renderHabits();
+        this.renderResources();
 
         // 更新统计
         this.updateStats();
@@ -612,8 +1069,10 @@ class GoalDetail {
                 })()
                 : '';
 
+            const isReview = note.content.startsWith('# ⚡️');
+
             return `
-                <div class="note-item" data-index="${index}">
+                <div class="note-item ${isReview ? 'review-note' : ''}" data-index="${index}">
                     ${milestoneBadge}
                     <div class="note-content">${this.escapeHtml(note.content)}</div>
                     ${photosHtml}
