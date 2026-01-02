@@ -69,36 +69,93 @@
                         </button>
                     </div>
 
-                    <div class="goal-content">
-                        <div class="description-section">
-                            <h3>Description</h3>
-                            <textarea class="goal-description" id="goalDescription"
-                                placeholder="Add a detailed description of your goal, why it matters to you, and what success looks like..."></textarea>
-                        </div>
+                    <div class="goal-tabs">
+                        <button class="tab-btn active" data-tab="overview">Overview</button>
+                        <button class="tab-btn" data-tab="plan">Plan</button>
+                        <button class="tab-btn" data-tab="journal">Journal</button>
+                    </div>
 
-                        <div class="tags-section">
-                            <h3>Tags</h3>
-                            <div class="tags-container">
-                                <div class="tags-display" id="tagsDisplay"></div>
-                                <button class="add-tag-btn" id="addTagBtn">+ Add Tag</button>
-                                <input type="text" class="tag-input hidden" id="tagInput"
-                                    placeholder="Enter tags separated by commas...">
+                    <div class="goal-content">
+                        <!-- Overview Tab -->
+                        <div class="tab-pane active" id="tab-overview">
+                            <div class="description-section">
+                                <h3>Description</h3>
+                                <textarea class="goal-description" id="goalDescription"
+                                    placeholder="Add a detailed description of your goal, why it matters to you, and what success looks like..."></textarea>
+                            </div>
+
+                            <div class="tags-section">
+                                <h3>Tags</h3>
+                                <div class="tags-container">
+                                    <div class="tags-display" id="tagsDisplay"></div>
+                                    <button class="add-tag-btn" id="addTagBtn">+ Add Tag</button>
+                                    <input type="text" class="tag-input hidden" id="tagInput"
+                                        placeholder="Enter tags separated by commas...">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="notes-section">
-                            <h3>Notes & Progress</h3>
-                            <div class="notes-list" id="notesList"></div>
-                            <div class="add-note">
+                        <!-- Plan Tab (New) -->
+                        <div class="tab-pane" id="tab-plan">
+                            <div class="milestones-section">
+                                <div class="section-header">
+                                    <div class="header-left">
+                                        <h3>Milestones</h3>
+                                        <span class="milestone-count" id="milestoneCount">0/0</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="milestoneProgress" style="width: 0%"></div>
+                                        </div>
+                                        <span class="progress-text" id="progressText">0%</span>
+                                    </div>
+                                </div>
+
+                                <div class="milestones-list" id="milestonesList">
+                                    <!-- Milestones will be injected here -->
+                                </div>
+
+                                <div class="add-milestone-wrapper">
+                                    <button class="add-milestone-btn" id="showAddMilestoneBtn">
+                                        <span class="icon">+</span> Add Milestone
+                                    </button>
+                                    <div class="add-milestone-form hidden" id="addMilestoneForm">
+                                        <div class="form-row">
+                                            <input type="text" class="milestone-input" id="newMilestoneTitle"
+                                                placeholder="What needs to be done?">
+                                            <input type="date" class="milestone-date" id="newMilestoneDate">
+                                        </div>
+                                        <div class="form-actions">
+                                            <button class="btn-cancel" id="cancelMilestoneBtn">Cancel</button>
+                                            <button class="btn-save" id="saveMilestoneBtn">Add Milestone</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Journal Tab (Formerly Notes) -->
+                        <div class="tab-pane" id="tab-journal">
+                            <div class="notes-section">
+                                <h3>Notes & Progress</h3>
+                                <div class="note-controls">
+                                    <select id="noteMilestoneSelect" class="note-milestone-select">
+                                        <option value="">General Update</option>
+                                        <!-- Steps will be populated by JS -->
+                                    </select>
+                                </div>
                                 <textarea class="note-input" id="noteInput"
                                     placeholder="Add a note about your progress, thoughts, or next steps..."></textarea>
                                 <div class="note-attachments" id="noteAttachments"></div>
                                 <div class="note-actions">
                                     <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
-                                    <button class="attach-photo-btn" id="attachPhotoBtn">📷 Add Photo</button>
+                                    <button class="attach-btn" id="attachPhotoBtn">📷 Add Photo</button>
+                                    <button class="attach-btn" id="attachLinkBtn">🔗 Add Link</button>
                                     <button class="add-note-btn" id="addNoteBtn">Add Note</button>
                                 </div>
                             </div>
+                            <div class="notes-divider"></div>
+                            <div class="notes-list" id="notesList"></div>
                         </div>
                     </div>
                 </div>

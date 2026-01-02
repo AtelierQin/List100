@@ -5,7 +5,8 @@ class ResourceDatabase {
         this.currentFilter = 'all';
         this.currentTag = '';
         this.searchQuery = '';
-        
+        this.timelineYear = new Date().getFullYear();
+
         this.init();
         this.loadList100Data();
         this.bindEvents();
@@ -31,6 +32,17 @@ class ResourceDatabase {
                 this.renderGoals();
             });
         });
+
+        // Timeline Navigation
+        document.getElementById('timelinePrev').addEventListener('click', () => {
+            this.timelineYear--;
+            this.renderTimeline();
+        });
+
+        document.getElementById('timelineNext').addEventListener('click', () => {
+            this.timelineYear++;
+            this.renderTimeline();
+        });
     }
 
 
@@ -41,46 +53,46 @@ class ResourceDatabase {
         // 只处理List100目标标签
         const goalTags = this.list100Items.flatMap(item => item.tags || []);
         const allTags = [...new Set(goalTags)];
-        
+
         console.log('Updating tag filters...');
         console.log('Goal tags:', goalTags);
         console.log('All unique tags:', allTags);
-        
+
         const tagFilterList = document.getElementById('tagFilterList');
-        
+
         // All Tags 只统计目标数量（与 List100 页面一致）
         const totalGoals = this.list100Items.length;
-        
+
         // 创建 tags 数组，包含 tag 名称和数量（只统计目标）
         const tagsWithCounts = allTags.map(tag => {
-            const goalCount = this.list100Items.filter(item => 
+            const goalCount = this.list100Items.filter(item =>
                 item.tags && item.tags.includes(tag)
             ).length;
-            
+
             return {
                 name: tag,
                 count: goalCount
             };
         });
-        
+
         // 按数量从高到低排序（与 List100 页面一致）
         tagsWithCounts.sort((a, b) => b.count - a.count);
-        
+
         console.log('Tags sorted by count:', tagsWithCounts);
-        
+
         tagFilterList.innerHTML = `
             <button class="tag-filter-item ${!this.currentTag ? 'active' : ''}" data-tag="">
                 <span class="tag-name">All Tags</span>
                 <span class="tag-count">${totalGoals}</span>
             </button>
             ${tagsWithCounts.map(tagData => {
-                return `
+            return `
                     <button class="tag-filter-item ${this.currentTag === tagData.name ? 'active' : ''}" data-tag="${tagData.name}">
                         <span class="tag-name">${tagData.name}</span>
                         <span class="tag-count">${tagData.count}</span>
                     </button>
                 `;
-            }).join('')}
+        }).join('')}
         `;
 
         // 绑定标签过滤事件
@@ -98,7 +110,7 @@ class ResourceDatabase {
     // 加载List100数据
     async loadList100Data() {
         console.log('Loading List100 data...');
-        
+
         try {
             // 首先尝试从localStorage加载
             const stored = localStorage.getItem('list100-items');
@@ -109,6 +121,7 @@ class ResourceDatabase {
                     console.log('Loaded', items.length, 'items from localStorage');
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.renderDashboard();
                     return;
                 }
             }
@@ -122,6 +135,7 @@ class ResourceDatabase {
                     console.log('Loaded', data.items.length, 'items from JSON file');
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.renderDashboard();
                 }
             }
         } catch (error) {
@@ -141,35 +155,36 @@ class ResourceDatabase {
                 }
             }
         });
-        
+
         // 监听页面获得焦点时重新加载数据
         window.addEventListener('focus', () => {
             console.log('Page focused, reloading List100 data...');
             this.reloadList100Data();
         });
-        
+
         // 定期检查数据更新（每5秒）
         setInterval(() => {
             this.reloadList100Data();
         }, 5000);
     }
-    
+
     // 重新加载List100数据
     reloadList100Data() {
         try {
             const stored = localStorage.getItem('list100-items');
             if (stored) {
                 const items = JSON.parse(stored);
-                
+
                 // 检查数据是否有变化
                 const currentData = JSON.stringify(this.list100Items);
                 const newData = JSON.stringify(items);
-                
+
                 if (currentData !== newData) {
                     console.log('List100 data changed, updating...');
                     this.list100Items = items;
                     this.renderGoals();
                     this.updateTagFilters();
+                    this.renderDashboard();
                 }
             }
         } catch (error) {
@@ -185,7 +200,7 @@ class ResourceDatabase {
         // 根据当前标签过滤目标
         let filteredGoals = this.list100Items;
         if (this.currentTag) {
-            filteredGoals = this.list100Items.filter(item => 
+            filteredGoals = this.list100Items.filter(item =>
                 item.tags && item.tags.includes(this.currentTag)
             );
         }
@@ -194,7 +209,7 @@ class ResourceDatabase {
         // 如果category不是'all'，则只显示包含该category作为tag的目标
         if (this.currentFilter !== 'all') {
             filteredGoals = filteredGoals.filter(item =>
-                item.tags && item.tags.some(tag => 
+                item.tags && item.tags.some(tag =>
                     tag.toLowerCase() === this.currentFilter.toLowerCase()
                 )
             );
@@ -263,8 +278,88 @@ class ResourceDatabase {
         });
     }
 
+    renderDashboard() {
+        this.calculateDashboardStats();
+        this.renderTimeline();
+    }
+
+    calculateDashboardStats() {
+        const total = this.list100Items.length;
+        const completed = this.list100Items.filter(i => i.completed).length;
+        const active = total - completed;
+        const rate = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statActive').textContent = active;
+        document.getElementById('statCompleted').textContent = completed;
+        document.getElementById('statCompletionRate').textContent = `${rate}%`;
+    }
+
+    renderTimeline() {
+        const grid = document.getElementById('timelineGrid');
+        const yearDisplay = document.getElementById('timelineYear');
+
+        if (yearDisplay) yearDisplay.textContent = this.timelineYear;
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        // Create 12 months
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        months.forEach((month, index) => {
+            const monthDiv = document.createElement('div');
+            monthDiv.className = 'timeline-month';
+
+            const goalsInMonth = this.getGoalsForMonth(index, this.timelineYear);
+
+            monthDiv.innerHTML = `
+                <div class="month-label">${month}</div>
+                <div class="month-column">
+                    ${goalsInMonth.map(g => `
+                        <div class="timeline-goal-marker ${g.completed ? 'completed' : ''}" 
+                             title="${g.text}" 
+                             onclick="window.location.href='goal-detail.html?id=${g.id}'">
+                            ${g.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            grid.appendChild(monthDiv);
+        });
+    }
+
+    getGoalsForMonth(monthIndex, year) {
+        return this.list100Items.filter(item => {
+            // Determine date for the item
+            // Priority: 1. Completed Date (if completed), 2. Target Date (from milestones or future), 3. Created Date
+
+            let date = new Date(item.createdAt);
+
+            if (item.completed && item.completedAt) {
+                date = new Date(item.completedAt);
+            } else if (item.milestones && item.milestones.length > 0) {
+                // Use the latest milestone due date that is in this year, or the first one?
+                // Or just if ANY milestone falls in this month/year?
+                // Simple version: Use the last milestone's due date
+                const dueDates = item.milestones
+                    .filter(m => m.dueDate)
+                    .map(m => new Date(m.dueDate));
+
+                if (dueDates.length > 0) {
+                    // Sort by date
+                    dueDates.sort((a, b) => b - a);
+                    date = dueDates[0]; // Last due date
+                }
+            }
+
+            return date.getMonth() === monthIndex && date.getFullYear() === year;
+        });
+    }
+
     createGoalCard(item) {
-        const tagsHTML = item.tags && item.tags.length > 0 
+        const tagsHTML = item.tags && item.tags.length > 0
             ? item.tags.map(tag => `<span class="goal-tag">${tag}</span>`).join('')
             : '';
 

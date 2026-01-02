@@ -342,6 +342,18 @@
 
 .notes-list {
     margin-bottom: 20px;
+    position: relative;
+    padding-left: 24px;
+}
+
+.notes-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    width: 2px;
+    background: var(--color-border-light);
 }
 
 .note-item {
@@ -349,8 +361,22 @@
     background: #f8fafc;
     border: 1px solid var(--color-border-light);
     border-radius: var(--border-radius);
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     position: relative;
+}
+
+.note-item::before {
+    content: '';
+    position: absolute;
+    left: -21px;
+    /* Adjust based on padding/line position */
+    top: 24px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-accent);
+    z-index: 1;
 }
 
 .note-content {
@@ -646,65 +672,470 @@
         gap: 16px;
         padding-top: 12px;
     }
-    
+
     .goal-sidebar {
         position: static;
         order: -1;
     }
-    
+
     .goal-header {
         flex-direction: column;
         gap: 16px;
         padding: 20px 16px;
     }
-    
+
     .goal-number {
         align-self: flex-start;
         min-width: auto;
         padding: 8px 10px;
         font-size: 16px;
     }
-    
+
     .goal-title {
         font-size: 18px;
     }
-    
+
     .goal-content {
         padding: 20px 16px;
     }
-    
+
     .completion-date {
         font-size: 12px;
     }
-    
+
     .completion-date-input {
         font-size: 11px;
         padding: 2px 4px;
         min-width: 100px;
         max-width: 120px;
     }
-    
+
     .date-hint {
         font-size: 9px;
     }
-    
+
     .complete-toggle {
         align-self: stretch;
         justify-content: center;
     }
-    
+
     .stats-card,
     .actions-card {
         padding: 14px;
     }
-    
+
     .goal-sidebar {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
-    
+
     .actions-card {
         grid-column: 1 / -1;
     }
+}
+
+/* --- Tabs System --- */
+.goal-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 0 32px;
+    margin-bottom: -1px;
+    /* Overlap with content border */
+    z-index: 10;
+    position: relative;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.tab-btn:hover {
+    color: var(--color-text-primary);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.tab-btn.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    font-weight: 600;
+}
+
+.goal-content {
+    /* Keep existing padding but ensure it works with tabs */
+    position: relative;
+    z-index: 5;
+    background: var(--color-surface);
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Milestones Section --- */
+.milestones-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.milestone-count {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 200px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--color-border-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    width: 36px;
+    text-align: right;
+}
+
+/* Milestone Items */
+.milestone-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+    margin-bottom: 8px;
+}
+
+.milestone-item:hover {
+    border-color: var(--color-accent-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.milestone-item.completed {
+    background: #f8fafc;
+    border-color: var(--color-border-light);
+}
+
+.milestone-item.completed .milestone-title {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+}
+
+.milestone-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.milestone-checkbox.checked {
+    background: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.milestone-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.milestone-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.milestone-meta {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.milestone-actions {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.milestone-item:hover .milestone-actions {
+    opacity: 1;
+}
+
+.btn-icon-only {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon-only:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--color-danger);
+}
+
+/* Add Milestone Form */
+.add-milestone-wrapper {
+    margin-top: 12px;
+}
+
+.add-milestone-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--border-radius);
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-milestone-btn:hover {
+    background: #f8fafc;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.add-milestone-form {
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    animation: slideDown 0.2s ease-out;
+}
+
+.add-milestone-form.hidden {
+    display: none;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.milestone-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    outline: none;
+}
+
+.milestone-date {
+    width: 140px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    outline: none;
+    color: var(--color-text-secondary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel {
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-save {
+    padding: 8px 20px;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-save:hover {
+    background: var(--color-accent-dark);
+}
+
+.notes-divider {
+    height: 1px;
+    background: var(--color-border-light);
+    margin: 24px 0;
+}
+
+/* Journal Phase 3 Styles */
+.note-controls {
+    margin-bottom: 12px;
+}
+
+.note-milestone-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+.note-milestone-select:focus {
+    border-color: var(--color-accent);
+}
+
+.attach-btn {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.attach-btn:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-hover);
+}
+
+.note-milestone-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    max-width: fit-content;
+}
+
+.note-link-attachment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: fit-content;
+}
+
+.note-link-attachment:hover {
+    background: #f1f5f9;
+    border-color: var(--color-border);
+    text-decoration: underline;
+}
+
+.note-link-icon {
+    font-size: 14px;
 }

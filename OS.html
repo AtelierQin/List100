@@ -83,6 +83,39 @@
                 </aside>
 
                 <section class="content">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-label">Total Goals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statActive">0</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statCompleted">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-card highlight">
+                            <div class="stat-value" id="statCompletionRate">0%</div>
+                            <div class="stat-label">Completion Rate</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <div class="timeline-header">
+                            <h3>Yearly Roadmap</h3>
+                            <div class="timeline-controls">
+                                <button class="timeline-nav" id="timelinePrev">&lt;</button>
+                                <span class="timeline-year" id="timelineYear">2024</span>
+                                <button class="timeline-nav" id="timelineNext">&gt;</button>
+                            </div>
+                        </div>
+                        <div class="timeline-grid" id="timelineGrid">
+                            <div class="timeline-empty">Loading timeline...</div>
+                        </div>
+                    </div>
+
                     <div class="search-section">
                         <div class="search-container">
                             <input type="text" id="searchInput" class="search-input" placeholder="Search goals...">

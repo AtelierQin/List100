@@ -18,6 +18,8 @@ class GoalDetail {
         console.log('=== Initializing GoalDetail ===');
         console.log('Goal ID:', this.goalId);
 
+        this.initTabs();
+
         // 测试 localStorage 是否可用
         if (!this.testLocalStorage()) {
             alert('LocalStorage is not available. Notes cannot be saved. Please check your browser settings.');
@@ -88,6 +90,10 @@ class GoalDetail {
             if (stored) {
                 const items = JSON.parse(stored);
                 this.goal = items.find(item => item.id === this.goalId);
+
+                if (this.goal && !this.goal.milestones) {
+                    this.goal.milestones = [];
+                }
 
                 // 如果没有找到目标，可能是数据不同步，尝试从备份加载
                 if (!this.goal) {
@@ -303,6 +309,49 @@ class GoalDetail {
         document.getElementById('deleteBtn').addEventListener('click', () => {
             this.deleteGoal();
         });
+
+        // Add Link Button
+        const attachLinkBtn = document.getElementById('attachLinkBtn');
+        if (attachLinkBtn) {
+            attachLinkBtn.addEventListener('click', () => {
+                const url = prompt('Enter link URL:');
+                if (url) {
+                    if (!this.pendingLinks) this.pendingLinks = [];
+                    this.pendingLinks.push({
+                        url: url,
+                        title: url // Can be enhanced to fetch title later
+                    });
+                    this.showToast('Link attached (will be saved with note)');
+                }
+            });
+        }
+
+        // Milestone interactions
+        const showAddMilestoneBtn = document.getElementById('showAddMilestoneBtn');
+        if (showAddMilestoneBtn) {
+            showAddMilestoneBtn.addEventListener('click', () => {
+                document.getElementById('addMilestoneForm').classList.remove('hidden');
+                document.getElementById('showAddMilestoneBtn').classList.add('hidden');
+                document.getElementById('newMilestoneTitle').focus();
+            });
+
+            document.getElementById('cancelMilestoneBtn').addEventListener('click', () => {
+                document.getElementById('addMilestoneForm').classList.add('hidden');
+                document.getElementById('showAddMilestoneBtn').classList.remove('hidden');
+                document.getElementById('newMilestoneTitle').value = '';
+                document.getElementById('newMilestoneDate').value = '';
+            });
+
+            document.getElementById('saveMilestoneBtn').addEventListener('click', () => {
+                this.addMilestone();
+            });
+
+            document.getElementById('newMilestoneTitle').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.addMilestone();
+                }
+            });
+        }
     }
 
     render() {
@@ -331,12 +380,42 @@ class GoalDetail {
 
         // 更新笔记
         console.log('About to call renderNotes()...');
+        this.populateMilestoneSelect();
         this.renderNotes();
+        this.renderMilestones();
 
         // 更新统计
         this.updateStats();
 
         console.log('render() completed');
+    }
+
+    populateMilestoneSelect() {
+        const select = document.getElementById('noteMilestoneSelect');
+        if (!select) return;
+
+        // Save current selection if any
+        const currentVal = select.value;
+
+        // Clear existing options except first
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+
+        if (this.goal.milestones && this.goal.milestones.length > 0) {
+            this.goal.milestones.forEach((m, index) => {
+                const option = document.createElement('option');
+                option.value = m.id;
+                option.textContent = `Milestone: ${m.title} (${m.completed ? 'Done' : 'Pending'})`;
+                select.appendChild(option);
+            });
+        }
+
+        // Restore selection if still valid
+        if (currentVal) {
+            const exists = Array.from(select.options).some(o => o.value === currentVal);
+            if (exists) select.value = currentVal;
+        }
     }
 
     getGoalNumber() {
@@ -517,10 +596,28 @@ class GoalDetail {
                 ).join('')}</div>`
                 : '';
 
+            const linksHtml = note.links && note.links.length > 0
+                ? note.links.map(link => `
+                    <a href="${link.url}" target="_blank" class="note-link-attachment">
+                        <span class="note-link-icon">🔗</span>
+                        ${this.escapeHtml(link.title || link.url)}
+                    </a>
+                `).join('')
+                : '';
+
+            const milestoneBadge = note.milestoneId
+                ? (() => {
+                    const m = this.goal.milestones?.find(ms => ms.id.toString() === note.milestoneId.toString());
+                    return m ? `<div class="note-milestone-badge">🎯 ${this.escapeHtml(m.title)}</div>` : '';
+                })()
+                : '';
+
             return `
                 <div class="note-item" data-index="${index}">
+                    ${milestoneBadge}
                     <div class="note-content">${this.escapeHtml(note.content)}</div>
                     ${photosHtml}
+                    ${linksHtml}
                     <div class="note-meta">
                         <span>${new Date(note.createdAt).toLocaleString()}</span>
                         <div class="note-actions">
@@ -550,20 +647,26 @@ class GoalDetail {
 
     addNote() {
         const noteInput = document.getElementById('noteInput');
+        const milestoneSelect = document.getElementById('noteMilestoneSelect');
         const content = noteInput.value.trim();
+        const milestoneId = milestoneSelect ? milestoneSelect.value : null;
 
         console.log('addNote() called');
-        console.log('Note content:', content);
-        console.log('Pending attachments:', this.pendingAttachments.length);
 
-        if (!content && this.pendingAttachments.length === 0) {
-            console.log('No content or attachments, skipping');
+        // Check for pending links (simple implementation: prompt on button click, but ideally stored in a pending array)
+        // For this version we will assume links are added via prompt immediately to the note? 
+        // Or we need a pendingLinks array similar to pendingAttachments.
+        // Let's implement pendingLinks quickly.
+
+        if (!content && this.pendingAttachments.length === 0 && (!this.pendingLinks || this.pendingLinks.length === 0)) {
             return;
         }
 
         const note = {
             id: Date.now(),
             content: content,
+            milestoneId: milestoneId,
+            links: this.pendingLinks || [],
             photos: [...this.pendingAttachments],
             createdAt: new Date().toISOString()
         };
@@ -585,6 +688,8 @@ class GoalDetail {
         this.updateStats();
 
         noteInput.value = '';
+        if (milestoneSelect) milestoneSelect.value = '';
+        this.pendingLinks = [];
         this.pendingAttachments = [];
         this.renderAttachmentPreviews();
 
@@ -1361,6 +1466,119 @@ class GoalDetail {
     }
 
 
+
+    initTabs() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const targetTab = e.target.dataset.tab;
+
+                // Update buttons
+                tabs.forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Update panes
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.classList.remove('active');
+                    if (pane.id === `tab-${targetTab}`) {
+                        pane.classList.add('active');
+                    }
+                });
+            });
+        });
+    }
+
+    renderMilestones() {
+        const list = document.getElementById('milestonesList');
+        const progressFill = document.getElementById('milestoneProgress');
+        const progressText = document.getElementById('progressText');
+        const countSpan = document.getElementById('milestoneCount');
+
+        if (!list) return;
+
+        const milestones = this.goal.milestones || [];
+        const total = milestones.length;
+        const completed = milestones.filter(m => m.completed).length;
+        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        // Update stats
+        if (progressFill) progressFill.style.width = `${percent}%`;
+        if (progressText) progressText.textContent = `${percent}%`;
+        if (countSpan) countSpan.textContent = `${completed}/${total}`;
+
+        if (total === 0) {
+            list.innerHTML = `
+                <div class="empty-state-small">
+                    <p>No milestones yet. Break your goal down into smaller steps!</p>
+                </div>
+            `;
+            return;
+        }
+
+        list.innerHTML = milestones.map((m, index) => `
+            <div class="milestone-item ${m.completed ? 'completed' : ''}" data-index="${index}">
+                <div class="milestone-checkbox ${m.completed ? 'checked' : ''}" 
+                     onclick="goalDetail.toggleMilestone(${index})">
+                    ${m.completed ? '✓' : ''}
+                </div>
+                <div class="milestone-content">
+                    <span class="milestone-title">${this.escapeHtml(m.title)}</span>
+                    ${m.dueDate ? `<span class="milestone-meta">Due: ${new Date(m.dueDate).toLocaleDateString()}</span>` : ''}
+                </div>
+                <div class="milestone-actions">
+                    <button class="btn-icon-only" onclick="goalDetail.deleteMilestone(${index})" title="Delete">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    addMilestone() {
+        const titleInput = document.getElementById('newMilestoneTitle');
+        const dateInput = document.getElementById('newMilestoneDate');
+        const title = titleInput.value.trim();
+        const date = dateInput.value;
+
+        if (!title) return;
+
+        if (!this.goal.milestones) this.goal.milestones = [];
+
+        this.goal.milestones.push({
+            id: Date.now(),
+            title: title,
+            dueDate: date || null,
+            completed: false,
+            createdAt: new Date().toISOString()
+        });
+
+        // Clear inputs
+        titleInput.value = '';
+        dateInput.value = '';
+        document.getElementById('addMilestoneForm').classList.add('hidden');
+        document.getElementById('showAddMilestoneBtn').classList.remove('hidden');
+
+        this.saveGoal();
+        this.renderMilestones();
+    }
+
+    toggleMilestone(index) {
+        if (!this.goal.milestones || !this.goal.milestones[index]) return;
+
+        this.goal.milestones[index].completed = !this.goal.milestones[index].completed;
+
+        // Check if all milestones completed, maybe offer to complete goal?
+        // keeping it simple for now
+
+        this.saveGoal();
+        this.renderMilestones();
+    }
+
+    deleteMilestone(index) {
+        if (!confirm('Delete this milestone?')) return;
+
+        this.goal.milestones.splice(index, 1);
+        this.saveGoal();
+        this.renderMilestones();
+    }
 
     escapeHtml(text) {
         const div = document.createElement('div');
