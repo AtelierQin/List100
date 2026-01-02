@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goal Detail - List100</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/goal-detail.css">
 </head>
+
 <body>
     <nav class="nav">
         <div class="nav-container">
@@ -51,9 +55,11 @@
                                 <div class="completion-date-wrapper hidden" id="completionDateSection">
                                     <div class="completion-date">
                                         <span>Completed on </span>
-                                        <input type="date" class="completion-date-input" id="completionDateInput" title="You can set any date, including dates before you created goal if you completed it earlier">
+                                        <input type="date" class="completion-date-input" id="completionDateInput"
+                                            title="You can set any date, including dates before you created goal if you completed it earlier">
                                     </div>
-                                    <small class="date-hint">💡 You can record goals completed before adding them to your list</small>
+                                    <small class="date-hint">💡 You can record goals completed before adding them to
+                                        your list</small>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +72,8 @@
                     <div class="goal-content">
                         <div class="description-section">
                             <h3>Description</h3>
-                            <textarea class="goal-description" id="goalDescription" placeholder="Add a detailed description of your goal, why it matters to you, and what success looks like..."></textarea>
+                            <textarea class="goal-description" id="goalDescription"
+                                placeholder="Add a detailed description of your goal, why it matters to you, and what success looks like..."></textarea>
                         </div>
 
                         <div class="tags-section">
@@ -74,7 +81,8 @@
                             <div class="tags-container">
                                 <div class="tags-display" id="tagsDisplay"></div>
                                 <button class="add-tag-btn" id="addTagBtn">+ Add Tag</button>
-                                <input type="text" class="tag-input hidden" id="tagInput" placeholder="Enter tags separated by commas...">
+                                <input type="text" class="tag-input hidden" id="tagInput"
+                                    placeholder="Enter tags separated by commas...">
                             </div>
                         </div>
 
@@ -82,7 +90,8 @@
                             <h3>Notes & Progress</h3>
                             <div class="notes-list" id="notesList"></div>
                             <div class="add-note">
-                                <textarea class="note-input" id="noteInput" placeholder="Add a note about your progress, thoughts, or next steps..."></textarea>
+                                <textarea class="note-input" id="noteInput"
+                                    placeholder="Add a note about your progress, thoughts, or next steps..."></textarea>
                                 <div class="note-attachments" id="noteAttachments"></div>
                                 <div class="note-actions">
                                     <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
@@ -136,7 +145,9 @@
         </div>
     </main>
 
+
     <script src="assets/js/goal-detail.js"></script>
     <script src="assets/js/dropdown.js"></script>
 </body>
+
 </html>

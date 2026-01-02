@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMDb Top 250</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/imdb-top-250.css">
 </head>
+
 <body>
     <nav class="nav">
         <div class="nav-container">
@@ -53,7 +57,7 @@
                     <div class="movies-container">
                         <div class="section-header">
                             <h2>IMDb Top 250 Movies</h2>
-                            
+
                             <!-- 筛选器 -->
                             <div class="filters-container">
                                 <div class="filter-group">
@@ -72,7 +76,7 @@
                                         <option value="romance">Romance</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-group">
                                     <label for="yearFilter">Release Year:</label>
                                     <select id="yearFilter" class="filter-select">
@@ -89,7 +93,7 @@
                                         <option value="1930s">1930s</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-group">
                                     <label for="ratingFilter">IMDb Rating:</label>
                                     <select id="ratingFilter" class="filter-select">
@@ -101,7 +105,7 @@
                                         <option value="7.0-7.4">7.0 - 7.4</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-group">
                                     <label for="statusFilter">Watch Status:</label>
                                     <select id="statusFilter" class="filter-select">
@@ -110,12 +114,12 @@
                                         <option value="unwatched">Not Watched</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-actions">
                                     <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
                                 </div>
                             </div>
-                            
+
                             <div class="legend">
                                 <div class="legend-item">
                                     <div class="legend-color unwatched"></div>
@@ -231,7 +235,9 @@
         </div>
     </div>
 
+
     <script src="assets/js/imdb-top-250.js"></script>
     <script src="assets/js/dropdown.js"></script>
 </body>
+
 </html>

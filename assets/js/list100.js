@@ -10,38 +10,38 @@ class List100 {
         console.log('Initializing List100...');
         this.items = await this.loadFromStorage();
         console.log(`Loaded ${this.items.length} items`);
-        
+
         // 如果有数据但localStorage为空，保存数据
         const stored = localStorage.getItem('list100-items');
         if (this.items.length > 0 && (!stored || JSON.parse(stored).length === 0)) {
             console.log('Saving loaded data to localStorage...');
             this.saveToStorage();
         }
-        
+
         this.bindEvents();
         this.updateTagFilter();
         this.render();
         this.updateProgress();
         this.updateSaveStatus();
-        
+
         // 检查是否需要提醒备份
         this.checkBackupReminder();
-        
+
         // 启动定期自动保存（每30秒）
         this.startAutoSave();
-        
+
         console.log('List100 initialization complete');
     }
-    
+
     checkBackupReminder() {
         const lastExport = localStorage.getItem('list100-last-export');
         const itemCount = this.items.length;
-        
+
         // 如果有超过10个目标且7天没有导出过，提醒用户
         if (itemCount >= 10) {
-            const daysSinceExport = lastExport ? 
+            const daysSinceExport = lastExport ?
                 (Date.now() - new Date(lastExport).getTime()) / (1000 * 60 * 60 * 24) : 999;
-            
+
             if (daysSinceExport >= 7) {
                 setTimeout(() => {
                     if (confirm('建议定期备份你的数据！现在要导出备份吗？')) {
@@ -165,7 +165,7 @@ class List100 {
         const item = this.items.find(item => item.id === id);
         if (item) {
             item.completed = !item.completed;
-            
+
             if (item.completed) {
                 item.completedAt = new Date().toISOString();
                 item.progress = 100; // 确保进度也更新为100%
@@ -176,7 +176,7 @@ class List100 {
                     item.progress = 95;
                 }
             }
-            
+
             this.saveToStorage();
             this.render();
             this.updateProgress();
@@ -210,13 +210,13 @@ class List100 {
                 .split(/[,\s]+/)
                 .map(tag => tag.trim())
                 .filter(tag => tag.length > 0);
-            
+
             // 添加最后修改时间戳，确保数据同步
             item.lastModified = new Date().toISOString();
-            
+
             this.saveToStorage();
             this.updateTagFilter();
-            
+
             // 触发自定义事件，通知其他页面数据已更新
             this.dispatchDataUpdateEvent(id, 'tags');
         }
@@ -226,7 +226,7 @@ class List100 {
         const item = this.items.find(item => item.id === id);
         if (item) {
             item.pinned = !item.pinned;
-            
+
             // 如果取消置顶，重置自定义顺序
             if (!item.pinned) {
                 item.customOrder = 0;
@@ -234,10 +234,10 @@ class List100 {
                 // 置顶时，设置为当前时间戳，确保最新置顶的在最前面
                 item.customOrder = Date.now();
             }
-            
+
             this.saveToStorage();
             this.render();
-            
+
             // 显示提示
             const message = item.pinned ? 'Goal pinned to top!' : 'Goal unpinned!';
             this.showToast(message);
@@ -272,7 +272,7 @@ class List100 {
         todoList.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
-            
+
             const afterElement = this.getDragAfterElement(todoList, e.clientY);
             if (afterElement == null) {
                 todoList.appendChild(draggedElement);
@@ -292,11 +292,11 @@ class List100 {
 
     getDragAfterElement(container, y) {
         const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
-        
+
         return draggableElements.reduce((closest, child) => {
             const box = child.getBoundingClientRect();
             const offset = y - box.top - box.height / 2;
-            
+
             if (offset < 0 && offset > closest.offset) {
                 return { offset: offset, element: child };
             } else {
@@ -308,7 +308,7 @@ class List100 {
     updateItemOrder(draggedId) {
         const todoList = document.getElementById('todoList');
         const items = [...todoList.querySelectorAll('.todo-item')];
-        
+
         // 重新排序items数组
         const newOrder = [];
         items.forEach((element, index) => {
@@ -319,11 +319,11 @@ class List100 {
                 newOrder.push(item);
             }
         });
-        
+
         // 更新items数组顺序
         this.items = newOrder;
         this.saveToStorage();
-        
+
         this.showToast('Goal order updated!');
     }
 
@@ -333,11 +333,11 @@ class List100 {
         if (existingToast) {
             existingToast.remove();
         }
-        
+
         // 创建提示消息
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        
+
         // 添加图标
         const icons = {
             success: '✓',
@@ -345,19 +345,19 @@ class List100 {
             warning: '⚠',
             info: 'ℹ'
         };
-        
+
         toast.innerHTML = `
             <span class="toast-icon">${icons[type] || icons.success}</span>
             ${message}
         `;
-        
+
         document.body.appendChild(toast);
-        
+
         // 显示动画
         setTimeout(() => {
             toast.classList.add('show');
         }, 100);
-        
+
         // 3秒后隐藏
         setTimeout(() => {
             toast.classList.remove('show');
@@ -373,18 +373,18 @@ class List100 {
 
     setFilter(filter) {
         this.currentFilter = filter;
-        
+
         document.querySelectorAll('.filter-tab').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-        
+
         this.render();
     }
 
     getFilteredItems() {
         let filtered = this.items;
-        
+
         switch (this.currentFilter) {
             case 'completed':
                 filtered = filtered.filter(item => item.completed);
@@ -393,27 +393,27 @@ class List100 {
                 filtered = filtered.filter(item => !item.completed);
                 break;
         }
-        
+
         if (this.currentTag) {
-            filtered = filtered.filter(item => 
+            filtered = filtered.filter(item =>
                 item.tags && item.tags.includes(this.currentTag)
             );
         }
-        
+
         // 排序：置顶的目标在前，然后按照自定义顺序或创建时间
         return filtered.sort((a, b) => {
             // 置顶的目标优先
             if (a.pinned && !b.pinned) return -1;
             if (!a.pinned && b.pinned) return 1;
-            
+
             // 如果都是置顶或都不是置顶，按照自定义顺序
             const orderA = a.customOrder || 0;
             const orderB = b.customOrder || 0;
-            
+
             if (orderA !== orderB) {
                 return orderA - orderB;
             }
-            
+
             // 最后按创建时间排序
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
@@ -438,29 +438,29 @@ class List100 {
 
     getTagColor(tag) {
         const colors = [
-            'tag-blue', 'tag-success', 'tag-orange', 'tag-purple', 
+            'tag-blue', 'tag-success', 'tag-orange', 'tag-purple',
             'tag-teal', 'tag-pink', 'tag-warning', 'tag-indigo',
             'tag-red', 'tag-emerald', 'tag-amber', 'tag-violet'
         ];
-        
+
         let hash = 0;
         for (let i = 0; i < tag.length; i++) {
             const char = tag.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;
         }
-        
+
         return colors[Math.abs(hash) % colors.length];
     }
 
     createItemHTML(item, number) {
-        const tagsDisplay = item.tags && item.tags.length > 0 
+        const tagsDisplay = item.tags && item.tags.length > 0
             ? item.tags.map(tag => `<span class="tag ${this.getTagColor(tag)}" data-tag="${tag}">${tag}</span>`).join('')
             : '';
-        
+
         const isPinned = item.pinned || false;
         const pinnedClass = isPinned ? 'pinned' : '';
-        
+
         return `
             <li class="todo-item ${item.completed ? 'completed' : ''} ${pinnedClass}" data-id="${item.id}" draggable="true">
                 <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
@@ -570,11 +570,11 @@ class List100 {
                 const id = parseInt(e.target.dataset.id);
                 const tagInput = e.target.parentElement.querySelector('.todo-tags');
                 const addBtn = e.target;
-                
+
                 tagInput.classList.remove('hidden');
                 addBtn.classList.add('hidden');
                 tagInput.focus();
-                
+
                 const item = this.items.find(item => item.id === id);
                 if (item && item.tags) {
                     tagInput.value = item.tags.join(', ');
@@ -587,11 +587,11 @@ class List100 {
             input.addEventListener('blur', (e) => {
                 const id = parseInt(e.target.dataset.id);
                 this.updateTags(id, e.target.value);
-                
+
                 e.target.classList.add('hidden');
                 const addBtn = e.target.parentElement.querySelector('.add-tag-btn');
                 addBtn.classList.remove('hidden');
-                
+
                 this.render();
             });
 
@@ -614,11 +614,11 @@ class List100 {
                 const tagSection = e.target.closest('.tags-section');
                 const tagInput = tagSection.querySelector('.todo-tags');
                 const addBtn = tagSection.querySelector('.add-tag-btn');
-                
+
                 tagInput.classList.remove('hidden');
                 addBtn.classList.add('hidden');
                 tagInput.focus();
-                
+
                 const id = parseInt(tagInput.dataset.id);
                 const item = this.items.find(item => item.id === id);
                 if (item && item.tags) {
@@ -652,7 +652,7 @@ class List100 {
         if (!tag) {
             return this.items.length;
         }
-        return this.items.filter(item => 
+        return this.items.filter(item =>
             item.tags && item.tags.includes(tag)
         ).length;
     }
@@ -661,33 +661,33 @@ class List100 {
         const tagFilterList = document.getElementById('tagFilterList');
         const allTags = this.getAllTags();
         const currentTag = this.currentTag || '';
-        
+
         tagFilterList.innerHTML = '';
-        
+
         const allTagsItem = document.createElement('button');
         allTagsItem.className = `tag-filter-item ${currentTag === '' ? 'active' : ''}`;
         allTagsItem.dataset.tag = '';
-        
+
         const allCount = this.getTagCount('');
         allTagsItem.innerHTML = `
             <span class="tag-name">All Tags</span>
             <span class="tag-count">${allCount}</span>
         `;
         tagFilterList.appendChild(allTagsItem);
-        
+
         // 按标签使用次数从高到低排序
         const tagsWithCounts = allTags.map(tag => ({
             name: tag,
             count: this.getTagCount(tag)
         }));
-        
+
         tagsWithCounts.sort((a, b) => b.count - a.count);
-        
+
         tagsWithCounts.forEach(tagData => {
             const tagItem = document.createElement('button');
             tagItem.className = `tag-filter-item ${currentTag === tagData.name ? 'active' : ''}`;
             tagItem.dataset.tag = tagData.name;
-            
+
             tagItem.innerHTML = `
                 <span class="tag-name">${tagData.name}</span>
                 <span class="tag-count">${tagData.count}</span>
@@ -704,7 +704,7 @@ class List100 {
         // 检查进度元素是否存在，避免在删除进度模块后出错
         const progressFill = document.getElementById('progressFill');
         const progressText = document.getElementById('progressText');
-        
+
         if (progressFill) {
             progressFill.style.width = `${percentage}%`;
         }
@@ -723,7 +723,7 @@ class List100 {
             }
         });
         window.dispatchEvent(event);
-        
+
         // 同时触发storage事件（用于跨标签页通信）
         const storageEvent = new StorageEvent('storage', {
             key: 'list100-items',
@@ -736,38 +736,52 @@ class List100 {
 
     saveToStorage() {
         console.log(`=== Saving ${this.items.length} items to localStorage ===`);
-        
+
         try {
-            // 保存到localStorage
-            const dataString = JSON.stringify(this.items);
-            localStorage.setItem('list100-items', dataString);
-            console.log('Saved to list100-items');
-            
-            // 同时保存到多个备份位置
-            localStorage.setItem('list100-backup-1', dataString);
-            localStorage.setItem('list100-backup-2', dataString);
-            console.log('Saved to backup locations');
-            
-            // 保存带时间戳的版本
+            // 准备带版本号的数据
             const timestamp = new Date().toISOString();
+            const dataWithMeta = {
+                version: '1.0',
+                items: this.items,
+                lastUpdated: timestamp
+            };
+            const dataString = JSON.stringify(this.items);
+            const metaDataString = JSON.stringify(dataWithMeta);
+
+            // 轮换备份：先将当前数据移到 backup-prev，再保存新数据
+            const currentBackup = localStorage.getItem('list100-backup-current');
+            if (currentBackup) {
+                localStorage.setItem('list100-backup-prev', currentBackup);
+            }
+            localStorage.setItem('list100-backup-current', metaDataString);
+
+            // 保存主数据（保持向后兼容）
+            localStorage.setItem('list100-items', dataString);
+            console.log('Saved to list100-items with rotating backup');
+
+            // 保存时间戳
             localStorage.setItem('list100-last-save', timestamp);
-            
+
             // 每10次保存创建一个历史备份
             const saveCount = parseInt(localStorage.getItem('list100-save-count') || '0') + 1;
             localStorage.setItem('list100-save-count', saveCount.toString());
-            
+
             if (saveCount % 10 === 0) {
                 localStorage.setItem(`list100-history-${saveCount}`, JSON.stringify({
+                    version: '1.0',
                     items: this.items,
                     timestamp: timestamp,
                     count: this.items.length
                 }));
                 console.log(`Created history backup #${saveCount}`);
+
+                // 清理旧的历史备份，只保留最近10个
+                this.cleanupHistoryBackups(10);
             }
-            
+
             // 更新保存时间显示
             this.updateSaveStatus();
-            
+
             // 验证保存是否成功
             const verification = localStorage.getItem('list100-items');
             if (verification) {
@@ -776,22 +790,46 @@ class List100 {
             } else {
                 console.error('Save verification failed: no data found after save');
             }
-            
+
         } catch (error) {
             console.error('Error saving to localStorage:', error);
             this.showToast('Error saving data!', 'error');
         }
     }
-    
+
+    cleanupHistoryBackups(maxBackups) {
+        // 收集所有历史备份键
+        const historyKeys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('list100-history-')) {
+                const num = parseInt(key.replace('list100-history-', ''));
+                if (!isNaN(num)) {
+                    historyKeys.push({ key, num });
+                }
+            }
+        }
+
+        // 如果超过最大限制，删除最旧的
+        if (historyKeys.length > maxBackups) {
+            historyKeys.sort((a, b) => a.num - b.num);
+            const toDelete = historyKeys.slice(0, historyKeys.length - maxBackups);
+            toDelete.forEach(({ key }) => {
+                localStorage.removeItem(key);
+                console.log(`Cleaned up old backup: ${key}`);
+            });
+        }
+    }
+
     updateSaveStatus() {
         const lastSave = localStorage.getItem('list100-last-save');
         const lastSaveElement = document.getElementById('lastSaveTime');
-        
+
         if (lastSave && lastSaveElement) {
             const saveTime = new Date(lastSave);
             const now = new Date();
             const diffMinutes = Math.floor((now - saveTime) / (1000 * 60));
-            
+
             let timeText;
             if (diffMinutes < 1) {
                 timeText = 'Just now';
@@ -800,18 +838,18 @@ class List100 {
             } else {
                 timeText = saveTime.toLocaleTimeString();
             }
-            
+
             lastSaveElement.textContent = timeText;
         }
     }
 
     async loadFromStorage() {
         console.log('=== Loading data ===');
-        
+
         // 优先从localStorage加载
         const stored = localStorage.getItem('list100-items');
         console.log('localStorage raw data:', stored ? stored.substring(0, 100) + '...' : 'null');
-        
+
         if (stored) {
             try {
                 const items = JSON.parse(stored);
@@ -831,7 +869,7 @@ class List100 {
         } else {
             console.log('No data in localStorage');
         }
-        
+
         // 如果localStorage为空或无效，尝试从JSON文件加载
         console.log('Loading from list100-data.json...');
         try {
@@ -848,7 +886,7 @@ class List100 {
         } catch (error) {
             console.error('Loading from JSON file failed:', error);
         }
-        
+
         console.log('No data found anywhere, returning empty array');
         return [];
     }
@@ -863,14 +901,14 @@ class List100 {
             completedItems: this.items.filter(item => item.completed).length,
             version: '1.0'
         };
-        
+
         const dataStr = JSON.stringify(data, null, 2);
-        const dataBlob = new Blob([dataStr], {type: 'application/json'});
-        
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
         // 生成带时间戳的文件名
         const timestamp = now.toISOString().slice(0, 19).replace(/:/g, '-');
         const filename = `list100-backup-${timestamp}.json`;
-        
+
         const link = document.createElement('a');
         link.href = URL.createObjectURL(dataBlob);
         link.download = filename;
@@ -879,20 +917,20 @@ class List100 {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
-        
+
         // 记录导出时间
         localStorage.setItem('list100-last-export', now.toISOString());
-        
+
         alert(`数据已导出为 ${filename}`);
     }
 
     async importData(file) {
         if (!file) return;
-        
+
         try {
             const text = await file.text();
             const data = JSON.parse(text);
-            
+
             if (data.items && Array.isArray(data.items)) {
                 if (confirm('This will replace all current goals. Are you sure?')) {
                     this.items = data.items;
@@ -908,38 +946,43 @@ class List100 {
             alert('Error reading file. Please make sure it is a valid JSON file.');
             console.error('Import error:', error);
         }
-        
+
         document.getElementById('fileInput').value = '';
     }
 
     recoverData() {
-        // 尝试多个备份源
+        // 尝试多个备份源（新的轮换备份结构）
         const backupSources = [
-            'list100-items',
-            'list100-backup-1', 
-            'list100-backup-2'
+            { key: 'list100-items', isMetaFormat: false },
+            { key: 'list100-backup-current', isMetaFormat: true },
+            { key: 'list100-backup-prev', isMetaFormat: true },
+            // 向后兼容：旧版备份
+            { key: 'list100-backup-1', isMetaFormat: false },
+            { key: 'list100-backup-2', isMetaFormat: false }
         ];
-        
+
         for (const source of backupSources) {
-            const stored = localStorage.getItem(source);
+            const stored = localStorage.getItem(source.key);
             if (stored) {
                 try {
-                    const items = JSON.parse(stored);
+                    const parsed = JSON.parse(stored);
+                    // 处理带元数据和不带元数据的两种格式
+                    const items = source.isMetaFormat ? parsed.items : parsed;
                     if (Array.isArray(items) && items.length > 0) {
                         this.items = items;
                         this.render();
                         this.updateProgress();
                         this.updateTagFilter();
-                        alert(`Successfully recovered ${items.length} items from ${source}!`);
+                        alert(`Successfully recovered ${items.length} items from ${source.key}!`);
                         return;
                     }
                 } catch (error) {
-                    console.error(`Error parsing ${source}:`, error);
+                    console.error(`Error parsing ${source.key}:`, error);
                     continue;
                 }
             }
         }
-        
+
         // 尝试历史备份
         const historyBackups = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -958,12 +1001,12 @@ class List100 {
                 }
             }
         }
-        
+
         if (historyBackups.length > 0) {
             // 按时间戳排序，最新的在前
             historyBackups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             const latest = historyBackups[0];
-            
+
             if (confirm(`Found historical backup with ${latest.count} items from ${new Date(latest.timestamp).toLocaleString()}. Restore this backup?`)) {
                 this.items = latest.data.items;
                 this.render();
@@ -973,7 +1016,7 @@ class List100 {
                 return;
             }
         }
-        
+
         // 如果没有找到任何备份，提供重置选项
         if (confirm('No recoverable data found in any backup location. Would you like to reset and load sample data from list100-data.json?')) {
             // 清除所有localStorage数据
@@ -985,7 +1028,7 @@ class List100 {
                 }
             }
             keysToRemove.forEach(key => localStorage.removeItem(key));
-            
+
             // 重新加载数据
             this.loadFromStorage().then(items => {
                 this.items = items;

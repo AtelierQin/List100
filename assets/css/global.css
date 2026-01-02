@@ -1826,3 +1826,34 @@ st通知系统 */
 .main-content.has-motto {
     padding-top: 0;
 }
+
+/* ==================== Footer Styles ==================== */
+.footer {
+    padding: 48px 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface-elevated, #ffffff);
+    margin-top: auto;
+}
+
+.footer .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.footer p {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 32px 0;
+    }
+    
+    .footer .container {
+        padding: 0 16px;
+    }
+}

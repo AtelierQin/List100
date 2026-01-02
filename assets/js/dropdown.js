@@ -99,35 +99,42 @@ class DropdownManager {
     }
 }
 
-// 页面加载完成后初始化
+// 移动端响应式处理 - 使用闭包防止重复绑定
+const handleMobileDropdowns = (() => {
+    let mobileHandlersInitialized = false;
+    
+    return function() {
+        const isMobile = window.innerWidth <= 768;
+        
+        // 只在移动端且未初始化时添加事件处理器
+        if (isMobile && !mobileHandlersInitialized) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                const firstItem = dropdown.querySelector('.dropdown-item');
+                
+                if (toggle && firstItem) {
+                    // 使用命名函数以便可以移除
+                    toggle.mobileClickHandler = function(e) {
+                        if (window.innerWidth <= 768) {
+                            e.preventDefault();
+                            window.location.href = firstItem.getAttribute('href');
+                        }
+                    };
+                    toggle.addEventListener('click', toggle.mobileClickHandler);
+                }
+            });
+            
+            mobileHandlersInitialized = true;
+        }
+    };
+})();
+
+// 页面加载完成后初始化（合并为单个事件监听器）
 document.addEventListener('DOMContentLoaded', () => {
     const dropdownManager = new DropdownManager();
     dropdownManager.setActivePage();
-});
-
-// 移动端响应式处理
-function handleMobileDropdowns() {
-    const isMobile = window.innerWidth <= 768;
-    const dropdowns = document.querySelectorAll('.dropdown');
-    
-    dropdowns.forEach(dropdown => {
-        if (isMobile) {
-            // 移动端：点击切换按钮直接跳转到第一个菜单项
-            const toggle = dropdown.querySelector('.dropdown-toggle');
-            const firstItem = dropdown.querySelector('.dropdown-item');
-            
-            if (toggle && firstItem) {
-                toggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.href = firstItem.getAttribute('href');
-                });
-            }
-        }
-    });
-}
-
-// 窗口大小变化时重新处理
-document.addEventListener('DOMContentLoaded', () => {
     handleMobileDropdowns();
     window.addEventListener('resize', handleMobileDropdowns);
 });

@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THU Book List - Tsinghua University Recommended Reading</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/thu-book-list.css">
 </head>
+
 <body>
     <nav class="nav">
         <div class="nav-container">
@@ -54,7 +58,7 @@
                         <div class="section-header">
                             <h2>THU Book List</h2>
                             <p class="collection-info">Tsinghua University Recommended Reading · 120 Books</p>
-                            
+
                             <!-- Filters -->
                             <div class="filters-container">
                                 <div class="filter-group">
@@ -69,7 +73,7 @@
                                         <option value="Politics">Politics</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-group">
                                     <label for="statusFilter">Reading Status:</label>
                                     <select id="statusFilter" class="filter-select">
@@ -78,12 +82,12 @@
                                         <option value="unread">Not Read</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="filter-actions">
                                     <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
                                 </div>
                             </div>
-                            
+
                             <div class="legend">
                                 <div class="legend-item">
                                     <div class="legend-color unread"></div>
@@ -190,7 +194,8 @@
                     <label for="personalRating">Personal Rating (1-10):</label>
                     <input type="number" id="personalRating" class="personal-rating" min="1" max="10" step="0.1">
                     <label for="readNotes">Reading Notes:</label>
-                    <textarea id="readNotes" class="read-notes" placeholder="Add your thoughts about this book..."></textarea>
+                    <textarea id="readNotes" class="read-notes"
+                        placeholder="Add your thoughts about this book..."></textarea>
                 </div>
                 <div class="modal-actions">
                     <button class="modal-btn btn-primary" id="markReadBtn">Mark as Read</button>
@@ -200,7 +205,9 @@
         </div>
     </div>
 
+
     <script src="assets/js/thu-book-list.js"></script>
     <script src="assets/js/dropdown.js"></script>
 </body>
+
 </html>

@@ -17,7 +17,7 @@ class GoalDetail {
     async init() {
         console.log('=== Initializing GoalDetail ===');
         console.log('Goal ID:', this.goalId);
-        
+
         // 测试 localStorage 是否可用
         if (!this.testLocalStorage()) {
             alert('LocalStorage is not available. Notes cannot be saved. Please check your browser settings.');
@@ -42,22 +42,22 @@ class GoalDetail {
         console.log('Loading notes...');
         this.loadNotes();
         console.log('Notes loaded, count:', this.notes.length);
-        
+
         console.log('Binding events...');
         this.bindEvents();
-        
+
         console.log('Rendering UI...');
         this.render();
-        
+
         console.log('Setting up auto-save...');
         this.setupAutoSave();
-        
+
         console.log('Adding save status indicator...');
         this.addSaveStatusIndicator();
-        
+
         console.log('Setting up data sync...');
         this.setupDataSync();
-        
+
         console.log('=== Initialization complete ===');
     }
 
@@ -68,7 +68,7 @@ class GoalDetail {
             localStorage.setItem(testKey, testValue);
             const retrieved = localStorage.getItem(testKey);
             localStorage.removeItem(testKey);
-            
+
             if (retrieved === testValue) {
                 console.log('✓ LocalStorage is working correctly');
                 return true;
@@ -88,12 +88,12 @@ class GoalDetail {
             if (stored) {
                 const items = JSON.parse(stored);
                 this.goal = items.find(item => item.id === this.goalId);
-                
+
                 // 如果没有找到目标，可能是数据不同步，尝试从备份加载
                 if (!this.goal) {
                     const backup1 = localStorage.getItem('list100-backup-1');
                     const backup2 = localStorage.getItem('list100-backup-2');
-                    
+
                     for (const backup of [backup1, backup2]) {
                         if (backup) {
                             try {
@@ -121,7 +121,7 @@ class GoalDetail {
             console.log('Loading notes with key:', key);
             const stored = localStorage.getItem(key);
             console.log('Stored notes data:', stored);
-            
+
             if (stored) {
                 this.notes = JSON.parse(stored);
                 console.log('Loaded notes:', this.notes.length, 'notes');
@@ -132,7 +132,7 @@ class GoalDetail {
         } catch (error) {
             console.error('Error loading notes:', error);
             this.notes = [];
-            
+
             // 尝试从备份恢复
             try {
                 const backupKey = `list100-notes-backup-${this.goalId}`;
@@ -159,17 +159,17 @@ class GoalDetail {
                     // 更新目标数据
                     this.goal.lastModified = new Date().toISOString();
                     items[index] = this.goal;
-                    
+
                     // 主要存储
                     localStorage.setItem('list100-items', JSON.stringify(items));
-                    
+
                     // 创建多重备份
                     this.createBackups(items);
-                    
+
                     // 更新保存状态
                     this.lastSaveTime = new Date();
                     this.updateSaveStatus();
-                    
+
                     console.log('Goal saved successfully at', this.lastSaveTime.toLocaleTimeString());
                 }
             }
@@ -183,15 +183,15 @@ class GoalDetail {
         try {
             const key = `list100-notes-${this.goalId}`;
             const notesData = JSON.stringify(this.notes);
-            
+
             console.log('Saving notes with key:', key);
             console.log('Notes count:', this.notes.length);
             console.log('Notes data size:', notesData.length, 'characters');
-            
+
             // 主要存储
             localStorage.setItem(key, notesData);
             console.log('Notes saved to main storage');
-            
+
             // 验证保存
             const verification = localStorage.getItem(key);
             if (verification === notesData) {
@@ -200,10 +200,10 @@ class GoalDetail {
                 console.error('✗ Notes save verification failed!');
                 throw new Error('Save verification failed');
             }
-            
+
             // 备份存储
             localStorage.setItem(`list100-notes-backup-${this.goalId}`, notesData);
-            
+
             // 带时间戳的历史备份
             const timestamp = new Date().toISOString();
             localStorage.setItem(`list100-notes-history-${this.goalId}-${Date.now()}`, JSON.stringify({
@@ -211,13 +211,13 @@ class GoalDetail {
                 timestamp: timestamp,
                 goalId: this.goalId
             }));
-            
+
             // 清理旧的历史备份（只保留最近5个）
             this.cleanupHistoryBackups();
-            
+
             this.lastSaveTime = new Date();
             this.updateSaveStatus();
-            
+
             console.log('Notes saved successfully at', this.lastSaveTime.toLocaleTimeString());
             this.showToast('Notes saved successfully', 'success');
         } catch (error) {
@@ -309,7 +309,7 @@ class GoalDetail {
         console.log('render() called');
         console.log('Goal:', this.goal);
         console.log('Notes count:', this.notes.length);
-        
+
         // 更新目标编号
         const goalNumber = this.getGoalNumber();
         document.getElementById('goalNumber').textContent = `#${goalNumber}`;
@@ -335,7 +335,7 @@ class GoalDetail {
 
         // 更新统计
         this.updateStats();
-        
+
         console.log('render() completed');
     }
 
@@ -357,7 +357,7 @@ class GoalDetail {
         const statusIndicator = document.getElementById('statusIndicator');
         const statusText = document.getElementById('statusText');
         const completeToggle = document.getElementById('completeToggle');
-        
+
         // 这些元素在当前 HTML 中不存在，添加空值检查
         if (statusIndicator) {
             if (this.goal.completed) {
@@ -366,11 +366,11 @@ class GoalDetail {
                 statusIndicator.classList.remove('completed');
             }
         }
-        
+
         if (statusText) {
             statusText.textContent = this.goal.completed ? 'Completed' : 'In Progress';
         }
-        
+
         if (completeToggle) {
             const toggleText = completeToggle.querySelector('.toggle-text');
             if (this.goal.completed) {
@@ -412,14 +412,14 @@ class GoalDetail {
 
     renderTags() {
         const tagsDisplay = document.getElementById('tagsDisplay');
-        
+
         if (!tagsDisplay) {
             console.warn('tagsDisplay element not found');
             return;
         }
-        
+
         if (this.goal.tags && this.goal.tags.length > 0) {
-            tagsDisplay.innerHTML = this.goal.tags.map(tag => 
+            tagsDisplay.innerHTML = this.goal.tags.map(tag =>
                 `<span class="tag ${this.getTagColor(tag)}" data-tag="${tag}">${tag}</span>`
             ).join('');
         } else {
@@ -436,41 +436,41 @@ class GoalDetail {
 
     getTagColor(tag) {
         const colors = [
-            'tag-blue', 'tag-success', 'tag-orange', 'tag-purple', 
+            'tag-blue', 'tag-success', 'tag-orange', 'tag-purple',
             'tag-teal', 'tag-pink', 'tag-warning', 'tag-indigo',
             'tag-red', 'tag-emerald', 'tag-amber', 'tag-violet'
         ];
-        
+
         let hash = 0;
         for (let i = 0; i < tag.length; i++) {
             const char = tag.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;
         }
-        
+
         return colors[Math.abs(hash) % colors.length];
     }
 
     showTagInput() {
         const tagInput = document.getElementById('tagInput');
         const addTagBtn = document.getElementById('addTagBtn');
-        
+
         tagInput.classList.remove('hidden');
         addTagBtn.classList.add('hidden');
-        
+
         if (this.goal.tags) {
             tagInput.value = this.goal.tags.join(', ');
         }
-        
+
         tagInput.focus();
     }
 
     hideTagInput() {
         const tagInput = document.getElementById('tagInput');
         const addTagBtn = document.getElementById('addTagBtn');
-        
+
         this.updateTags();
-        
+
         tagInput.classList.add('hidden');
         addTagBtn.classList.remove('hidden');
     }
@@ -478,12 +478,12 @@ class GoalDetail {
     updateTags() {
         const tagInput = document.getElementById('tagInput');
         const tagsString = tagInput.value;
-        
+
         this.goal.tags = tagsString
             .split(/[,\s]+/)
             .map(tag => tag.trim())
             .filter(tag => tag.length > 0);
-        
+
         this.saveGoal();
         this.renderTags();
     }
@@ -492,31 +492,31 @@ class GoalDetail {
         console.log('renderNotes() called');
         console.log('Notes to render:', this.notes.length);
         console.log('Notes data:', this.notes);
-        
+
         const notesList = document.getElementById('notesList');
-        
+
         if (!notesList) {
             console.error('notesList element not found!');
             return;
         }
-        
+
         if (this.notes.length === 0) {
             console.log('No notes to display');
             notesList.innerHTML = '<p style="color: var(--color-text-muted); font-size: 14px; text-align: center; padding: 20px;">No notes yet. Add your first note below.</p>';
             return;
         }
-        
+
         console.log('Rendering', this.notes.length, 'notes...');
 
         notesList.innerHTML = this.notes.map((note, index) => {
-            const photosHtml = note.photos && note.photos.length > 0 
-                ? `<div class="note-photos">${note.photos.map(photo => 
+            const photosHtml = note.photos && note.photos.length > 0
+                ? `<div class="note-photos">${note.photos.map(photo =>
                     `<div class="note-photo" onclick="goalDetail.openPhotoModal('${photo}')">
                         <img src="${photo}" alt="Note photo">
                     </div>`
                 ).join('')}</div>`
                 : '';
-            
+
             return `
                 <div class="note-item" data-index="${index}">
                     <div class="note-content">${this.escapeHtml(note.content)}</div>
@@ -551,11 +551,11 @@ class GoalDetail {
     addNote() {
         const noteInput = document.getElementById('noteInput');
         const content = noteInput.value.trim();
-        
+
         console.log('addNote() called');
         console.log('Note content:', content);
         console.log('Pending attachments:', this.pendingAttachments.length);
-        
+
         if (!content && this.pendingAttachments.length === 0) {
             console.log('No content or attachments, skipping');
             return;
@@ -570,31 +570,31 @@ class GoalDetail {
 
         console.log('Created note:', note);
         console.log('Current notes count before add:', this.notes.length);
-        
+
         this.notes.unshift(note);
-        
+
         console.log('Current notes count after add:', this.notes.length);
         console.log('Calling saveNotes()...');
-        
+
         this.saveNotes();
-        
+
         console.log('Calling renderNotes()...');
         this.renderNotes();
-        
+
         console.log('Updating stats...');
         this.updateStats();
-        
+
         noteInput.value = '';
         this.pendingAttachments = [];
         this.renderAttachmentPreviews();
-        
+
         console.log('addNote() completed');
     }
 
     editNote(index) {
         const note = this.notes[index];
         const newContent = prompt('Edit note:', note.content);
-        
+
         if (newContent !== null && newContent.trim()) {
             this.notes[index].content = newContent.trim();
             this.notes[index].updatedAt = new Date().toISOString();
@@ -615,7 +615,7 @@ class GoalDetail {
     toggleComplete() {
         const wasCompleted = this.goal.completed;
         this.goal.completed = !this.goal.completed;
-        
+
         if (this.goal.completed) {
             // 标记为完成
             this.goal.progress = 100;
@@ -632,7 +632,7 @@ class GoalDetail {
             }
             this.showToast('Goal marked as in progress');
         }
-        
+
         this.saveGoal();
         this.updateAllUI();
     }
@@ -641,16 +641,16 @@ class GoalDetail {
         if (!dateString || !this.goal.completed) {
             return;
         }
-        
+
         const selectedDate = new Date(dateString + 'T12:00:00');
         const createdDate = new Date(this.goal.createdAt);
         const today = new Date();
-        
+
         // 验证日期合理性
         if (selectedDate < createdDate) {
             // 如果完成日期早于创建日期，询问用户是否要记录之前完成的目标
             const confirmMessage = `The completion date (${selectedDate.toLocaleDateString()}) is earlier than when you created this goal (${createdDate.toLocaleDateString()}).\n\nDid you complete this goal before adding it to your list?`;
-            
+
             if (!confirm(confirmMessage)) {
                 // 重置为之前的日期
                 if (this.goal.completedAt) {
@@ -662,15 +662,15 @@ class GoalDetail {
                 }
                 return;
             }
-            
+
             // 用户确认要记录之前完成的目标
             this.showToast('Recording previously completed goal');
         }
-        
+
         if (selectedDate > today) {
             const daysDiff = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24));
             const confirmMessage = `Completion date is ${daysDiff} day${daysDiff > 1 ? 's' : ''} in the future. Are you sure?`;
-            
+
             if (!confirm(confirmMessage)) {
                 // 重置为之前的日期
                 if (this.goal.completedAt) {
@@ -683,7 +683,7 @@ class GoalDetail {
                 return;
             }
         }
-        
+
         this.goal.completedAt = selectedDate.toISOString();
         this.saveGoal();
         this.showToast('Completion date updated');
@@ -696,14 +696,14 @@ class GoalDetail {
         const createdDate = new Date(this.goal.createdAt);
         const now = new Date();
         const daysActive = Math.ceil((now - createdDate) / (1000 * 60 * 60 * 24));
-        
+
         const daysActiveEl = document.getElementById('daysActive');
         const notesCountEl = document.getElementById('notesCount');
         const lastUpdatedEl = document.getElementById('lastUpdated');
-        
+
         if (daysActiveEl) daysActiveEl.textContent = daysActive;
         if (notesCountEl) notesCountEl.textContent = this.notes.length;
-        
+
         // 最后更新时间
         const lastUpdated = this.getLastUpdatedTime();
         if (lastUpdatedEl) lastUpdatedEl.textContent = lastUpdated;
@@ -711,20 +711,20 @@ class GoalDetail {
 
     getLastUpdatedTime() {
         const times = [this.goal.createdAt];
-        
+
         if (this.goal.completedAt) {
             times.push(this.goal.completedAt);
         }
-        
+
         if (this.notes.length > 0) {
             times.push(...this.notes.map(note => note.createdAt));
             times.push(...this.notes.filter(note => note.updatedAt).map(note => note.updatedAt));
         }
-        
+
         const latestTime = new Date(Math.max(...times.map(time => new Date(time))));
         const now = new Date();
         const diffMinutes = Math.floor((now - latestTime) / (1000 * 60));
-        
+
         if (diffMinutes < 1) {
             return 'Just now';
         } else if (diffMinutes < 60) {
@@ -742,14 +742,14 @@ class GoalDetail {
         if (this.notes.length > 0) {
             this.saveNotes();
         }
-        
+
         // 返回到List100页面
         window.location.href = 'list100.html';
     }
 
     shareGoal() {
         const shareText = `${this.goal.text}${this.goal.description ? `\n\n${this.goal.description}` : ''}${this.goal.tags && this.goal.tags.length > 0 ? `\n\nTags: ${this.goal.tags.join(', ')}` : ''}`;
-        
+
         navigator.clipboard.writeText(shareText).then(() => {
             // 显示成功提示
             const successIndicator = document.createElement('div');
@@ -768,7 +768,7 @@ class GoalDetail {
             `;
             successIndicator.textContent = 'Goal text copied to clipboard!';
             document.body.appendChild(successIndicator);
-            
+
             setTimeout(() => {
                 if (successIndicator.parentNode) {
                     successIndicator.parentNode.removeChild(successIndicator);
@@ -784,28 +784,28 @@ class GoalDetail {
     deleteGoal() {
         const goalTitle = this.goal.text || 'Untitled Goal';
         const confirmMessage = `Are you sure you want to delete "${goalTitle}"?\n\nThis will permanently remove:\n• The goal and its description\n• All notes and photos\n• All progress data\n\nThis action cannot be undone.`;
-        
+
         if (confirm(confirmMessage)) {
             // 二次确认
             const finalConfirm = prompt('To confirm deletion, please type "DELETE" (in capital letters):');
-            
+
             if (finalConfirm === 'DELETE') {
                 try {
                     const stored = localStorage.getItem('list100-items');
                     if (stored) {
                         const items = JSON.parse(stored);
                         const filteredItems = items.filter(item => item.id !== this.goalId);
-                        
+
                         // 保存更新后的列表
                         localStorage.setItem('list100-items', JSON.stringify(filteredItems));
-                        
+
                         // 创建备份
                         this.createBackups(filteredItems);
-                        
+
                         // 删除相关数据
                         localStorage.removeItem(`list100-notes-${this.goalId}`);
                         localStorage.removeItem(`list100-notes-backup-${this.goalId}`);
-                        
+
                         // 清理历史备份
                         for (let i = 0; i < localStorage.length; i++) {
                             const key = localStorage.key(i);
@@ -814,7 +814,7 @@ class GoalDetail {
                                 i--; // 调整索引，因为localStorage长度改变了
                             }
                         }
-                        
+
                         alert('Goal deleted successfully!');
                         window.location.href = 'list100.html';
                     }
@@ -839,14 +839,14 @@ class GoalDetail {
                 reader.readAsDataURL(file);
             }
         });
-        
+
         // 清空文件输入
         document.getElementById('photoInput').value = '';
     }
 
     renderAttachmentPreviews() {
         const attachmentsContainer = document.getElementById('noteAttachments');
-        
+
         if (this.pendingAttachments.length === 0) {
             attachmentsContainer.innerHTML = '';
             return;
@@ -881,7 +881,7 @@ class GoalDetail {
             z-index: 1000;
             cursor: pointer;
         `;
-        
+
         const img = document.createElement('img');
         img.src = photoSrc;
         img.style.cssText = `
@@ -890,10 +890,10 @@ class GoalDetail {
             border-radius: 8px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         `;
-        
+
         modal.appendChild(img);
         document.body.appendChild(modal);
-        
+
         modal.addEventListener('click', () => {
             document.body.removeChild(modal);
         });
@@ -901,27 +901,66 @@ class GoalDetail {
 
     createBackups(items) {
         try {
-            // 创建多个备份位置
-            localStorage.setItem('list100-backup-1', JSON.stringify(items));
-            localStorage.setItem('list100-backup-2', JSON.stringify(items));
-            
-            // 带时间戳的备份
             const timestamp = new Date().toISOString();
+            const dataWithMeta = {
+                version: '1.0',
+                items: items,
+                lastUpdated: timestamp
+            };
+            const metaDataString = JSON.stringify(dataWithMeta);
+
+            // 轮换备份：先将当前数据移到 backup-prev，再保存新数据
+            const currentBackup = localStorage.getItem('list100-backup-current');
+            if (currentBackup) {
+                localStorage.setItem('list100-backup-prev', currentBackup);
+            }
+            localStorage.setItem('list100-backup-current', metaDataString);
+
+            // 保存时间戳
             localStorage.setItem('list100-last-save', timestamp);
-            
+
             // 每10次保存创建一个历史备份
             const saveCount = parseInt(localStorage.getItem('list100-save-count') || '0') + 1;
             localStorage.setItem('list100-save-count', saveCount.toString());
-            
+
             if (saveCount % 10 === 0) {
                 localStorage.setItem(`list100-history-${saveCount}`, JSON.stringify({
+                    version: '1.0',
                     items: items,
                     timestamp: timestamp,
                     count: items.length
                 }));
+                // 清理旧的历史备份
+                this.cleanupList100HistoryBackups();
             }
         } catch (error) {
             console.error('Error creating backups:', error);
+        }
+    }
+
+    cleanupList100HistoryBackups(maxBackups = 10) {
+        try {
+            const historyKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('list100-history-')) {
+                    const num = parseInt(key.replace('list100-history-', ''));
+                    if (!isNaN(num)) {
+                        historyKeys.push({ key, num });
+                    }
+                }
+            }
+
+            if (historyKeys.length > maxBackups) {
+                historyKeys.sort((a, b) => a.num - b.num);
+                const toDelete = historyKeys.slice(0, historyKeys.length - maxBackups);
+                toDelete.forEach(({ key }) => {
+                    localStorage.removeItem(key);
+                    console.log(`Cleaned up old backup: ${key}`);
+                });
+            }
+        } catch (error) {
+            console.error('Error cleaning up list100 history backups:', error);
         }
     }
 
@@ -937,10 +976,10 @@ class GoalDetail {
                     });
                 }
             }
-            
+
             // 按时间戳排序，保留最新的5个
             historyKeys.sort((a, b) => b.timestamp - a.timestamp);
-            
+
             // 删除多余的备份
             for (let i = 5; i < historyKeys.length; i++) {
                 localStorage.removeItem(historyKeys[i].key);
@@ -1027,17 +1066,17 @@ class GoalDetail {
 
     hasGoalChanged(newGoal) {
         if (!this.goal) return true;
-        
+
         // 比较关键字段
         const fieldsToCompare = ['text', 'description', 'tags', 'completed', 'pinned', 'progress', 'lastModified'];
-        
+
         for (const field of fieldsToCompare) {
             if (JSON.stringify(this.goal[field]) !== JSON.stringify(newGoal[field])) {
                 console.log(`Field ${field} changed:`, this.goal[field], '->', newGoal[field]);
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -1051,7 +1090,7 @@ class GoalDetail {
                 if (storedGoal && storedGoal.lastModified && this.goal.lastModified) {
                     const storedTime = new Date(storedGoal.lastModified);
                     const currentTime = new Date(this.goal.lastModified);
-                    
+
                     if (storedTime > currentTime) {
                         console.log('Detected newer data in localStorage, syncing...');
                         this.goal = storedGoal;
@@ -1090,7 +1129,7 @@ class GoalDetail {
         if (this.autoSaveTimer) {
             clearTimeout(this.autoSaveTimer);
         }
-        
+
         // 设置新的定时器，1秒后保存
         this.autoSaveTimer = setTimeout(() => {
             this.saveGoal();
@@ -1118,7 +1157,7 @@ class GoalDetail {
         `;
         statusIndicator.textContent = 'Saved';
         document.body.appendChild(statusIndicator);
-        
+
         // 添加调试面板
         const debugPanel = document.createElement('div');
         debugPanel.id = 'debugPanel';
@@ -1143,22 +1182,22 @@ class GoalDetail {
             <div id="debugInfo">Initializing...</div>
         `;
         document.body.appendChild(debugPanel);
-        
+
         // 定期更新调试信息
         setInterval(() => {
             this.updateDebugInfo();
         }, 1000);
     }
-    
+
     updateDebugInfo() {
         const debugInfo = document.getElementById('debugInfo');
         if (!debugInfo) return;
-        
+
         try {
             const key = `list100-notes-${this.goalId}`;
             const stored = localStorage.getItem(key);
             const storedNotes = stored ? JSON.parse(stored) : [];
-            
+
             debugInfo.innerHTML = `
                 Goal ID: ${this.goalId}<br>
                 Memory Notes: ${this.notes.length}<br>
@@ -1179,7 +1218,7 @@ class GoalDetail {
         if (statusIndicator && this.lastSaveTime) {
             statusIndicator.textContent = `Saved at ${this.lastSaveTime.toLocaleTimeString()}`;
             statusIndicator.style.opacity = '1';
-            
+
             // 3秒后隐藏
             setTimeout(() => {
                 statusIndicator.style.opacity = '0';
@@ -1205,7 +1244,7 @@ class GoalDetail {
         `;
         errorIndicator.textContent = message;
         document.body.appendChild(errorIndicator);
-        
+
         // 5秒后移除
         setTimeout(() => {
             if (errorIndicator.parentNode) {
@@ -1222,13 +1261,13 @@ class GoalDetail {
                 exportedAt: new Date().toISOString(),
                 version: '1.0'
             };
-            
+
             const dataStr = JSON.stringify(goalData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
             const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
             const filename = `goal-${this.goalId}-backup-${timestamp}.json`;
-            
+
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
             link.download = filename;
@@ -1237,7 +1276,7 @@ class GoalDetail {
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            
+
             alert(`Goal data exported as ${filename}`);
         } catch (error) {
             console.error('Error exporting goal data:', error);
@@ -1258,11 +1297,11 @@ class GoalDetail {
         // 更新基本信息
         const titleElement = document.getElementById('goalTitle');
         const descriptionElement = document.getElementById('goalDescription');
-        
+
         if (titleElement) {
             titleElement.value = this.goal.text || '';
         }
-        
+
         if (descriptionElement) {
             descriptionElement.value = this.goal.description || '';
         }
@@ -1274,7 +1313,7 @@ class GoalDetail {
         if (existingToast) {
             existingToast.remove();
         }
-        
+
         // 定义不同类型的样式
         const colors = {
             success: 'rgba(16, 185, 129, 0.9)',
@@ -1282,7 +1321,7 @@ class GoalDetail {
             warning: 'rgba(245, 158, 11, 0.9)',
             error: 'rgba(239, 68, 68, 0.9)'
         };
-        
+
         // 创建提示消息
         const toast = document.createElement('div');
         toast.id = 'goalToast';
@@ -1304,12 +1343,12 @@ class GoalDetail {
         `;
         toast.textContent = message;
         document.body.appendChild(toast);
-        
+
         // 显示动画
         setTimeout(() => {
             toast.style.opacity = '1';
         }, 100);
-        
+
         // 3秒后隐藏
         setTimeout(() => {
             toast.style.opacity = '0';
