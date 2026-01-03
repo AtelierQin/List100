@@ -1,0 +1,366 @@
+/**
+ * Media Layout Common Styles
+ * 媒体页面（IMDb、DG120、书单）的共享样式
+ */
+
+/* 主布局 - 左侧列表 + 右侧信息面板 */
+.media-layout,
+.dg120-layout,
+.books-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    align-items: start;
+}
+
+/* 主要内容区域 */
+.movies-section,
+.albums-section,
+.books-section {
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-base);
+}
+
+.movies-section:hover,
+.albums-section:hover,
+.books-section:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+/* 容器 */
+.movies-container,
+.albums-container,
+.books-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 150px);
+    min-height: 600px;
+}
+
+/* 列表区域 */
+.movies-list,
+.albums-list,
+.books-list {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border-light);
+    padding: 12px;
+}
+
+/* 滚动条样式 */
+.movies-list::-webkit-scrollbar,
+.albums-list::-webkit-scrollbar,
+.books-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.movies-list::-webkit-scrollbar-track,
+.albums-list::-webkit-scrollbar-track,
+.books-list::-webkit-scrollbar-track {
+    background: rgba(248, 250, 252, 0.5);
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+.movies-list::-webkit-scrollbar-thumb,
+.albums-list::-webkit-scrollbar-thumb,
+.books-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.6) 0%, rgba(102, 126, 234, 0.4) 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.movies-list::-webkit-scrollbar-thumb:hover,
+.albums-list::-webkit-scrollbar-thumb:hover,
+.books-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(102, 126, 234, 0.6) 100%);
+}
+
+/* Section 头部 */
+.section-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--color-border-light);
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    flex-shrink: 0;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 12px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.header-content .section-header h2 {
+    margin-bottom: 0;
+}
+
+/* 图例 */
+.legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.legend-color.unwatched,
+.legend-color.unlistened,
+.legend-color.unread {
+    background: #e2e8f0;
+}
+
+.legend-color.watched,
+.legend-color.listened,
+.legend-color.read {
+    background: #10b981;
+}
+
+.results-count {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-left: auto;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* 信息面板 */
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 76px;
+}
+
+/* 统计面板 */
+.stats-panel,
+.movie-stats-panel,
+.listening-stats-panel,
+.reading-stats-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.stat-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 1px;
+}
+
+/* 统计格子 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.stat-box .stat-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-box .stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 1px;
+}
+
+/* 快捷操作区域 */
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-align: left;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 已观看/已听列表 */
+.watched-movies-list,
+.listened-albums-list,
+.read-books-list {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.watched-movies-list::-webkit-scrollbar,
+.listened-albums-list::-webkit-scrollbar,
+.read-books-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.watched-movies-list::-webkit-scrollbar-track,
+.listened-albums-list::-webkit-scrollbar-track,
+.read-books-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.watched-movies-list::-webkit-scrollbar-thumb,
+.listened-albums-list::-webkit-scrollbar-thumb,
+.read-books-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+
+/* 计数标签 */
+.watched-movies-count,
+.listened-albums-count,
+.read-books-count {
+    font-size: 10px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 12px;
+    color: var(--color-text-muted);
+}
+
+.empty-state p {
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.empty-state small {
+    font-size: 10px;
+    color: var(--color-text-muted);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .media-layout,
+    .dg120-layout,
+    .books-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-top: 12px;
+    }
+
+    .info-panel {
+        position: static;
+        order: -1;
+    }
+
+    .movies-container,
+    .albums-container,
+    .books-container {
+        height: 70vh;
+        min-height: 600px;
+    }
+
+    .section-header {
+        padding: 16px 20px 12px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+
+    .stats-panel,
+    .movie-stats-panel,
+    .listening-stats-panel,
+    .reading-stats-panel {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .watched-movies-list,
+    .listened-albums-list,
+    .read-books-list {
+        max-height: 100px;
+    }
+
+    .panel-card {
+        padding: 12px;
+    }
+}

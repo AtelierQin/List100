@@ -1,5 +1,89 @@
-/* THU Book List Page Specific Styles */
+/**
+ * THU Book List Page CSS
+ *
+ * 重构后的模块化架构：
+ * - 通过 @import 引入共享的基础和媒体组件
+ * - 只保留 THU Book List 页面特定的样式
+ */
 
+/* ==================== 导入共享组件 ==================== */
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+@import url('./components/navbar.css');
+@import url('./components/buttons.css');
+@import url('./components/cards.css');
+@import url('./components/modal.css');
+@import url('./components/forms.css');
+@import url('./components/media-layout.css');
+@import url('./components/media-items.css');
+
+/* ==================== THU Book List 页面特定样式 ==================== */
+
+/* Motto Section */
+.motto-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid var(--color-border-light);
+    padding: 24px 0;
+    position: relative;
+    overflow: hidden;
+    margin-top: 64px;
+}
+
+.motto-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.04) 0%, transparent 60%),
+        radial-gradient(circle at 70% 50%, rgba(237, 100, 166, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.motto-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.motto-text {
+    font-family: var(--font-family-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    font-style: italic;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    animation: mottoFadeIn 1.8s ease-out 0.2s forwards;
+    transform: translateY(12px);
+}
+
+@keyframes mottoFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 0.85; transform: translateY(0); }
+}
+
+.main-content.has-motto {
+    padding-top: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ==================== THU Book List 特定布局样式 ==================== */
+
+/* 使用共享的 media-layout 的 books-layout */
 .books-layout {
     display: grid;
     grid-template-columns: 1fr 350px;
@@ -26,149 +110,6 @@
     flex-direction: column;
     height: calc(100vh - 150px);
     min-height: 600px;
-}
-
-.section-header {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--color-border-light);
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-    flex-shrink: 0;
-}
-
-.section-header h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 4px;
-}
-
-.collection-info {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    margin-bottom: 12px;
-    font-style: italic;
-}
-
-/* Filter styles */
-.filters-container {
-    background: rgba(248, 250, 252, 0.9);
-    border: 1px solid var(--color-border-light);
-    border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 18px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 14px;
-    align-items: end;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.filter-group label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.filter-select {
-    padding: 8px 12px;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    font-size: 13px;
-    background: var(--color-surface);
-    color: var(--color-text-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    font-weight: 500;
-}
-
-.filter-select:focus {
-    outline: none;
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    transform: translateY(-1px);
-}
-
-.filter-select:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-1px);
-}
-
-.filter-actions {
-    display: flex;
-    align-items: end;
-}
-
-.clear-filters-btn {
-    padding: 8px 14px;
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--color-danger);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.clear-filters-btn:hover {
-    background: rgba(239, 68, 68, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-}
-
-.legend {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.results-count {
-    font-size: 11px;
-    color: var(--color-text-muted);
-    font-weight: 600;
-    background: rgba(102, 126, 234, 0.1);
-    padding: 6px 10px;
-    border-radius: 6px;
-    margin-left: auto;
-    border: 1px solid rgba(102, 126, 234, 0.2);
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-}
-
-.legend-color {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.legend-color.unread {
-    background: #e2e8f0;
-}
-
-.legend-color.read {
-    background: #10b981;
 }
 
 .books-list {
@@ -200,114 +141,16 @@
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(102, 126, 234, 0.6) 100%);
 }
 
-/* Book item styles */
-.book-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 12px 14px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--color-surface);
-    margin-bottom: 8px;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
+/* ==================== Collection Info ==================== */
 
-.book-item:hover {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    border-color: var(--color-accent);
-}
-
-.book-item.read {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%);
-    border-color: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
-}
-
-.book-item.read:hover {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.06) 100%);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
-}
-
-.book-item.read::after {
-    content: '✓';
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    color: #10b981;
-    font-weight: 700;
-    font-size: 16px;
-    background: rgba(16, 185, 129, 0.15);
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(16, 185, 129, 0.2);
-}
-
-.book-number {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    margin-right: 14px;
-    min-width: 32px;
-    text-align: center;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-variant-numeric: tabular-nums;
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    flex-shrink: 0;
-}
-
-.book-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-    padding-right: 30px;
-}
-
-.book-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    line-height: 1.3;
-    margin-bottom: 2px;
-}
-
-.book-author {
+.collection-info {
     font-size: 12px;
     color: var(--color-text-secondary);
-    line-height: 1.2;
-    font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
+    font-style: italic;
 }
 
-.book-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: var(--color-text-muted);
-    flex-wrap: wrap;
-}
-
-.book-publisher {
-    background: rgba(102, 126, 234, 0.1);
-    color: var(--color-primary);
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-weight: 600;
-    border: 1px solid rgba(102, 126, 234, 0.2);
-}
+/* ==================== Book Description Preview ==================== */
 
 .book-description-preview {
     font-size: 11px;
@@ -321,44 +164,7 @@
     -webkit-box-orient: vertical;
 }
 
-/* Info panel styles */
-.info-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: sticky;
-    top: 76px;
-}
-
-.panel-card {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    padding: 12px;
-    box-shadow: var(--shadow-sm);
-}
-
-.panel-card h3 {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    margin-bottom: 8px;
-    letter-spacing: -0.1px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.read-books-count {
-    font-size: 10px;
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--color-success);
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-}
+/* ==================== Reading Stats Panel ==================== */
 
 .reading-stats-panel {
     display: grid;
@@ -391,37 +197,14 @@
     margin-top: 1px;
 }
 
-.quick-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.action-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    font-size: 12px;
+.read-books-count {
+    font-size: 10px;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    padding: 2px 6px;
+    border-radius: 3px;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    text-align: left;
-    background: var(--color-surface);
-    color: var(--color-text-primary);
-}
-
-.action-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-icon {
-    font-size: 14px;
+    font-variant-numeric: tabular-nums;
 }
 
 .read-books-list {
@@ -442,186 +225,7 @@
     border-radius: 2px;
 }
 
-.read-book-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.read-book-item:hover {
-    background: rgba(248, 250, 252, 0.5);
-    transform: translateY(-1px);
-}
-
-.read-book-item:last-child {
-    border-bottom: none;
-}
-
-.read-book-name {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.read-book-number {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    background: #f1f5f9;
-    padding: 2px 6px;
-    border-radius: 3px;
-    min-width: 28px;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-}
-
-.read-book-title {
-    font-weight: 500;
-    color: var(--color-text-primary);
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.read-book-date {
-    font-size: 11px;
-    color: var(--color-text-muted);
-}
-
-.empty-state {
-    text-align: center;
-    padding: 12px;
-    color: var(--color-text-muted);
-}
-
-.empty-state p {
-    font-size: 12px;
-    margin-bottom: 2px;
-}
-
-.empty-state small {
-    font-size: 10px;
-    color: var(--color-text-muted);
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.stat-box {
-    text-align: center;
-    padding: 8px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: var(--border-radius-sm);
-    border: 1px solid rgba(226, 232, 240, 0.5);
-}
-
-.stat-box .stat-value {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    font-variant-numeric: tabular-nums;
-}
-
-.stat-box .stat-label {
-    font-size: 10px;
-    color: var(--color-text-secondary);
-    margin-top: 1px;
-}
-
-/* Modal styles */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(4px);
-}
-
-.modal.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.modal-content {
-    background: var(--color-surface);
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    width: 90%;
-    max-width: 600px;
-    max-height: 85vh;
-    overflow-y: auto;
-    border: 1px solid var(--color-border-light);
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 28px 20px;
-    border-bottom: 1px solid var(--color-border-light);
-}
-
-.modal-header h3 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    letter-spacing: -0.02em;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    line-height: 1;
-}
-
-.modal-close:hover {
-    background: var(--color-border-light);
-    color: var(--color-text-primary);
-    transform: scale(1.1);
-}
-
-.modal-body {
-    padding: 24px 28px 28px;
-}
-
-.book-info {
-    margin-bottom: 24px;
-}
-
-.book-details p {
-    margin-bottom: 10px;
-    font-size: 15px;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-}
-
-.book-details strong {
-    color: var(--color-text-primary);
-    font-weight: 600;
-}
+/* ==================== 阅读信息输入框 ==================== */
 
 .read-info {
     margin-bottom: 24px;
@@ -680,167 +284,63 @@
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.modal-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+/* ==================== Book Details Modal ==================== */
+
+.book-info {
+    margin-bottom: 24px;
 }
 
-.modal-btn {
-    flex: 1;
-    padding: 12px 20px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    font-size: 14px;
+.book-details p {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.book-details strong {
+    color: var(--color-text-primary);
     font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    text-align: center;
 }
 
-.modal-btn.btn-primary {
-    background: var(--color-accent);
-    color: white;
-    border-color: var(--color-accent);
-}
+/* ==================== 响应式设计 ==================== */
 
-.modal-btn.btn-primary:hover {
-    background: var(--color-accent-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.modal-btn.btn-danger {
-    background: rgba(245, 101, 101, 0.1);
-    color: var(--color-danger);
-    border-color: rgba(245, 101, 101, 0.2);
-}
-
-.modal-btn.btn-danger:hover {
-    background: rgba(245, 101, 101, 0.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.2);
-}
-
-/* Responsive design */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .motto-section {
+        padding: 16px 0;
+        margin-top: 64px;
+    }
+
+    .motto-text {
+        font-size: 18px;
+        padding: 0 20px;
+    }
+
     .books-layout {
         grid-template-columns: 1fr;
         gap: 16px;
         padding-top: 12px;
     }
-    
+
     .info-panel {
         position: static;
         order: -1;
     }
-    
+
     .books-container {
         height: 70vh;
         min-height: 600px;
     }
-    
-    .section-header {
-        padding: 16px 20px 12px;
-    }
-    
-    .section-header h2 {
-        font-size: 16px;
-    }
-    
-    .filters-container {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 14px;
-    }
-    
-    .book-item {
-        padding: 10px 12px;
-    }
-    
-    .book-number {
-        font-size: 11px;
-        margin-right: 12px;
-        min-width: 28px;
-        padding: 4px 6px;
-    }
-    
-    .book-title {
-        font-size: 13px;
-    }
-    
-    .book-author {
-        font-size: 11px;
-    }
-    
-    .book-meta {
-        font-size: 10px;
-        gap: 6px;
-    }
-    
-    .panel-card {
-        padding: 12px;
-    }
-    
+
     .reading-stats-panel {
         grid-template-columns: 1fr;
         gap: 8px;
     }
-    
+
     .read-books-list {
         max-height: 100px;
     }
-    
-    .modal-content {
-        width: 95%;
-        margin: 20px;
-    }
-    
-    .modal-actions {
-        flex-direction: column;
-    }
-}
-/* CSS Update for Filter Toggle */
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.section-header h2 {
-    margin-bottom: 0;
-}
-
-.toggle-filters-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.toggle-filters-btn:hover {
-    background: var(--color-surface-hover);
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-}
-
-.toggle-filters-btn.active {
-    background: rgba(102, 126, 234, 0.1);
-    color: var(--color-primary);
-    border-color: rgba(102, 126, 234, 0.3);
-}
-
-.filters-container.hidden {
-    display: none;
 }

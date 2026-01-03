@@ -1,0 +1,59 @@
+/**
+ * Toast Component
+ * 统一的 Toast 通知系统 - 所有页面共享
+ */
+
+.toast {
+    position: fixed;
+    top: 80px;
+    right: var(--spacing-lg);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    max-width: 320px;
+    min-width: 200px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-success {
+    background: var(--color-success);
+    color: white;
+    border-color: var(--color-success);
+}
+
+.toast-error {
+    background: var(--color-danger);
+    color: white;
+    border-color: var(--color-danger);
+}
+
+.toast-warning {
+    background: var(--color-warning);
+    color: white;
+    border-color: var(--color-warning);
+}
+
+.toast-info {
+    background: var(--color-info);
+    color: white;
+    border-color: var(--color-info);
+}
+
+.toast-icon {
+    display: inline-block;
+    margin-right: var(--spacing-sm);
+    font-size: var(--font-size-base);
+}

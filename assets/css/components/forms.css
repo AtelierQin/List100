@@ -1,0 +1,162 @@
+/**
+ * Form Components
+ * 统一的表单样式 - 所有页面共享
+ */
+
+/* 基础输入框 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    transition: var(--transition-base);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-text-muted);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Select 下拉框 */
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 13px;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.filter-select:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+}
+
+/* 筛选器容器 */
+.filters-container {
+    background: rgba(248, 250, 252, 0.9);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    align-items: end;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.filters-container.hidden {
+    display: none;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: end;
+}
+
+.clear-filters-btn {
+    padding: 8px 14px;
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.clear-filters-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* 切换筛选器按钮 */
+.toggle-filters-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toggle-filters-btn:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.toggle-filters-btn.active {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--color-primary);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .filters-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+    }
+}

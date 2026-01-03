@@ -1,0 +1,95 @@
+/**
+ * Design System Variables
+ * 统一的设计系统变量定义 - 所有页面共享
+ */
+
+:root {
+    /* ==================== 颜色系统 ==================== */
+
+    /* 主色调 */
+    --color-primary: #667eea;
+    --color-primary-hover: #5a67d8;
+    --color-primary-light: #edf2f7;
+    --color-primary-dark: #4c51bf;
+
+    /* 背景色系 */
+    --color-bg: #fafbfc;
+    --color-surface: #fafafa;
+    --color-surface-elevated: #ffffff;
+    --color-surface-hover: #f8fafc;
+
+    /* 文字色系 */
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #666666;
+    --color-text-muted: #999999;
+    --color-text-light: #718096;
+
+    /* 边框色系 */
+    --color-border: #e5e5e5;
+    --color-border-light: #f7fafc;
+    --color-border-hover: #cbd5e0;
+
+    /* 状态色系 */
+    --color-success: #48bb78;
+    --color-success-light: #c6f6d5;
+    --color-danger: #f56565;
+    --color-danger-light: #fed7d7;
+    --color-warning: #ed8936;
+    --color-warning-light: #feebc8;
+    --color-info: #4299e1;
+    --color-info-light: #bee3f8;
+
+    /* 功能色系 */
+    --color-accent: #0066cc;
+    --color-accent-hover: #0052a3;
+    --color-accent-light: var(--color-primary-light);
+    --color-purple: #9f7aea;
+    --color-pink: #ed64a6;
+    --color-indigo: #667eea;
+    --color-teal: #38b2ac;
+    --color-orange: #ed8936;
+
+    /* ==================== 字体系统 ==================== */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family-serif: 'Playfair Display', 'Georgia', serif;
+
+    --font-size-xs: 11px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 20px;
+    --font-size-3xl: 24px;
+    --font-size-4xl: 28px;
+    --font-size-5xl: 32px;
+
+    /* ==================== 圆角系统 ==================== */
+    --border-radius: 8px;
+    --border-radius-sm: 8px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+    --border-radius-full: 9999px;
+
+    /* ==================== 阴影系统 ==================== */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* ==================== 间距系统 ==================== */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-2xl: 64px;
+    --spacing-3xl: 96px;
+    --spacing-4xl: 128px;
+
+    /* ==================== 过渡动画 ==================== */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition: 0.2s ease;
+    --transition-slow: 0.3s ease;
+}

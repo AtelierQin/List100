@@ -1,0 +1,58 @@
+/**
+ * Card Component
+ * 统一的卡片组件 - 所有页面共享
+ */
+
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.card-elevated {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+.card-footer {
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* 面板卡片 - 用于侧边栏 */
+.panel-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-card h3 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: -0.1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
