@@ -44,7 +44,7 @@
     <section class="motto-section">
         <div class="container">
             <div class="motto-content">
-                <p class="motto-text">音乐是时间的艺术，录音是永恒的见证。</p>
+                <p class="motto-text">Music is the art of time; recording is the witness of eternity.</p>
             </div>
         </div>
     </section>
@@ -52,7 +52,7 @@
     <main class="main-content has-motto">
         <div class="container">
             <div class="dg120-layout">
-                <!-- 左侧音乐专辑列表区域 -->
+                <!-- Left Side: Album List -->
                 <div class="albums-section">
                     <div class="albums-container">
                         <div class="section-header">
@@ -62,155 +62,128 @@
                                     <span class="btn-icon">⚙️</span> Filters
                                 </button>
                             </div>
-                            <p class="collection-info">德意志留声机公司成立120周年纪念套装 · 121张CD</p>
+                            <p class="collection-info">Deutsche Grammophon 120th Anniversary Box Set · 121 CDs</p>
 
-                            <!-- 筛选器 -->
+                            <!-- Filters -->
                             <div class="filters-container hidden" id="filtersContainer">
                                 <div class="filter-group">
-                                    <label for="musicTypeFilter">音乐类型:</label>
+                                    <label for="musicTypeFilter">Music Type:</label>
                                     <select id="musicTypeFilter" class="filter-select">
-                                        <option value="">全部类型</option>
-                                        <option value="贝多芬">贝多芬</option>
-                                        <option value="莫扎特">莫扎特</option>
-                                        <option value="勃拉姆斯">勃拉姆斯</option>
-                                        <option value="舒伯特">舒伯特</option>
-                                        <option value="布鲁克纳">布鲁克纳</option>
-                                        <option value="马勒">马勒</option>
-                                        <option value="瓦格纳">瓦格纳</option>
-                                        <option value="柴可夫斯基">柴可夫斯基</option>
-                                        <option value="德沃夏克">德沃夏克</option>
-                                        <option value="肖邦">肖邦</option>
-                                        <option value="李斯特">李斯特</option>
-                                        <option value="舒曼">舒曼</option>
-                                        <option value="巴赫">巴赫</option>
-                                        <option value="德彪西">德彪西</option>
-                                        <option value="拉威尔">拉威尔</option>
-                                        <option value="斯特拉文斯基">斯特拉文斯基</option>
-                                        <option value="普罗科菲耶夫">普罗科菲耶夫</option>
-                                        <option value="肖斯塔科维奇">肖斯塔科维奇</option>
-                                        <option value="小提琴">小提琴</option>
-                                        <option value="钢琴">钢琴</option>
-                                        <option value="大提琴">大提琴</option>
-                                        <option value="单簧管">单簧管</option>
-                                        <option value="圆号">圆号</option>
-                                        <option value="弦乐四重奏">弦乐四重奏</option>
-                                        <option value="交响曲">交响曲</option>
-                                        <option value="协奏曲">协奏曲</option>
-                                        <option value="奏鸣曲">奏鸣曲</option>
-                                        <option value="歌剧">歌剧</option>
-                                        <option value="宗教音乐">宗教音乐</option>
-                                        <option value="艺术歌曲">艺术歌曲</option>
-                                        <option value="巴洛克时期">巴洛克时期</option>
-                                        <option value="古典时期">古典时期</option>
-                                        <option value="浪漫时期">浪漫时期</option>
-                                        <option value="现代时期">现代时期</option>
-                                        <option value="早期录音">早期录音</option>
-                                        <option value="其他">其他</option>
+                                        <option value="">All Types</option>
+                                        <!-- Javascript will populate this -->
                                     </select>
                                 </div>
 
                                 <div class="filter-group">
-                                    <label for="periodFilter">录音年代:</label>
+                                    <label for="composerFilter">Composer:</label>
+                                    <select id="composerFilter" class="filter-select">
+                                        <option value="">All Composers</option>
+                                        <!-- Javascript will populate this -->
+                                    </select>
+                                </div>
+
+                                <div class="filter-group">
+                                    <label for="periodFilter">Recording Period:</label>
                                     <select id="periodFilter" class="filter-select">
-                                        <option value="">全部年代</option>
-                                        <option value="1900s-1920s">1900-1920年代</option>
-                                        <option value="1930s-1940s">1930-1940年代</option>
-                                        <option value="1950s-1960s">1950-1960年代</option>
-                                        <option value="1970s-1980s">1970-1980年代</option>
-                                        <option value="1990s-2000s">1990-2000年代</option>
-                                        <option value="2010s-2020s">2010-2020年代</option>
+                                        <option value="">All Periods</option>
+                                        <option value="1900s-1920s">1900s-1920s</option>
+                                        <option value="1930s-1940s">1930s-1940s</option>
+                                        <option value="1950s-1960s">1950s-1960s</option>
+                                        <option value="1970s-1980s">1970s-1980s</option>
+                                        <option value="1990s-2000s">1990s-2000s</option>
+                                        <option value="2010s-2020s">2010s-2020s</option>
                                     </select>
                                 </div>
 
                                 <div class="filter-group">
-                                    <label for="statusFilter">聆听状态:</label>
+                                    <label for="statusFilter">Status:</label>
                                     <select id="statusFilter" class="filter-select">
-                                        <option value="">全部专辑</option>
-                                        <option value="listened">已聆听</option>
-                                        <option value="unlistened">未聆听</option>
+                                        <option value="">All Albums</option>
+                                        <option value="listened">Listened</option>
+                                        <option value="unlistened">Unlistened</option>
                                     </select>
                                 </div>
 
                                 <div class="filter-actions">
-                                    <button id="clearFilters" class="clear-filters-btn">清除筛选</button>
+                                    <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
                                 </div>
                             </div>
 
                             <div class="legend">
                                 <div class="legend-item">
                                     <div class="legend-color unlistened"></div>
-                                    <span>未聆听</span>
+                                    <span>Unlistened</span>
                                 </div>
                                 <div class="legend-item">
                                     <div class="legend-color listened"></div>
-                                    <span>已聆听</span>
+                                    <span>Listened</span>
                                 </div>
                                 <div class="results-count">
-                                    <span id="resultsCount">121 张专辑</span>
+                                    <span id="resultsCount">121 Albums</span>
                                 </div>
                             </div>
                         </div>
                         <div class="albums-list" id="albumsList">
-                            <!-- 专辑列表将通过JavaScript生成 -->
+                            <!-- Albums will be generated by JavaScript -->
                         </div>
                     </div>
                 </div>
 
-                <!-- 右侧信息面板 -->
+                <!-- Right Side: Info Panel -->
                 <div class="info-panel">
                     <div class="panel-card">
-                        <h3>聆听进度</h3>
+                        <h3>Listening Progress</h3>
                         <div class="listening-stats-panel">
                             <div class="stat-item">
                                 <span class="stat-number" id="listenedCount">0</span>
-                                <span class="stat-label">已聆听专辑</span>
+                                <span class="stat-label">Albums Listened</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number" id="listenedPercentage">0%</span>
-                                <span class="stat-label">完成进度</span>
+                                <span class="stat-label">Progress</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>快速操作</h3>
+                        <h3>Quick Actions</h3>
                         <div class="quick-actions">
                             <button class="action-btn btn-primary" id="importDataBtn">
                                 <span class="btn-icon">📥</span>
-                                导入数据
+                                Import Data
                             </button>
                             <input type="file" id="importFileInput" accept=".json" style="display: none;">
                             <button class="action-btn btn-ghost" id="clearAllBtn">
                                 <span class="btn-icon">🗑️</span>
-                                清除全部
+                                Clear All
                             </button>
                             <button class="action-btn btn-ghost" id="exportDataBtn">
                                 <span class="btn-icon">💾</span>
-                                导出数据
+                                Export Data
                             </button>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>已聆听专辑 <span class="listened-albums-count" id="listenedAlbumsCount">0</span></h3>
+                        <h3>Listened Albums <span class="listened-albums-count" id="listenedAlbumsCount">0</span></h3>
                         <div class="listened-albums-list" id="listenedAlbumsList">
                             <div class="empty-state">
-                                <p>暂无已聆听专辑</p>
-                                <small>点击专辑标记为已聆听</small>
+                                <p>No albums listened yet</p>
+                                <small>Click album to mark as listened</small>
                             </div>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>统计信息</h3>
+                        <h3>Statistics</h3>
                         <div class="stats-grid">
                             <div class="stat-box">
                                 <div class="stat-value" id="totalAlbums">121</div>
-                                <div class="stat-label">总专辑数</div>
+                                <div class="stat-label">Total Albums</div>
                             </div>
                             <div class="stat-box">
                                 <div class="stat-value" id="totalDiscs">121</div>
-                                <div class="stat-label">总CD数</div>
+                                <div class="stat-label">Total CDs</div>
                             </div>
                         </div>
                     </div>
@@ -219,43 +192,52 @@
         </div>
     </main>
 
-    <!-- 专辑详情模态框 -->
+    <!-- Album Modal -->
     <div class="modal hidden" id="albumModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="albumTitle">专辑标题</h3>
+                <h3 id="albumTitle">Album Title</h3>
                 <button class="modal-close" id="closeModal">×</button>
             </div>
             <div class="modal-body">
                 <div class="album-info">
                     <div class="album-details">
-                        <p><strong>CD编号:</strong> <span id="albumDiscNumber">-</span></p>
-                        <p><strong>分类:</strong> <span id="albumCategory">-</span></p>
-                        <p><strong>主要艺术家:</strong> <span id="albumArtists">-</span></p>
-                        <p><strong>录音时期:</strong> <span id="albumPeriod">-</span></p>
-                        <p><strong>状态:</strong> <span id="albumStatus">未聆听</span></p>
+                        <p><strong>Disc No:</strong> <span id="albumDiscNumber">-</span></p>
+                        <p><strong>Category:</strong> <span id="albumCategory">-</span></p>
+                        <p><strong>Artists:</strong> <span id="albumArtists">-</span></p>
+                        <p><strong>Period:</strong> <span id="albumPeriod">-</span></p>
+                        <p><strong>Status:</strong> <span id="albumStatus">Unlistened</span></p>
                     </div>
                     <div class="album-description">
-                        <h4>专辑介绍</h4>
+                        <h4>Album Description</h4>
                         <p id="albumDescriptionText">-</p>
                     </div>
                 </div>
                 <div class="listen-info" id="listenInfo" style="display: none;">
-                    <label for="listenDate">聆听日期:</label>
+                    <label for="listenDate">Listen Date:</label>
                     <input type="date" id="listenDate" class="listen-date-input">
-                    <label for="personalRating">个人评分 (1-10):</label>
+                    <label for="personalRating">Rating (1-10):</label>
                     <input type="number" id="personalRating" class="personal-rating" min="1" max="10" step="0.1">
-                    <label for="listenNotes">聆听笔记:</label>
-                    <textarea id="listenNotes" class="listen-notes" placeholder="记录您对这张专辑的感受..."></textarea>
+                    <label for="listenNotes">Notes:</label>
+                    <textarea id="listenNotes" class="listen-notes"
+                        placeholder="Add notes about this album..."></textarea>
                 </div>
                 <div class="modal-actions">
-                    <button class="modal-btn btn-primary" id="markListenedBtn">标记为已聆听</button>
-                    <button class="modal-btn btn-danger" id="removeAlbumBtn" style="display: none;">移除</button>
+                    <button class="modal-btn btn-primary" id="markListenedBtn">Mark as Listened</button>
+                    <button class="modal-btn btn-danger" id="removeAlbumBtn" style="display: none;">Remove</button>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <script src="assets/js/core/storage.js"></script>
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/components/modal.js"></script>
+    <script src="assets/js/components/filters.js"></script>
+    <script src="assets/js/components/toast.js"></script>
+    <script src="assets/js/components/list-renderer.js"></script>
+    <script src="assets/js/core/collection-page.js"></script>
 
     <script src="assets/js/dg120.js"></script>
     <script src="assets/js/dropdown.js"></script>

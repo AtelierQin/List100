@@ -829,6 +829,11 @@
 
 /* ==================== Utility Classes ==================== */
 
+.hidden {
+    display: none !important;
+}
+
+
 .hover-lift {
     transition: var(--transition-base);
 }

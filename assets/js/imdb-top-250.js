@@ -253,452 +253,249 @@ const top250Movies = [
     { rank: 250, titleEn: "Paper Moon", titleCn: "纸月亮", year: 1973, director: "Peter Bogdanovich", rating: 7.9, genres: ["comedy", "crime", "drama"] }
 ];
 
-// 筛选状态
-let currentFilters = {
-    genre: '',
-    year: '',
-    rating: '',
-    status: ''
-};
+/**
+ * IMDb Top 250 Page - extends CollectionPage
+ * Uses shared modules for storage, filters, modal, and list rendering
+ */
+class IMDbPage extends CollectionPage {
+    constructor() {
+        super({
+            namespace: 'imdb',
+            items: top250Movies,
+            itemIdField: 'rank',
+            itemTitleField: 'titleEn',
 
-// 筛选后的电影列表
-let filteredMovies = [];
+            // Labels
+            markedLabel: 'Watched',
+            unmarkedLabel: 'Not Watched',
+            markBtnText: 'Mark as Watched',
+            unmarkBtnText: 'Mark as Unwatched',
+            resultsCountSuffix: 'movies',
+            emptyListMessage: 'No movies found',
+            emptySidebarMessage: 'No movies watched yet',
 
-// 全局变量
-let watchedMovies = JSON.parse(localStorage.getItem('watchedMovies')) || [];
-let currentMovie = null;
+            // Element IDs
+            elementIds: {
+                listContainer: 'moviesList',
+                resultsCount: 'resultsCount',
+                modal: 'movieModal',
+                closeModal: 'closeModal',
+                markBtn: 'markWatchedBtn',
+                removeBtn: 'removeMovieBtn',
+                sidebarList: 'watchedMoviesList',
+                sidebarCount: 'watchedMoviesCount',
+                markedCount: 'watchedCount',
+                markedPercentage: 'watchedPercentage',
+                totalItems: 'totalMovies',
+                exportBtn: 'exportDataBtn',
+                importBtn: 'importDataBtn',
+                importInput: 'importFileInput',
+                clearAllBtn: 'clearAllBtn'
+            },
 
-// DOM 元素变量
-let moviesList, watchedCount, watchedPercentage, totalMovies, averageRating;
-let watchedMoviesList, movieModal, closeModal, markWatchedBtn, removeMovieBtn;
-let clearAllBtn, exportDataBtn, importDataBtn, importFileInput;
+            // Filter configuration
+            filterConfig: {
+                genreFilter: FilterConfigs.category('genres'),
+                yearFilter: FilterConfigs.decade('year'),
+                ratingFilter: FilterConfigs.rating('rating'),
+                statusFilter: FilterConfigs.status(
+                    (movie) => this.isItemMarked(movie),
+                    'watched',
+                    'unwatched'
+                )
+            },
 
-// 初始化
-document.addEventListener('DOMContentLoaded', function () {
-    // 获取DOM元素
-    moviesList = document.getElementById('moviesList');
-    watchedCount = document.getElementById('watchedCount');
-    watchedPercentage = document.getElementById('watchedPercentage');
-    totalMovies = document.getElementById('totalMovies');
-    averageRating = document.getElementById('averageRating');
-    watchedMoviesList = document.getElementById('watchedMoviesList');
-    movieModal = document.getElementById('movieModal');
-    closeModal = document.getElementById('closeModal');
-    markWatchedBtn = document.getElementById('markWatchedBtn');
-    removeMovieBtn = document.getElementById('removeMovieBtn');
-    clearAllBtn = document.getElementById('clearAllBtn');
-    exportDataBtn = document.getElementById('exportDataBtn');
-    importDataBtn = document.getElementById('importDataBtn');
-    importFileInput = document.getElementById('importFileInput');
-
-    // 初始化筛选后的电影列表
-    filteredMovies = [...top250Movies];
-
-    // 渲染电影列表
-    renderMovies();
-    updateStats();
-    updateWatchedMoviesList();
-
-    // 绑定事件监听器
-    bindEventListeners();
-});// 绑定事
-件监听器
-function bindEventListeners() {
-    // 筛选器事件
-    document.getElementById('genreFilter').addEventListener('change', handleFilterChange);
-    document.getElementById('yearFilter').addEventListener('change', handleFilterChange);
-    document.getElementById('ratingFilter').addEventListener('change', handleFilterChange);
-    document.getElementById('statusFilter').addEventListener('change', handleFilterChange);
-    document.getElementById('clearFilters').addEventListener('click', clearFilters);
-
-    // 模态框事件
-    closeModal.addEventListener('click', closeMovieModal);
-    markWatchedBtn.addEventListener('click', toggleWatchedStatus);
-    removeMovieBtn.addEventListener('click', removeFromWatched);
-
-    // 数据管理事件
-    clearAllBtn.addEventListener('click', clearAllData);
-    exportDataBtn.addEventListener('click', exportData);
-    importDataBtn.addEventListener('click', () => importFileInput.click());
-    importFileInput.addEventListener('change', importData);
-
-    // 点击模态框外部关闭
-    movieModal.addEventListener('click', function (e) {
-        if (e.target === movieModal) {
-            closeMovieModal();
-        }
-    });
-
-    // 筛选器开关
-    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
-    const filtersContainer = document.getElementById('filtersContainer');
-    if (toggleFiltersBtn && filtersContainer) {
-        toggleFiltersBtn.addEventListener('click', function () {
-            filtersContainer.classList.toggle('hidden');
-            const isHidden = filtersContainer.classList.contains('hidden');
-
-            // 更新按钮状态和文本
-            if (isHidden) {
-                toggleFiltersBtn.innerHTML = '<span class="btn-icon">⚙️</span> Filters';
-                toggleFiltersBtn.classList.remove('active');
-            } else {
-                toggleFiltersBtn.innerHTML = '<span class="btn-icon">✖️</span> Close';
-                toggleFiltersBtn.classList.add('active');
-            }
+            // Custom render functions
+            renderItemCard: (movie, isWatched) => this._renderMovieCard(movie, isWatched),
+            renderSidebarItem: (movie) => this._renderSidebarMovie(movie),
+            populateModal: (movie, isWatched, watchedData) => this._populateMovieModal(movie, isWatched, watchedData)
         });
+
+        // Additional stats element
+        this.averageRatingEl = null;
     }
-}
 
-// 渲染电影列表
-function renderMovies() {
-    if (!moviesList) return;
+    /**
+     * Override init to add extra functionality
+     */
+    init() {
+        // Migrate from old localStorage key if needed
+        this._migrateOldData();
 
-    moviesList.innerHTML = '';
+        // Call parent init
+        super.init();
 
-    filteredMovies.forEach(movie => {
-        const isWatched = watchedMovies.some(w => w.rank === movie.rank);
-        const movieCard = createMovieCard(movie, isWatched);
-        moviesList.appendChild(movieCard);
-    });
+        // Get additional stats element
+        this.averageRatingEl = document.getElementById('averageRating');
 
-    // 更新结果计数
-    const resultsCount = document.getElementById('resultsCount');
-    if (resultsCount) {
-        resultsCount.textContent = `${filteredMovies.length} movies`;
+        // Update additional stats
+        this._updateAverageRating();
     }
-}
 
-// 创建电影卡片
-function createMovieCard(movie, isWatched) {
-    const card = document.createElement('div');
-    card.className = `movie-item ${isWatched ? 'watched' : 'unwatched'}`;
-    card.addEventListener('click', () => openMovieModal(movie));
+    /**
+     * Migrate data from old localStorage format
+     * @private
+     */
+    _migrateOldData() {
+        const oldData = localStorage.getItem('watchedMovies');
+        if (oldData && !localStorage.getItem('list100_imdb_markedItems')) {
+            try {
+                const movies = JSON.parse(oldData);
+                if (Array.isArray(movies) && movies.length > 0) {
+                    this.store.saveMarkedItems(movies);
+                    // Keep old data as backup, don't delete
+                }
+            } catch (e) {
+                console.warn('Failed to migrate old watchedMovies data:', e);
+            }
+        }
+    }
 
-    card.innerHTML = `
-        <div class="movie-rank">#${movie.rank}</div>
-        <div class="movie-content">
-            <div class="movie-titles">
-                <div class="movie-title-en">${movie.titleEn}</div>
-                <div class="movie-title-cn">${movie.titleCn}</div>
+    /**
+     * Render a movie card
+     * @private
+     */
+    _renderMovieCard(movie, isWatched) {
+        return `
+            <div class="movie-item collection-item ${isWatched ? 'watched' : 'unwatched'}" data-item-id="${movie.rank}">
+                <div class="movie-rank">#${movie.rank}</div>
+                <div class="movie-content">
+                    <div class="movie-titles">
+                        <div class="movie-title-en">${movie.titleEn}</div>
+                        <div class="movie-title-cn">${movie.titleCn}</div>
+                    </div>
+                    <div class="movie-meta">
+                        <span class="movie-year">${movie.year}</span>
+                        <span class="movie-rating">★ ${movie.rating}</span>
+                        <span class="movie-director">${movie.director}</span>
+                    </div>
+                    <div class="movie-genres">
+                        ${movie.genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
+                    </div>
+                </div>
             </div>
-            <div class="movie-meta">
-                <span class="movie-year">${movie.year}</span>
-                <span class="movie-rating">⭐ ${movie.rating}</span>
-                <span class="movie-director">${movie.director}</span>
-            </div>
-            <div class="movie-genres">
-                ${movie.genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
-            </div>
-        </div>
-    `;
 
-    return card;
-}
-
-// 处理筛选器变化
-function handleFilterChange() {
-    currentFilters.genre = document.getElementById('genreFilter').value;
-    currentFilters.year = document.getElementById('yearFilter').value;
-    currentFilters.rating = document.getElementById('ratingFilter').value;
-    currentFilters.status = document.getElementById('statusFilter').value;
-
-    applyFilters();
-}
-
-// 应用筛选器
-function applyFilters() {
-    filteredMovies = top250Movies.filter(movie => {
-        // 类型筛选
-        if (currentFilters.genre && !movie.genres.includes(currentFilters.genre)) {
-            return false;
-        }
-
-        // 年代筛选
-        if (currentFilters.year) {
-            const decade = getDecade(movie.year);
-            if (decade !== currentFilters.year) {
-                return false;
-            }
-        }
-
-        // 评分筛选
-        if (currentFilters.rating) {
-            if (!isInRatingRange(movie.rating, currentFilters.rating)) {
-                return false;
-            }
-        }
-
-        // 观看状态筛选
-        if (currentFilters.status) {
-            const isWatched = watchedMovies.some(w => w.rank === movie.rank);
-            if (currentFilters.status === 'watched' && !isWatched) {
-                return false;
-            }
-            if (currentFilters.status === 'unwatched' && isWatched) {
-                return false;
-            }
-        }
-
-        return true;
-    });
-
-    renderMovies();
-}
-
-// 获取年代
-function getDecade(year) {
-    if (year >= 2020) return '2020s';
-    if (year >= 2010) return '2010s';
-    if (year >= 2000) return '2000s';
-    if (year >= 1990) return '1990s';
-    if (year >= 1980) return '1980s';
-    if (year >= 1970) return '1970s';
-    if (year >= 1960) return '1960s';
-    if (year >= 1950) return '1950s';
-    if (year >= 1940) return '1940s';
-    if (year >= 1930) return '1930s';
-    return 'older';
-}
-
-// 检查评分范围
-function isInRatingRange(rating, range) {
-    switch (range) {
-        case '9.0+':
-            return rating >= 9.0;
-        case '8.5-8.9':
-            return rating >= 8.5 && rating < 9.0;
-        case '8.0-8.4':
-            return rating >= 8.0 && rating < 8.5;
-        case '7.5-7.9':
-            return rating >= 7.5 && rating < 8.0;
-        case '7.0-7.4':
-            return rating >= 7.0 && rating < 7.5;
-        default:
-            return true;
-    }
-}
-
-// 清除筛选器
-function clearFilters() {
-    currentFilters = {
-        genre: '',
-        year: '',
-        rating: '',
-        status: ''
-    };
-
-    document.getElementById('genreFilter').value = '';
-    document.getElementById('yearFilter').value = '';
-    document.getElementById('ratingFilter').value = '';
-    document.getElementById('statusFilter').value = '';
-
-    filteredMovies = [...top250Movies];
-    renderMovies();
-}
-
-// 打开电影详情模态框
-function openMovieModal(movie) {
-    currentMovie = movie;
-    const isWatched = watchedMovies.some(w => w.rank === movie.rank);
-    const watchedMovie = watchedMovies.find(w => w.rank === movie.rank);
-
-    document.getElementById('movieTitle').textContent = movie.titleEn;
-    document.getElementById('movieYear').textContent = movie.year;
-    document.getElementById('movieDirector').textContent = movie.director;
-    document.getElementById('movieRating').textContent = movie.rating;
-    document.getElementById('movieStatus').textContent = isWatched ? 'Watched' : 'Not Watched';
-
-    // 更新按钮状态
-    markWatchedBtn.textContent = isWatched ? 'Mark as Unwatched' : 'Mark as Watched';
-    markWatchedBtn.className = isWatched ? 'modal-btn btn-secondary' : 'modal-btn btn-primary';
-    removeMovieBtn.style.display = isWatched ? 'inline-block' : 'none';
-
-    // 显示/隐藏观看信息
-    const watchInfo = document.getElementById('watchInfo');
-    if (isWatched && watchedMovie) {
-        watchInfo.style.display = 'block';
-        document.getElementById('watchDate').value = watchedMovie.watchDate || '';
-        document.getElementById('personalRating').value = watchedMovie.personalRating || '';
-        document.getElementById('watchNotes').value = watchedMovie.notes || '';
-    } else {
-        watchInfo.style.display = 'none';
+        `;
     }
 
-    movieModal.classList.remove('hidden');
-}
-
-// 关闭电影详情模态框
-function closeMovieModal() {
-    movieModal.classList.add('hidden');
-    currentMovie = null;
-}
-
-// 切换观看状态
-function toggleWatchedStatus() {
-    if (!currentMovie) return;
-
-    const isWatched = watchedMovies.some(w => w.rank === currentMovie.rank);
-
-    if (isWatched) {
-        // 移除观看记录
-        watchedMovies = watchedMovies.filter(w => w.rank !== currentMovie.rank);
-    } else {
-        // 添加观看记录
-        const watchedMovie = {
-            rank: currentMovie.rank,
-            titleEn: currentMovie.titleEn,
-            titleCn: currentMovie.titleCn,
-            year: currentMovie.year,
-            rating: currentMovie.rating,
-            watchDate: document.getElementById('watchDate').value || new Date().toISOString().split('T')[0],
-            personalRating: document.getElementById('personalRating').value || '',
-            notes: document.getElementById('watchNotes').value || ''
-        };
-        watchedMovies.push(watchedMovie);
-    }
-
-    // 保存到本地存储
-    localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies));
-
-    // 更新界面
-    renderMovies();
-    updateStats();
-    updateWatchedMoviesList();
-    openMovieModal(currentMovie); // 重新打开模态框以更新状态
-}
-
-// 从观看列表中移除
-function removeFromWatched() {
-    if (!currentMovie) return;
-
-    watchedMovies = watchedMovies.filter(w => w.rank !== currentMovie.rank);
-    localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies));
-
-    renderMovies();
-    updateStats();
-    updateWatchedMoviesList();
-    closeMovieModal();
-}
-
-// 更新统计信息
-function updateStats() {
-    if (!watchedCount || !watchedPercentage || !totalMovies || !averageRating) return;
-
-    const watched = watchedMovies.length;
-    const total = top250Movies.length;
-    const percentage = Math.round((watched / total) * 100);
-
-    watchedCount.textContent = watched;
-    watchedPercentage.textContent = `${percentage}%`;
-    totalMovies.textContent = total;
-
-    // 计算平均评分
-    if (watched > 0) {
-        const totalRating = watchedMovies.reduce((sum, movie) => {
-            const movieData = top250Movies.find(m => m.rank === movie.rank);
-            return sum + (movieData ? movieData.rating : 0);
-        }, 0);
-        const avgRating = (totalRating / watched).toFixed(1);
-        averageRating.textContent = avgRating;
-    } else {
-        averageRating.textContent = '0.0';
-    }
-}
-
-// 更新已观看电影列表
-function updateWatchedMoviesList() {
-    if (!watchedMoviesList) return;
-
-    if (watchedMovies.length === 0) {
-        watchedMoviesList.innerHTML = `
-            <div class="empty-state">
-                <p>No movies watched yet</p>
-                <small>Click on movies to mark them as watched</small>
+    /**
+     * Render a sidebar movie item
+     * @private
+     */
+    _renderSidebarMovie(movie) {
+        return `
+            <div class="watched-movie-item" data-item-id="${movie.rank}">
+                <div class="watched-movie-name">
+                    <div class="watched-movie-rank">#${movie.rank}</div>
+                    <div class="watched-movie-title">${movie.titleEn}</div>
+                </div>
+                <div class="watched-movie-date">${movie.year}</div>
             </div>
         `;
-        document.getElementById('watchedMoviesCount').textContent = '0';
-        return;
     }
 
-    // 按排名排序
-    const sortedWatched = [...watchedMovies].sort((a, b) => a.rank - b.rank);
+    /**
+     * Populate the movie modal
+     * @private
+     */
+    _populateMovieModal(movie, isWatched, watchedData) {
+        // Update text content
+        this.modal.updateElements({
+            movieTitle: movie.titleEn,
+            movieYear: movie.year,
+            movieDirector: movie.director,
+            movieRating: movie.rating,
+            movieStatus: isWatched ? 'Watched' : 'Not Watched'
+        });
 
-    watchedMoviesList.innerHTML = sortedWatched.map(movie => `
-        <div class="watched-movie-item" onclick="openMovieModalByRank(${movie.rank})">
-            <div class="watched-movie-name">
-                <div class="watched-movie-rank">#${movie.rank}</div>
-                <div class="watched-movie-title">${movie.titleEn}</div>
-            </div>
-            <div class="watched-movie-date">${movie.year}</div>
-        </div>
-    `).join('');
+        // Update mark button
+        this.modal.updateButton('markWatchedBtn', {
+            text: isWatched ? 'Mark as Unwatched' : 'Mark as Watched',
+            className: isWatched ? 'modal-btn btn-secondary' : 'modal-btn btn-primary'
+        });
 
-    document.getElementById('watchedMoviesCount').textContent = watchedMovies.length;
-}
+        // Show/hide remove button
+        this.modal.updateButton('removeMovieBtn', {
+            visible: isWatched
+        });
 
-// 通过排名打开电影模态框
-function openMovieModalByRank(rank) {
-    const movie = top250Movies.find(m => m.rank === rank);
-    if (movie) {
-        openMovieModal(movie);
-    }
-}
-
-// 清除所有数据
-function clearAllData() {
-    if (confirm('Are you sure you want to clear all watched movies data? This action cannot be undone.')) {
-        watchedMovies = [];
-        localStorage.removeItem('watchedMovies');
-        renderMovies();
-        updateStats();
-        updateWatchedMoviesList();
-    }
-}
-
-// 导出数据
-function exportData() {
-    const data = {
-        watchedMovies: watchedMovies,
-        exportDate: new Date().toISOString(),
-        version: '1.0'
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `imdb-top250-watched-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// 导入数据
-function importData(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        try {
-            const data = JSON.parse(e.target.result);
-            if (data.watchedMovies && Array.isArray(data.watchedMovies)) {
-                watchedMovies = data.watchedMovies;
-                localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies));
-                renderMovies();
-                updateStats();
-                updateWatchedMoviesList();
-                alert('Data imported successfully!');
-            } else {
-                alert('Invalid file format. Please select a valid export file.');
-            }
-        } catch (error) {
-            alert('Error reading file. Please make sure it\'s a valid JSON file.');
+        // Show/hide and populate watch info
+        this.modal.toggleElement('watchInfo', isWatched);
+        if (isWatched && watchedData) {
+            this.modal.setFormValues({
+                watchDate: watchedData.watchDate || '',
+                personalRating: watchedData.personalRating || '',
+                watchNotes: watchedData.notes || ''
+            });
         }
-    };
-    reader.readAsText(file);
+    }
 
-    // 清除文件输入
-    event.target.value = '';
+    /**
+     * Override _buildMarkedItemData to include custom fields
+     * @private
+     */
+    _buildMarkedItemData(movie) {
+        const formValues = this.modal.getFormValues(['watchDate', 'personalRating', 'watchNotes']);
+
+        return {
+            rank: movie.rank,
+            titleEn: movie.titleEn,
+            titleCn: movie.titleCn,
+            year: movie.year,
+            rating: movie.rating,
+            watchDate: formValues.watchDate || getTodayISO(),
+            personalRating: formValues.personalRating || '',
+            notes: formValues.watchNotes || ''
+        };
+    }
+
+    /**
+     * Override _updateStats to include average rating
+     * @private
+     */
+    _updateStats() {
+        super._updateStats();
+        this._updateAverageRating();
+    }
+
+    /**
+     * Update average rating display
+     * @private
+     */
+    _updateAverageRating() {
+        if (!this.averageRatingEl) return;
+
+        const markedItems = this.store.getMarkedItems();
+        if (markedItems.length === 0) {
+            this.averageRatingEl.textContent = '0.0';
+            return;
+        }
+
+        const totalRating = markedItems.reduce((sum, item) => {
+            const movie = this.allItems.find(m => m.rank === item.rank);
+            return sum + (movie ? movie.rating : 0);
+        }, 0);
+
+        const avgRating = (totalRating / markedItems.length).toFixed(1);
+        this.averageRatingEl.textContent = avgRating;
+    }
+}
+
+// Global page instance (needed for onclick handlers in sidebar)
+let imdbPage = null;
+
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', function () {
+    imdbPage = new IMDbPage();
+    imdbPage.init();
+});
+
+// Global function for sidebar item clicks (onclick handler compatibility)
+function openMovieModalByRank(rank) {
+    if (imdbPage) {
+        const movie = top250Movies.find(m => m.rank === rank);
+        if (movie) {
+            imdbPage.openModal(movie);
+        }
+    }
 }
