@@ -51,8 +51,6 @@ FutureCast-List100/
 │   ├── DESIGN_SYSTEM.md      # Design system documentation
 │   ├── DEVELOPMENT_GUIDE.md  # Development guide
 │   ├── FILE_STRUCTURE.md     # File structure documentation
-│   ├── OS_LIST100_SYNC.md    # OS and List100 sync documentation
-│   └── PROGRESS_COMPONENT_REMOVAL.md # Progress component removal notes
 ├── landing.html       # Landing page
 ├── list100.html       # Main List100 application
 ├── OS.html            # Resource management and List100 goals

@@ -39,6 +39,8 @@ FutureCast 采用现代化、简洁的设计语言，注重用户体验和视觉
 
 ## 颜色系统
 
+所有的颜色变量定义在 `assets/css/base/variables.css` 文件中。
+
 ### 主色调
 ```css
 --color-primary: #667eea        /* 主品牌色 */
@@ -140,10 +142,10 @@ FutureCast 采用现代化、简洁的设计语言，注重用户体验和视觉
   <div class="nav-container">
     <a href="landing.html" class="logo">FutureCast</a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">List 100</a>
-      <a href="travel-map.html" class="nav-link">World</a>
-      <a href="china-map.html" class="nav-link">China</a>
-      <a href="database.html" class="nav-link">Database</a>
+      <a href="list100.html" class="nav-link">List 100</a>
+      <a href="world.html" class="nav-link">World</a>
+      <a href="china.html" class="nav-link">China</a>
+      <a href="OS.html" class="nav-link">Database</a>
       <!-- 特殊元素：进度条、状态指示器等 -->
     </div>
   </div>

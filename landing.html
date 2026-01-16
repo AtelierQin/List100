@@ -4,82 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A contemplative approach to life design—curate one hundred meaningful aspirations with intention and purpose.">
-    <title>FutureCast</title>
+    <title>FutureCast Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-container">
-            <a href="landing.html" class="logo">FutureCast</a>
-            <div class="nav-links">
-                <a href="list100.html" class="nav-link">List100</a>
-                <div class="dropdown">
-                    <button class="dropdown-toggle">Tours</button>
-                    <div class="dropdown-menu">
-                        <a href="world.html" class="dropdown-item">World</a>
-                        <a href="china.html" class="dropdown-item">China</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="dropdown-toggle">Collections</button>
-                    <div class="dropdown-menu">
-                        <a href="imdb-top-250.html" class="dropdown-item">IMDb Top 250</a>
-                        <a href="dg120.html" class="dropdown-item">DG 120</a>
-                        <a href="thu-book-list.html" class="dropdown-item">THU Book List</a>
-                    </div>
-                </div>
-                <a href="OS.html" class="nav-link">OS</a>
-                <a href="#about" class="nav-link">About</a>
-            </div>
-        </div>
-    </nav>
+    <!-- Nav is injected by assets/js/components/layout.js -->
 
     <main class="main">
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="hero-title">Curate the extraordinary within the ordinary</h1>
-                    <p class="hero-subtitle">
-                        A contemplative approach to life design—where intention meets aspiration, 
-                        and every pursuit becomes a deliberate act of self-discovery.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="list100.html" class="btn btn-primary">Begin Your Journey</a>
-                        <a href="#about" class="btn btn-secondary">Checklist</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="container dashboard-container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="hero-title" id="greeting">Welcome</h1>
+                <p class="hero-subtitle">Design a life of intention. One hundred aspirations, curated with purpose.</p>
+            </section>
 
-        <section id="about" class="about-section">
-            <div class="container">
-                <div class="about-content">
-                    <h2 class="about-title">My Goals</h2>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="landingProgressFill"></div>
-                        </div>
-                        <span class="progress-text" id="landingProgressText">0/0</span>
-                    </div>
-                    <div class="goals-list">
-                        <ul id="landingGoalsList">
-                            <li>Loading goals...</li>
-                        </ul>
+            <!-- Stats Strip -->
+            <section class="stats-strip">
+                <div class="stat-item">
+                    <span class="stat-label">Completion</span>
+                    <div class="stat-value-group">
+                        <span class="stat-value" id="dashGoalPercentage">0</span>
+                        <span class="stat-unit">%</span>
                     </div>
                 </div>
-            </div>
-        </section>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Realized</span>
+                    <div class="stat-value-group">
+                        <span class="stat-value" id="dashGoalCount">0</span>
+                        <span class="stat-unit">/ 100</span>
+                    </div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Global</span>
+                    <div class="stat-value-group">
+                        <span class="stat-value" id="dashWorldCount">0</span>
+                        <span class="stat-unit">Countries</span>
+                    </div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">China</span>
+                    <div class="stat-value-group">
+                        <span class="stat-value" id="dashChinaCount">0</span>
+                        <span class="stat-unit">Cities</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Focus List -->
+            <section class="focus-section">
+                <div class="section-header">
+                    <h2 class="section-title">Current Focus</h2>
+                </div>
+                <div class="focus-list" id="activeGoalsList">
+                    <!-- Injected via JS -->
+                    <div class="loading-line"></div>
+                </div>
+            </section>
+
+            <!-- All Goals List -->
+            <section class="all-goals-section">
+                <div class="section-header">
+                    <h2 class="section-title">Progress as of Dec 31, 2025</h2>
+                    <a href="list100.html" class="section-link">View List <span class="arrow">&rarr;</span></a>
+                </div>
+                <div class="all-goals-list" id="allGoalsList">
+                    <!-- Injected via JS -->
+                    <div class="loading-line"></div>
+                </div>
+            </section>
+        </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 FutureCast. Life is finite, make it count.</p>
-        </div>
-    </footer>
-    <script src="assets/js/landing.js"></script>
+    <!-- Footer is injected by assets/js/components/layout.js -->
+
+    <script src="assets/js/core/data-manager.js"></script>
     <script src="assets/js/dropdown.js"></script>
+    <script src="assets/js/components/layout.js"></script>
+    <script src="assets/js/landing.js"></script>
 </body>
 </html>

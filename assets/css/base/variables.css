@@ -4,25 +4,28 @@
  */
 
 :root {
-    /* ==================== 颜色系统 ==================== */
+    /* ==================== 颜色系统 (Light Mode Only) ==================== */
 
     /* 主色调 */
     --color-primary: #667eea;
     --color-primary-hover: #5a67d8;
     --color-primary-light: #edf2f7;
     --color-primary-dark: #4c51bf;
+    --color-primary-alpha: rgba(102, 126, 234, 0.1);
 
     /* 背景色系 */
     --color-bg: #fafbfc;
     --color-surface: #fafafa;
     --color-surface-elevated: #ffffff;
     --color-surface-hover: #f8fafc;
+    --color-surface-translucent: rgba(255, 255, 255, 0.85);
 
     /* 文字色系 */
     --color-text-primary: #1a1a1a;
     --color-text-secondary: #666666;
     --color-text-muted: #999999;
     --color-text-light: #718096;
+    --color-text-on-primary: #ffffff;
 
     /* 边框色系 */
     --color-border: #e5e5e5;
@@ -51,7 +54,9 @@
 
     /* ==================== 字体系统 ==================== */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family-base: var(--font-family);
     --font-family-serif: 'Playfair Display', 'Georgia', serif;
+    --font-family-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
 
     --font-size-xs: 11px;
     --font-size-sm: 12px;

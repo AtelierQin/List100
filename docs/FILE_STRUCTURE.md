@@ -10,26 +10,49 @@ This document describes the organized file structure of the FutureCast List100 p
 Contains all static resources organized by type.
 
 #### `/assets/css/` - Stylesheets
-- `global.css` - Global styles and design system
-- `landing.css` - Landing page specific styles
-- `list100.css` - List100 application styles
-- `OS.css` - OS page styles (resource management and goals display)
-- `world.css` - World travel map styles
-- `china.css` - China travel map styles
-- `goal-detail.css` - Goal detail page styles
-- `imdb-top-250.css` - IMDb Top 250 collection styles
-- `dg120.css` - DG 120 collection styles
+- **`/base/` - Base Styles**
+    - `reset.css` - CSS Reset
+    - `variables.css` - CSS Variables and Design Tokens
+- **`/components/` - Component Styles**
+    - `buttons.css` - Button styles
+    - `cards.css` - Card styles
+    - `forms.css` - Form element styles
+    - `media-items.css` - Media item styles
+    - `media-layout.css` - Media layout styles
+    - `modal.css` - Modal dialog styles
+    - `navbar.css` - Navigation bar styles
+    - `toast.css` - Toast notification styles
+- **Page-Specific Styles**
+    - `global.css` - Global styles and design system
+    - `landing.css` - Landing page specific styles
+    - `list100.css` - List100 application styles
+    - `OS.css` - OS page styles (resource management and goals display)
+    - `world.css` - World travel map styles
+    - `china.css` - China travel map styles
+    - `goal-detail.css` - Goal detail page styles
+    - `imdb-top-250.css` - IMDb Top 250 collection styles
+    - `dg120.css` - DG 120 collection styles
 
 #### `/assets/js/` - JavaScript Files
-- `list100.js` - Main List100 application logic
-- `OS.js` - OS page functionality (resource management and List100 sync)
-- `world.js` - World travel map functionality
-- `china.js` - China travel map functionality
-- `goal-detail.js` - Individual goal detail management
-- `imdb-top-250.js` - IMDb Top 250 collection functionality
-- `dg120.js` - DG 120 collection functionality
-- `dropdown.js` - Reusable dropdown menu component
-- `landing.js` - Landing page functionality
+- **`/core/` - Core Logic**
+    - `collection-page.js` - Base class for collection pages
+    - `storage.js` - Data persistence and storage management
+    - `utils.js` - Utility functions
+- **`/components/` - UI Components**
+    - `filters.js` - Filter component logic
+    - `list-renderer.js` - List rendering logic
+    - `modal.js` - Modal component logic
+    - `toast.js` - Toast notification logic
+- **Page-Specific Logic**
+    - `list100.js` - Main List100 application logic
+    - `OS.js` - OS page functionality (resource management and List100 sync)
+    - `world.js` - World travel map functionality
+    - `china.js` - China travel map functionality
+    - `goal-detail.js` - Individual goal detail management
+    - `imdb-top-250.js` - IMDb Top 250 collection functionality
+    - `dg120.js` - DG 120 collection functionality
+    - `dropdown.js` - Reusable dropdown menu component
+    - `landing.js` - Landing page functionality
 
 #### `/assets/data/` - Data Files
 - `list100-data.json` - Sample goals and initial data
@@ -40,8 +63,6 @@ Contains all static resources organized by type.
 - `DEVELOPMENT_GUIDE.md` - Development guide and best practices
 - `FILE_STRUCTURE.md` - This file
 - `Manifesto.md` - Project philosophy and vision
-- `imdb 250.md` - IMDb Top 250 collection documentation
-- `DG 120 The Anniversary Edition.md` - DG 120 collection documentation
 
 ### Root HTML Files
 - `landing.html` - Main landing page

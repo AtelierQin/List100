@@ -41,15 +41,19 @@ Each page is self-contained with its own CSS and JavaScript:
 
 ### CSS Architecture
 - `global.css` - Base styles, design system, and shared components
+- `assets/css/base/` - Foundation styles and variables
+- `assets/css/components/` - Modular component styles for reusability
 - Page-specific CSS files for unique styling
 - Modular approach for maintainability
 
 ### JavaScript Modules
-- Each page has its own JavaScript file matching the page name
+- **Core Modules**: `assets/js/core/` (Storage, Utils, CollectionPage base class)
+- **Components**: `assets/js/components/` (Modal, Filters, ListRenderer, Toast)
+- **Page Logic**: Page-specific scripts inherit from `CollectionPage` or use components compositionally
+- `CollectionPage` provides a standard foundation for data-driven pages (IMDb, Books, etc.)
 - No external dependencies - pure vanilla JavaScript
 - ES6+ features used throughout (classes, async/await, arrow functions)
 - Local storage for data persistence with multiple backup strategies
-- Shared components (e.g., `dropdown.js`) for reusable functionality
 - Cross-page data synchronization via storage events
 
 ## Coding Standards
@@ -129,6 +133,7 @@ Each page is self-contained with its own CSS and JavaScript:
 1. Create HTML file in root directory (e.g., `newpage.html`)
 2. Create corresponding CSS in `assets/css/` (e.g., `newpage.css`)
 3. Create corresponding JS in `assets/js/` (e.g., `newpage.js`)
+   - If creating a data collection page, extend `CollectionPage` to inherit standard functionality
 4. Update navigation dropdown in all existing pages
 5. Update documentation (README.md, FILE_STRUCTURE.md)
 6. Test across all browsers and devices
