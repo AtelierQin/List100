@@ -121,7 +121,77 @@ class List100 {
             }
         });
 
+        // Setup event delegation for todo list items (prevents memory leaks from repeated bindings)
+        this.setupTodoListDelegation();
+    }
 
+    setupTodoListDelegation() {
+        const todoList = document.getElementById('todoList');
+        if (!todoList) return;
+
+        todoList.addEventListener('click', (e) => {
+            const target = e.target;
+
+            if (target.closest('.goal-link')) {
+                const id = parseInt(target.closest('.goal-link').dataset.id);
+                window.location.href = `goal-detail.html?id=${id}`;
+                return;
+            }
+
+            if (target.closest('.todo-checkbox')) {
+                const id = parseInt(target.closest('.todo-checkbox').dataset.id);
+                this.toggleComplete(id);
+                return;
+            }
+
+            if (target.closest('.pin-btn')) {
+                e.stopPropagation();
+                const id = parseInt(target.closest('.pin-btn').dataset.id);
+                this.togglePin(id);
+                return;
+            }
+
+            if (target.closest('.delete-btn')) {
+                const id = parseInt(target.closest('.delete-btn').dataset.id);
+                if (confirm('Are you sure you want to delete this goal?')) {
+                    this.deleteItem(id);
+                }
+                return;
+            }
+
+            if (target.closest('.add-tag-btn')) {
+                const btn = target.closest('.add-tag-btn');
+                const id = parseInt(btn.dataset.id);
+                const tagSection = btn.closest('.tags-section');
+                const tagInput = tagSection.querySelector('.todo-tags');
+
+                tagInput.classList.remove('hidden');
+                btn.classList.add('hidden');
+                tagInput.focus();
+
+                const item = this.items.find(item => item.id === id);
+                if (item && item.tags) {
+                    tagInput.value = item.tags.join(', ');
+                }
+                return;
+            }
+
+            if (target.closest('.tag')) {
+                const tagSection = target.closest('.tags-section');
+                const tagInput = tagSection.querySelector('.todo-tags');
+                const addBtn = tagSection.querySelector('.add-tag-btn');
+
+                tagInput.classList.remove('hidden');
+                addBtn.classList.add('hidden');
+                tagInput.focus();
+
+                const id = parseInt(tagInput.dataset.id);
+                const item = this.items.find(item => item.id === id);
+                if (item && item.tags) {
+                    tagInput.value = item.tags.join(', ');
+                }
+            }
+        });
     }
 
     addItem() {
@@ -455,20 +525,25 @@ class List100 {
 
     createItemHTML(item, number) {
         const tagsDisplay = item.tags && item.tags.length > 0
-            ? item.tags.map(tag => `<span class="tag ${this.getTagColor(tag)}" data-tag="${tag}">${tag}</span>`).join('')
+            ? item.tags.map(tag => {
+                const escapedTag = escapeHtml(tag);
+                return `<span class="tag ${this.getTagColor(tag)}" data-tag="${escapedTag}">${escapedTag}</span>`;
+              }).join('')
             : '';
 
         const isPinned = item.pinned || false;
         const pinnedClass = isPinned ? 'pinned' : '';
+        const escapedText = escapeHtml(item.text || '');
+        const escapedDescription = escapeHtml(item.description || '');
 
         return `
             <li class="todo-item ${item.completed ? 'completed' : ''} ${pinnedClass}" data-id="${item.id}" draggable="true">
                 <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
                 <span class="todo-number goal-link" data-id="${item.id}" title="View goal details">${number}</span>
-                <div class="todo-checkbox ${item.completed ? 'checked' : ''}" data-id="${item.id}"></div>
+                <div class="todo-checkbox ${item.completed ? 'checked' : ''}" data-id="${item.id}" role="checkbox" aria-checked="${item.completed}" tabindex="0" aria-label="Toggle completion status"></div>
                 <div class="todo-content">
-                    <input type="text" class="todo-text" value="${item.text || ''}" data-id="${item.id}" placeholder="Enter your goal...">
-                    <input type="text" class="todo-description" value="${item.description || ''}" data-id="${item.id}" placeholder="Add description (optional)...">
+                    <input type="text" class="todo-text" value="${escapedText}" data-id="${item.id}" placeholder="Enter your goal...">
+                    <input type="text" class="todo-description" value="${escapedDescription}" data-id="${item.id}" placeholder="Add description (optional)...">
                     <div class="tags-section">
                         <div class="tags-display">${tagsDisplay}</div>
                         <button class="add-tag-btn" data-id="${item.id}" title="Add tags">+</button>
@@ -502,36 +577,12 @@ class List100 {
     }
 
     bindItemEvents() {
-        // 目标编号点击事件 - 跳转到详情页
-        document.querySelectorAll('.goal-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                window.location.href = `goal-detail.html?id=${id}`;
-            });
-        });
-
-        // 复选框点击事件
-        document.querySelectorAll('.todo-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                this.toggleComplete(id);
-            });
-        });
-
-        // 置顶按钮事件
-        document.querySelectorAll('.pin-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = parseInt(e.target.dataset.id);
-                this.togglePin(id);
-            });
-        });
-
-        // 拖动排序事件
         this.setupDragAndDrop();
 
-        // 文本输入事件
-        document.querySelectorAll('.todo-text').forEach(input => {
+        const todoList = document.getElementById('todoList');
+        if (!todoList) return;
+
+        todoList.querySelectorAll('.todo-text').forEach(input => {
             input.addEventListener('input', (e) => {
                 const id = parseInt(e.target.dataset.id);
                 this.updateText(id, e.target.value);
@@ -547,8 +598,7 @@ class List100 {
             });
         });
 
-        // 描述输入事件
-        document.querySelectorAll('.todo-description').forEach(input => {
+        todoList.querySelectorAll('.todo-description').forEach(input => {
             input.addEventListener('input', (e) => {
                 const id = parseInt(e.target.dataset.id);
                 this.updateDescription(id, e.target.value);
@@ -564,26 +614,7 @@ class List100 {
             });
         });
 
-        // 添加标签按钮事件
-        document.querySelectorAll('.add-tag-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                const tagInput = e.target.parentElement.querySelector('.todo-tags');
-                const addBtn = e.target;
-
-                tagInput.classList.remove('hidden');
-                addBtn.classList.add('hidden');
-                tagInput.focus();
-
-                const item = this.items.find(item => item.id === id);
-                if (item && item.tags) {
-                    tagInput.value = item.tags.join(', ');
-                }
-            });
-        });
-
-        // 标签输入事件
-        document.querySelectorAll('.todo-tags').forEach(input => {
+        todoList.querySelectorAll('.todo-tags').forEach(input => {
             input.addEventListener('blur', (e) => {
                 const id = parseInt(e.target.dataset.id);
                 this.updateTags(id, e.target.value);
@@ -607,35 +638,6 @@ class List100 {
             });
         });
 
-        // 标签点击编辑事件
-        document.querySelectorAll('.tag').forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                const tagText = e.target.textContent;
-                const tagSection = e.target.closest('.tags-section');
-                const tagInput = tagSection.querySelector('.todo-tags');
-                const addBtn = tagSection.querySelector('.add-tag-btn');
-
-                tagInput.classList.remove('hidden');
-                addBtn.classList.add('hidden');
-                tagInput.focus();
-
-                const id = parseInt(tagInput.dataset.id);
-                const item = this.items.find(item => item.id === id);
-                if (item && item.tags) {
-                    tagInput.value = item.tags.join(', ');
-                }
-            });
-        });
-
-        // 删除按钮事件
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                if (confirm('Are you sure you want to delete this goal?')) {
-                    this.deleteItem(id);
-                }
-            });
-        });
     }
 
     getAllTags() {

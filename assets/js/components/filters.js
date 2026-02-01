@@ -212,7 +212,7 @@ const FilterConfigs = {
         getValue: (item) => item[yearField],
         match: (item, filterValue) => {
             const year = item[yearField];
-            const decade = getDecadeFromYear(year);
+            const decade = getDecade(year);
             return decade === filterValue;
         }
     }),
@@ -238,7 +238,7 @@ const FilterConfigs = {
     rating: (ratingField = 'rating') => ({
         match: (item, filterValue) => {
             const rating = item[ratingField];
-            return isInRatingRangeLocal(rating, filterValue);
+            return isInRatingRange(rating, filterValue);
         }
     }),
 
@@ -249,52 +249,10 @@ const FilterConfigs = {
     period: (periodField = 'recordingPeriod') => ({
         match: (item, filterValue) => {
             const period = item[periodField];
-            return matchesPeriodFilterLocal(period, filterValue);
+            return matchesPeriodFilter(period, filterValue);
         }
     })
 };
-
-// Helper functions for filter configs
-function getDecadeFromYear(year) {
-    if (year >= 2020) return '2020s';
-    if (year >= 2010) return '2010s';
-    if (year >= 2000) return '2000s';
-    if (year >= 1990) return '1990s';
-    if (year >= 1980) return '1980s';
-    if (year >= 1970) return '1970s';
-    if (year >= 1960) return '1960s';
-    if (year >= 1950) return '1950s';
-    if (year >= 1940) return '1940s';
-    if (year >= 1930) return '1930s';
-    return 'older';
-}
-
-function isInRatingRangeLocal(rating, range) {
-    if (!range) return true;
-    if (range.endsWith('+')) {
-        const min = parseFloat(range.slice(0, -1));
-        return rating >= min;
-    }
-    const [minStr, maxStr] = range.split('-');
-    const min = parseFloat(minStr);
-    const max = parseFloat(maxStr);
-    return rating >= min && rating < max + 0.1;
-}
-
-function matchesPeriodFilterLocal(period, filterValue) {
-    if (!filterValue) return true;
-    const periodRanges = {
-        '1900s-1920s': ['190', '191', '192'],
-        '1930s-1940s': ['193', '194'],
-        '1950s-1960s': ['195', '196'],
-        '1970s-1980s': ['197', '198'],
-        '1990s-2000s': ['199', '200'],
-        '2010s-2020s': ['201', '202']
-    };
-    const prefixes = periodRanges[filterValue];
-    if (!prefixes) return true;
-    return prefixes.some(prefix => period.includes(prefix));
-}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
