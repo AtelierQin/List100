@@ -17,11 +17,27 @@ class Modal {
         this.onOpen = options.onOpen || null;
         this.onClose = options.onClose || null;
         this.currentItem = null;
+        this.previousActiveElement = null;
 
         this.modal = document.getElementById(this.modalId);
         this.closeBtn = document.getElementById(this.closeBtnId);
 
+        this._setupAccessibility();
         this._bindEvents();
+    }
+
+    /**
+     * Setup accessibility attributes for the modal
+     * @private
+     */
+    _setupAccessibility() {
+        if (this.modal) {
+            this.modal.setAttribute('role', 'dialog');
+            this.modal.setAttribute('aria-modal', 'true');
+            if (this.modalId) {
+                this.modal.setAttribute('aria-labelledby', `${this.modalId}-title`);
+            }
+        }
     }
 
     /**
@@ -58,9 +74,20 @@ class Modal {
     show(item = null) {
         if (!this.modal) return;
 
+        this.previousActiveElement = document.activeElement;
         this.currentItem = item;
         this.modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        document.body.style.overflow = 'hidden';
+
+        // Set initial focus to close button or first focusable element
+        setTimeout(() => {
+            const focusableElement = this.modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (focusableElement) {
+                focusableElement.focus();
+            } else if (this.closeBtn) {
+                this.closeBtn.focus();
+            }
+        }, 0);
 
         if (this.onOpen && typeof this.onOpen === 'function') {
             this.onOpen(item);
@@ -74,10 +101,15 @@ class Modal {
         if (!this.modal) return;
 
         this.modal.classList.add('hidden');
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = '';
 
         const previousItem = this.currentItem;
         this.currentItem = null;
+
+        // Restore focus to the element that was active before opening the modal
+        if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
+            this.previousActiveElement.focus();
+        }
 
         if (this.onClose && typeof this.onClose === 'function') {
             this.onClose(previousItem);

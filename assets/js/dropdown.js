@@ -35,20 +35,22 @@ class DropdownManager {
             }
         });
         
-        // 点击页面其他区域关闭所有下拉菜单
-        // Use named function for removal if needed, but for now simple check
-        document.onclick = (e) => {
+        // 存储事件处理器引用以便清理
+        this._outsideClickHandler = (e) => {
             if (!e.target.closest('.dropdown')) {
                 this.closeAllDropdowns();
             }
         };
         
-        // 键盘导航支持
-        document.onkeydown = (e) => {
+        this._escapeKeyHandler = (e) => {
             if (e.key === 'Escape') {
                 this.closeAllDropdowns();
             }
         };
+        
+        // 使用 addEventListener 替代直接赋值，避免覆盖其他处理器
+        document.addEventListener('click', this._outsideClickHandler);
+        document.addEventListener('keydown', this._escapeKeyHandler);
     }
     
     toggleDropdown(dropdown) {
@@ -73,6 +75,20 @@ class DropdownManager {
         this.dropdowns.forEach(dropdown => {
             dropdown.classList.remove('active');
         });
+    }
+    
+    /**
+     * Clean up event listeners to prevent memory leaks
+     * Call this method when the component is being destroyed
+     */
+    destroy() {
+        if (this._outsideClickHandler) {
+            document.removeEventListener('click', this._outsideClickHandler);
+        }
+        if (this._escapeKeyHandler) {
+            document.removeEventListener('keydown', this._escapeKeyHandler);
+        }
+        this.dropdowns = [];
     }
     
     // 设置当前页面的下拉菜单状态
