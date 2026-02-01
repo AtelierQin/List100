@@ -500,6 +500,20 @@ class GoalDetail {
                 const activeType = document.querySelector('.resource-tab.active').dataset.type;
                 this.renderResourceResults(activeType, query);
             });
+
+            // Resource item click delegation - XSS safe approach
+            document.getElementById('resourceResults').addEventListener('click', (e) => {
+                const item = e.target.closest('.resource-result-item');
+                if (!item) return;
+
+                const resourceId = item.dataset.resourceId;
+                const resourceType = item.dataset.resourceType;
+                const resource = this.mockCollections[resourceType]?.find(r => r.id === resourceId);
+
+                if (resource) {
+                    this.linkResource(resource);
+                }
+            });
         }
     }
 
@@ -546,7 +560,7 @@ class GoalDetail {
         );
 
         resultsContainer.innerHTML = filtered.map(item => `
-            <div class="resource-result-item" onclick='goalDetail.linkResource(${JSON.stringify(item)})'>
+            <div class="resource-result-item" data-resource-id="${item.id}" data-resource-type="${type}">
                 <div class="result-icon">${item.type === 'book' ? '📖' : '✈️'}</div>
                 <div class="result-info">
                     <div class="result-title">${this.escapeHtml(item.title)}</div>
@@ -1371,13 +1385,14 @@ ${habitSummary}
                         localStorage.removeItem(`list100-notes-backup-${this.goalId}`);
 
                         // 清理历史备份
+                        const keysToRemove = [];
                         for (let i = 0; i < localStorage.length; i++) {
                             const key = localStorage.key(i);
                             if (key && key.startsWith(`list100-notes-history-${this.goalId}-`)) {
-                                localStorage.removeItem(key);
-                                i--; // 调整索引，因为localStorage长度改变了
+                                keysToRemove.push(key);
                             }
                         }
+                        keysToRemove.forEach(key => localStorage.removeItem(key));
 
                         alert('Goal deleted successfully!');
                         window.location.href = 'list100.html';

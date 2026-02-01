@@ -1,4 +1,17 @@
 // OS页面的JavaScript功能
+
+/**
+ * Escape HTML to prevent XSS attacks
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped text safe for HTML insertion
+ */
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 class ResourceDatabase {
     constructor() {
         this.list100Items = [];
@@ -207,8 +220,13 @@ class ResourceDatabase {
         window.addEventListener('storage', (e) => {
             if (e.key === 'list100-items' && e.newValue) {
                 try {
-                    console.log('List100 data updated from another tab');
-                    this.list100Items = JSON.parse(e.newValue);
+                    const parsedData = JSON.parse(e.newValue);
+                    if (!Array.isArray(parsedData)) {
+                        console.error('Invalid data format: expected array, got', typeof parsedData);
+                        return;
+                    }
+                    console.log('List100 data updated from another tab:', parsedData.length, 'items');
+                    this.list100Items = parsedData;
                     this.renderGoals();
                     this.updateTagFilters();
                     this.updateYearFilters();
@@ -433,16 +451,16 @@ class ResourceDatabase {
 
     createGoalCard(item) {
         const tagsHTML = item.tags && item.tags.length > 0
-            ? item.tags.map(tag => `<span class="goal-tag">${tag}</span>`).join('')
+            ? item.tags.map(tag => `<span class="goal-tag">${escapeHtml(tag)}</span>`).join('')
             : '';
 
         return `
             <div class="goal-card ${item.completed ? 'completed' : ''}" data-id="${item.id}">
                 <div class="goal-header">
-                    <h4 class="goal-title">${item.text || 'Untitled Goal'}</h4>
+                    <h4 class="goal-title">${escapeHtml(item.text) || 'Untitled Goal'}</h4>
                     ${item.pinned ? '<span class="goal-pin">📌</span>' : ''}
                 </div>
-                ${item.description ? `<p class="goal-description">${item.description}</p>` : ''}
+                ${item.description ? `<p class="goal-description">${escapeHtml(item.description)}</p>` : ''}
                 ${tagsHTML ? `<div class="goal-tags">${tagsHTML}</div>` : ''}
                 ${item.completed ? `
                     <div class="goal-completed-badge">
