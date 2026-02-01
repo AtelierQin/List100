@@ -172,7 +172,5 @@ class Layout {
 
 document.addEventListener('DOMContentLoaded', () => {
     new Layout();
-    // Clear legacy theme data
-    localStorage.removeItem('theme');
-    document.documentElement.removeAttribute('data-theme');
+    // Theme manager auto-initializes separately
 });
