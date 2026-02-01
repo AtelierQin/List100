@@ -252,23 +252,3 @@
 .nav {
     view-transition-name: navbar;
 }
-
-/* ==================== Dark Mode Adaptations ==================== */
-[data-theme="dark"] .nav {
-    background: rgba(22, 22, 42, 0.95);
-    border-bottom-color: rgba(124, 140, 229, 0.15);
-}
-
-[data-theme="dark"] .dropdown-menu {
-    background: rgba(30, 30, 58, 0.98);
-    border-color: rgba(124, 140, 229, 0.2);
-}
-
-[data-theme="dark"] .mobile-menu {
-    background: rgba(22, 22, 42, 0.98);
-    border-bottom-color: rgba(124, 140, 229, 0.15);
-}
-
-[data-theme="dark"] .mobile-menu-btn span {
-    background: var(--color-text-primary);
-}

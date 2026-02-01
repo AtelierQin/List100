@@ -15,7 +15,6 @@
 @import url('./components/modal.css');
 @import url('./components/toast.css');
 @import url('./components/forms.css');
-@import url('./components/theme-toggle.css');
 
 /* ==================== List100 布局样式 ==================== */
 
@@ -1061,28 +1060,4 @@
     .footer .container {
         padding: 0 16px;
     }
-}
-
-/* ==================== Dark Mode Adaptations ==================== */
-[data-theme="dark"] .motto-section {
-    background: linear-gradient(135deg, #1a1a35 0%, #252545 100%);
-}
-
-[data-theme="dark"] .motto-section::before {
-    background: radial-gradient(circle at 30% 50%, rgba(124, 140, 229, 0.08) 0%, transparent 60%),
-        radial-gradient(circle at 70% 50%, rgba(244, 114, 182, 0.06) 0%, transparent 60%);
-}
-
-[data-theme="dark"] .sidebar {
-    background: linear-gradient(135deg, #1e1e3a 0%, #252550 100%);
-    border-color: rgba(124, 140, 229, 0.15);
-}
-
-[data-theme="dark"] .list-container {
-    border-color: rgba(124, 140, 229, 0.1);
-}
-
-[data-theme="dark"] .todo-item.pinned {
-    background: linear-gradient(135deg, #252550 0%, #2a2a60 100%);
-    border-color: rgba(124, 140, 229, 0.2);
 }
