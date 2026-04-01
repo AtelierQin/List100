@@ -1,0 +1,2166 @@
+[
+    {
+        "id": "beijing",
+        "name": "北京",
+        "nameEn": "Beijing",
+        "type": "municipality",
+        "lat": 39.90,
+        "lng": 116.40,
+        "cities": [
+            {
+                "id": "beijing-city",
+                "name": "北京市",
+                "lat": 39.90,
+                "lng": 116.40
+            }
+        ]
+    },
+    {
+        "id": "tianjin",
+        "name": "天津",
+        "nameEn": "Tianjin",
+        "type": "municipality",
+        "lat": 39.13,
+        "lng": 117.20,
+        "cities": [
+            {
+                "id": "tianjin-city",
+                "name": "天津市",
+                "lat": 39.13,
+                "lng": 117.20
+            }
+        ]
+    },
+    {
+        "id": "shanghai",
+        "name": "上海",
+        "nameEn": "Shanghai",
+        "type": "municipality",
+        "lat": 31.23,
+        "lng": 121.47,
+        "cities": [
+            {
+                "id": "shanghai-city",
+                "name": "上海市",
+                "lat": 31.23,
+                "lng": 121.47
+            }
+        ]
+    },
+    {
+        "id": "chongqing",
+        "name": "重庆",
+        "nameEn": "Chongqing",
+        "type": "municipality",
+        "lat": 29.56,
+        "lng": 106.55,
+        "cities": [
+            {
+                "id": "chongqing-city",
+                "name": "重庆市",
+                "lat": 29.56,
+                "lng": 106.55
+            }
+        ]
+    },
+    {
+        "id": "hebei",
+        "name": "河北",
+        "nameEn": "Hebei",
+        "type": "province",
+        "lat": 38.03,
+        "lng": 114.53,
+        "cities": [
+            {
+                "id": "shijiazhuang",
+                "name": "石家庄",
+                "lat": 38.04,
+                "lng": 114.51
+            },
+            {
+                "id": "tangshan",
+                "name": "唐山",
+                "lat": 39.63,
+                "lng": 118.18
+            },
+            {
+                "id": "qinhuangdao",
+                "name": "秦皇岛",
+                "lat": 39.94,
+                "lng": 119.60
+            },
+            {
+                "id": "handan",
+                "name": "邯郸",
+                "lat": 36.63,
+                "lng": 114.54
+            },
+            {
+                "id": "baoding",
+                "name": "保定",
+                "lat": 38.87,
+                "lng": 115.46
+            },
+            {
+                "id": "zhangjiakou",
+                "name": "张家口",
+                "lat": 40.77,
+                "lng": 114.88
+            },
+            {
+                "id": "chengde",
+                "name": "承德",
+                "lat": 40.95,
+                "lng": 117.93
+            },
+            {
+                "id": "langfang",
+                "name": "廊坊",
+                "lat": 39.52,
+                "lng": 116.68
+            },
+            {
+                "id": "cangzhou",
+                "name": "沧州",
+                "lat": 38.30,
+                "lng": 116.84
+            },
+            {
+                "id": "hengshui",
+                "name": "衡水",
+                "lat": 37.74,
+                "lng": 115.67
+            },
+            {
+                "id": "xingtai",
+                "name": "邢台",
+                "lat": 37.07,
+                "lng": 114.50
+            }
+        ]
+    },
+    {
+        "id": "shanxi",
+        "name": "山西",
+        "nameEn": "Shanxi",
+        "type": "province",
+        "lat": 37.87,
+        "lng": 112.55,
+        "cities": [
+            {
+                "id": "taiyuan",
+                "name": "太原",
+                "lat": 37.87,
+                "lng": 112.55
+            },
+            {
+                "id": "datong",
+                "name": "大同",
+                "lat": 40.08,
+                "lng": 113.30
+            },
+            {
+                "id": "yangquan",
+                "name": "阳泉",
+                "lat": 37.87,
+                "lng": 113.58
+            },
+            {
+                "id": "changzhi",
+                "name": "长治",
+                "lat": 36.20,
+                "lng": 113.12
+            },
+            {
+                "id": "jincheng",
+                "name": "晋城",
+                "lat": 35.49,
+                "lng": 112.85
+            },
+            {
+                "id": "shuozhou",
+                "name": "朔州",
+                "lat": 39.33,
+                "lng": 112.43
+            },
+            {
+                "id": "jinzhong",
+                "name": "晋中",
+                "lat": 37.69,
+                "lng": 112.75
+            },
+            {
+                "id": "yuncheng",
+                "name": "运城",
+                "lat": 35.02,
+                "lng": 111.01
+            },
+            {
+                "id": "xinzhou",
+                "name": "忻州",
+                "lat": 38.42,
+                "lng": 112.73
+            },
+            {
+                "id": "linfen",
+                "name": "临汾",
+                "lat": 36.09,
+                "lng": 111.52
+            },
+            {
+                "id": "lvliang",
+                "name": "吕梁",
+                "lat": 37.52,
+                "lng": 111.14
+            }
+        ]
+    },
+    {
+        "id": "neimenggu",
+        "name": "内蒙古",
+        "nameEn": "Inner Mongolia",
+        "type": "autonomous",
+        "lat": 40.82,
+        "lng": 111.65,
+        "cities": [
+            {
+                "id": "hohhot",
+                "name": "呼和浩特",
+                "lat": 40.84,
+                "lng": 111.75
+            },
+            {
+                "id": "baotou",
+                "name": "包头",
+                "lat": 40.66,
+                "lng": 109.84
+            },
+            {
+                "id": "chifeng",
+                "name": "赤峰",
+                "lat": 42.26,
+                "lng": 118.89
+            },
+            {
+                "id": "ordos",
+                "name": "鄂尔多斯",
+                "lat": 39.61,
+                "lng": 109.78
+            },
+            {
+                "id": "hulunbuir",
+                "name": "呼伦贝尔",
+                "lat": 49.21,
+                "lng": 119.77
+            },
+            {
+                "id": "tongliao",
+                "name": "通辽",
+                "lat": 43.65,
+                "lng": 122.24
+            }
+        ]
+    },
+    {
+        "id": "liaoning",
+        "name": "辽宁",
+        "nameEn": "Liaoning",
+        "type": "province",
+        "lat": 41.80,
+        "lng": 123.43,
+        "cities": [
+            {
+                "id": "shenyang",
+                "name": "沈阳",
+                "lat": 41.80,
+                "lng": 123.43
+            },
+            {
+                "id": "dalian",
+                "name": "大连",
+                "lat": 38.91,
+                "lng": 121.60
+            },
+            {
+                "id": "anshan",
+                "name": "鞍山",
+                "lat": 41.11,
+                "lng": 122.99
+            },
+            {
+                "id": "fushun",
+                "name": "抚顺",
+                "lat": 41.88,
+                "lng": 123.96
+            },
+            {
+                "id": "benxi",
+                "name": "本溪",
+                "lat": 41.30,
+                "lng": 123.77
+            },
+            {
+                "id": "dandong",
+                "name": "丹东",
+                "lat": 40.00,
+                "lng": 124.38
+            },
+            {
+                "id": "jinzhou",
+                "name": "锦州",
+                "lat": 41.10,
+                "lng": 121.13
+            },
+            {
+                "id": "yingkou",
+                "name": "营口",
+                "lat": 40.67,
+                "lng": 122.24
+            },
+            {
+                "id": "liaoyang",
+                "name": "辽阳",
+                "lat": 41.27,
+                "lng": 123.24
+            },
+            {
+                "id": "panjin",
+                "name": "盘锦",
+                "lat": 41.12,
+                "lng": 122.07
+            }
+        ]
+    },
+    {
+        "id": "jilin",
+        "name": "吉林",
+        "nameEn": "Jilin",
+        "type": "province",
+        "lat": 43.84,
+        "lng": 125.33,
+        "cities": [
+            {
+                "id": "changchun",
+                "name": "长春",
+                "lat": 43.88,
+                "lng": 125.32
+            },
+            {
+                "id": "jilin-city",
+                "name": "吉林市",
+                "lat": 43.84,
+                "lng": 126.55
+            },
+            {
+                "id": "siping",
+                "name": "四平",
+                "lat": 43.17,
+                "lng": 124.35
+            },
+            {
+                "id": "tonghua",
+                "name": "通化",
+                "lat": 41.73,
+                "lng": 125.94
+            },
+            {
+                "id": "baishan",
+                "name": "白山",
+                "lat": 41.94,
+                "lng": 126.42
+            },
+            {
+                "id": "yanbian",
+                "name": "延边",
+                "lat": 42.89,
+                "lng": 129.51
+            }
+        ]
+    },
+    {
+        "id": "heilongjiang",
+        "name": "黑龙江",
+        "nameEn": "Heilongjiang",
+        "type": "province",
+        "lat": 45.75,
+        "lng": 126.65,
+        "cities": [
+            {
+                "id": "harbin",
+                "name": "哈尔滨",
+                "lat": 45.75,
+                "lng": 126.65
+            },
+            {
+                "id": "qiqihar",
+                "name": "齐齐哈尔",
+                "lat": 47.35,
+                "lng": 123.97
+            },
+            {
+                "id": "mudanjiang",
+                "name": "牡丹江",
+                "lat": 44.55,
+                "lng": 129.63
+            },
+            {
+                "id": "jiamusi",
+                "name": "佳木斯",
+                "lat": 46.80,
+                "lng": 130.32
+            },
+            {
+                "id": "daqing",
+                "name": "大庆",
+                "lat": 46.59,
+                "lng": 125.10
+            },
+            {
+                "id": "yichun-hlj",
+                "name": "伊春",
+                "lat": 47.73,
+                "lng": 128.84
+            }
+        ]
+    },
+    {
+        "id": "jiangsu",
+        "name": "江苏",
+        "nameEn": "Jiangsu",
+        "type": "province",
+        "lat": 32.06,
+        "lng": 118.80,
+        "cities": [
+            {
+                "id": "nanjing",
+                "name": "南京",
+                "lat": 32.06,
+                "lng": 118.80
+            },
+            {
+                "id": "wuxi",
+                "name": "无锡",
+                "lat": 31.49,
+                "lng": 120.31
+            },
+            {
+                "id": "xuzhou",
+                "name": "徐州",
+                "lat": 34.26,
+                "lng": 117.19
+            },
+            {
+                "id": "changzhou",
+                "name": "常州",
+                "lat": 31.81,
+                "lng": 119.97
+            },
+            {
+                "id": "suzhou-js",
+                "name": "苏州",
+                "lat": 31.30,
+                "lng": 120.62
+            },
+            {
+                "id": "nantong",
+                "name": "南通",
+                "lat": 32.06,
+                "lng": 120.87
+            },
+            {
+                "id": "lianyungang",
+                "name": "连云港",
+                "lat": 34.60,
+                "lng": 119.22
+            },
+            {
+                "id": "huaian",
+                "name": "淮安",
+                "lat": 33.55,
+                "lng": 119.02
+            },
+            {
+                "id": "yancheng",
+                "name": "盐城",
+                "lat": 33.35,
+                "lng": 120.16
+            },
+            {
+                "id": "yangzhou",
+                "name": "扬州",
+                "lat": 32.39,
+                "lng": 119.43
+            },
+            {
+                "id": "zhenjiang",
+                "name": "镇江",
+                "lat": 32.20,
+                "lng": 119.45
+            },
+            {
+                "id": "taizhou-js",
+                "name": "泰州",
+                "lat": 32.46,
+                "lng": 119.92
+            },
+            {
+                "id": "suqian",
+                "name": "宿迁",
+                "lat": 33.96,
+                "lng": 118.28
+            }
+        ]
+    },
+    {
+        "id": "zhejiang",
+        "name": "浙江",
+        "nameEn": "Zhejiang",
+        "type": "province",
+        "lat": 30.27,
+        "lng": 120.15,
+        "cities": [
+            {
+                "id": "hangzhou",
+                "name": "杭州",
+                "lat": 30.27,
+                "lng": 120.15
+            },
+            {
+                "id": "ningbo",
+                "name": "宁波",
+                "lat": 29.87,
+                "lng": 121.54
+            },
+            {
+                "id": "wenzhou",
+                "name": "温州",
+                "lat": 28.00,
+                "lng": 120.67
+            },
+            {
+                "id": "jiaxing",
+                "name": "嘉兴",
+                "lat": 30.77,
+                "lng": 120.75
+            },
+            {
+                "id": "huzhou",
+                "name": "湖州",
+                "lat": 30.87,
+                "lng": 120.09
+            },
+            {
+                "id": "shaoxing",
+                "name": "绍兴",
+                "lat": 30.00,
+                "lng": 120.58
+            },
+            {
+                "id": "jinhua",
+                "name": "金华",
+                "lat": 29.08,
+                "lng": 119.65
+            },
+            {
+                "id": "quzhou",
+                "name": "衢州",
+                "lat": 28.97,
+                "lng": 118.87
+            },
+            {
+                "id": "zhoushan",
+                "name": "舟山",
+                "lat": 30.03,
+                "lng": 122.11
+            },
+            {
+                "id": "taizhou-zj",
+                "name": "台州",
+                "lat": 28.66,
+                "lng": 121.42
+            },
+            {
+                "id": "lishui",
+                "name": "丽水",
+                "lat": 28.47,
+                "lng": 119.92
+            }
+        ]
+    },
+    {
+        "id": "anhui",
+        "name": "安徽",
+        "nameEn": "Anhui",
+        "type": "province",
+        "lat": 31.86,
+        "lng": 117.28,
+        "cities": [
+            {
+                "id": "hefei",
+                "name": "合肥",
+                "lat": 31.86,
+                "lng": 117.28
+            },
+            {
+                "id": "wuhu",
+                "name": "芜湖",
+                "lat": 31.35,
+                "lng": 118.38
+            },
+            {
+                "id": "bengbu",
+                "name": "蚌埠",
+                "lat": 32.92,
+                "lng": 117.39
+            },
+            {
+                "id": "huainan",
+                "name": "淮南",
+                "lat": 32.63,
+                "lng": 117.02
+            },
+            {
+                "id": "maanshan",
+                "name": "马鞍山",
+                "lat": 31.67,
+                "lng": 118.51
+            },
+            {
+                "id": "huangshan-city",
+                "name": "黄山",
+                "lat": 29.72,
+                "lng": 118.34
+            },
+            {
+                "id": "anqing",
+                "name": "安庆",
+                "lat": 30.54,
+                "lng": 117.06
+            },
+            {
+                "id": "fuyang",
+                "name": "阜阳",
+                "lat": 32.89,
+                "lng": 115.81
+            },
+            {
+                "id": "suzhou-ah",
+                "name": "宿州",
+                "lat": 33.64,
+                "lng": 116.96
+            }
+        ]
+    },
+    {
+        "id": "fujian",
+        "name": "福建",
+        "nameEn": "Fujian",
+        "type": "province",
+        "lat": 26.10,
+        "lng": 119.30,
+        "cities": [
+            {
+                "id": "fuzhou",
+                "name": "福州",
+                "lat": 26.07,
+                "lng": 119.31
+            },
+            {
+                "id": "xiamen",
+                "name": "厦门",
+                "lat": 24.48,
+                "lng": 118.09
+            },
+            {
+                "id": "putian",
+                "name": "莆田",
+                "lat": 25.43,
+                "lng": 119.01
+            },
+            {
+                "id": "sanming",
+                "name": "三明",
+                "lat": 26.26,
+                "lng": 117.64
+            },
+            {
+                "id": "quanzhou",
+                "name": "泉州",
+                "lat": 24.87,
+                "lng": 118.68
+            },
+            {
+                "id": "zhangzhou",
+                "name": "漳州",
+                "lat": 24.51,
+                "lng": 117.65
+            },
+            {
+                "id": "nanping",
+                "name": "南平",
+                "lat": 26.64,
+                "lng": 118.18
+            },
+            {
+                "id": "longyan",
+                "name": "龙岩",
+                "lat": 25.10,
+                "lng": 117.01
+            },
+            {
+                "id": "ningde",
+                "name": "宁德",
+                "lat": 26.66,
+                "lng": 119.52
+            }
+        ]
+    },
+    {
+        "id": "jiangxi",
+        "name": "江西",
+        "nameEn": "Jiangxi",
+        "type": "province",
+        "lat": 28.68,
+        "lng": 115.86,
+        "cities": [
+            {
+                "id": "nanchang",
+                "name": "南昌",
+                "lat": 28.68,
+                "lng": 115.86
+            },
+            {
+                "id": "jingdezhen",
+                "name": "景德镇",
+                "lat": 29.29,
+                "lng": 117.21
+            },
+            {
+                "id": "pingxiang",
+                "name": "萍乡",
+                "lat": 27.62,
+                "lng": 113.85
+            },
+            {
+                "id": "jiujiang",
+                "name": "九江",
+                "lat": 29.71,
+                "lng": 116.00
+            },
+            {
+                "id": "xinyu",
+                "name": "新余",
+                "lat": 27.82,
+                "lng": 114.93
+            },
+            {
+                "id": "yingtan",
+                "name": "鹰潭",
+                "lat": 28.26,
+                "lng": 117.07
+            },
+            {
+                "id": "ganzhou",
+                "name": "赣州",
+                "lat": 25.85,
+                "lng": 114.93
+            },
+            {
+                "id": "jian",
+                "name": "吉安",
+                "lat": 27.11,
+                "lng": 114.99
+            },
+            {
+                "id": "yichun-jx",
+                "name": "宜春",
+                "lat": 27.80,
+                "lng": 114.39
+            },
+            {
+                "id": "shangrao",
+                "name": "上饶",
+                "lat": 28.45,
+                "lng": 117.97
+            }
+        ]
+    },
+    {
+        "id": "shandong",
+        "name": "山东",
+        "nameEn": "Shandong",
+        "type": "province",
+        "lat": 36.67,
+        "lng": 116.99,
+        "cities": [
+            {
+                "id": "jinan",
+                "name": "济南",
+                "lat": 36.65,
+                "lng": 116.99
+            },
+            {
+                "id": "qingdao",
+                "name": "青岛",
+                "lat": 36.07,
+                "lng": 120.38
+            },
+            {
+                "id": "zibo",
+                "name": "淄博",
+                "lat": 36.81,
+                "lng": 118.05
+            },
+            {
+                "id": "zaozhuang",
+                "name": "枣庄",
+                "lat": 34.86,
+                "lng": 117.55
+            },
+            {
+                "id": "dongying",
+                "name": "东营",
+                "lat": 37.43,
+                "lng": 118.67
+            },
+            {
+                "id": "yantai",
+                "name": "烟台",
+                "lat": 37.54,
+                "lng": 121.40
+            },
+            {
+                "id": "weifang",
+                "name": "潍坊",
+                "lat": 36.71,
+                "lng": 119.16
+            },
+            {
+                "id": "jining",
+                "name": "济宁",
+                "lat": 35.41,
+                "lng": 116.59
+            },
+            {
+                "id": "taian",
+                "name": "泰安",
+                "lat": 36.19,
+                "lng": 117.09
+            },
+            {
+                "id": "weihai",
+                "name": "威海",
+                "lat": 37.51,
+                "lng": 122.12
+            },
+            {
+                "id": "rizhao",
+                "name": "日照",
+                "lat": 35.42,
+                "lng": 119.53
+            },
+            {
+                "id": "linyi",
+                "name": "临沂",
+                "lat": 35.10,
+                "lng": 118.34
+            },
+            {
+                "id": "dezhou",
+                "name": "德州",
+                "lat": 37.44,
+                "lng": 116.36
+            },
+            {
+                "id": "liaocheng",
+                "name": "聊城",
+                "lat": 36.46,
+                "lng": 115.99
+            },
+            {
+                "id": "binzhou",
+                "name": "滨州",
+                "lat": 37.38,
+                "lng": 117.97
+            },
+            {
+                "id": "heze",
+                "name": "菏泽",
+                "lat": 35.23,
+                "lng": 115.48
+            }
+        ]
+    },
+    {
+        "id": "henan",
+        "name": "河南",
+        "nameEn": "Henan",
+        "type": "province",
+        "lat": 34.76,
+        "lng": 113.65,
+        "cities": [
+            {
+                "id": "zhengzhou",
+                "name": "郑州",
+                "lat": 34.75,
+                "lng": 113.65
+            },
+            {
+                "id": "kaifeng",
+                "name": "开封",
+                "lat": 34.80,
+                "lng": 114.31
+            },
+            {
+                "id": "luoyang",
+                "name": "洛阳",
+                "lat": 34.62,
+                "lng": 112.45
+            },
+            {
+                "id": "pingdingshan",
+                "name": "平顶山",
+                "lat": 33.77,
+                "lng": 113.19
+            },
+            {
+                "id": "anyang",
+                "name": "安阳",
+                "lat": 36.10,
+                "lng": 114.39
+            },
+            {
+                "id": "hebi",
+                "name": "鹤壁",
+                "lat": 35.75,
+                "lng": 114.30
+            },
+            {
+                "id": "xinxiang",
+                "name": "新乡",
+                "lat": 35.30,
+                "lng": 113.93
+            },
+            {
+                "id": "jiaozuo",
+                "name": "焦作",
+                "lat": 35.22,
+                "lng": 113.24
+            },
+            {
+                "id": "puyang",
+                "name": "濮阳",
+                "lat": 35.76,
+                "lng": 115.03
+            },
+            {
+                "id": "xuchang",
+                "name": "许昌",
+                "lat": 34.04,
+                "lng": 113.85
+            },
+            {
+                "id": "luohe",
+                "name": "漯河",
+                "lat": 33.58,
+                "lng": 114.02
+            },
+            {
+                "id": "sanmenxia",
+                "name": "三门峡",
+                "lat": 34.77,
+                "lng": 111.20
+            },
+            {
+                "id": "nanyang",
+                "name": "南阳",
+                "lat": 33.00,
+                "lng": 112.53
+            },
+            {
+                "id": "shangqiu",
+                "name": "商丘",
+                "lat": 34.44,
+                "lng": 115.65
+            },
+            {
+                "id": "xinyang",
+                "name": "信阳",
+                "lat": 32.13,
+                "lng": 114.07
+            },
+            {
+                "id": "zhoukou",
+                "name": "周口",
+                "lat": 33.63,
+                "lng": 114.65
+            },
+            {
+                "id": "zhumadian",
+                "name": "驻马店",
+                "lat": 32.98,
+                "lng": 114.02
+            }
+        ]
+    },
+    {
+        "id": "hubei",
+        "name": "湖北",
+        "nameEn": "Hubei",
+        "type": "province",
+        "lat": 30.59,
+        "lng": 114.31,
+        "cities": [
+            {
+                "id": "wuhan",
+                "name": "武汉",
+                "lat": 30.59,
+                "lng": 114.31
+            },
+            {
+                "id": "huangshi",
+                "name": "黄石",
+                "lat": 30.20,
+                "lng": 115.04
+            },
+            {
+                "id": "shiyan",
+                "name": "十堰",
+                "lat": 32.65,
+                "lng": 110.80
+            },
+            {
+                "id": "yichang",
+                "name": "宜昌",
+                "lat": 30.69,
+                "lng": 111.29
+            },
+            {
+                "id": "xiangyang",
+                "name": "襄阳",
+                "lat": 32.00,
+                "lng": 112.14
+            },
+            {
+                "id": "ezhou",
+                "name": "鄂州",
+                "lat": 30.39,
+                "lng": 114.89
+            },
+            {
+                "id": "jingmen",
+                "name": "荆门",
+                "lat": 31.04,
+                "lng": 112.20
+            },
+            {
+                "id": "xiaogan",
+                "name": "孝感",
+                "lat": 30.92,
+                "lng": 113.93
+            },
+            {
+                "id": "jingzhou",
+                "name": "荆州",
+                "lat": 30.33,
+                "lng": 112.24
+            },
+            {
+                "id": "huanggang",
+                "name": "黄冈",
+                "lat": 30.45,
+                "lng": 114.87
+            },
+            {
+                "id": "xianning",
+                "name": "咸宁",
+                "lat": 29.84,
+                "lng": 114.32
+            },
+            {
+                "id": "enshi",
+                "name": "恩施",
+                "lat": 30.27,
+                "lng": 109.49
+            }
+        ]
+    },
+    {
+        "id": "hunan",
+        "name": "湖南",
+        "nameEn": "Hunan",
+        "type": "province",
+        "lat": 28.23,
+        "lng": 112.94,
+        "cities": [
+            {
+                "id": "changsha",
+                "name": "长沙",
+                "lat": 28.23,
+                "lng": 112.94
+            },
+            {
+                "id": "zhuzhou",
+                "name": "株洲",
+                "lat": 27.83,
+                "lng": 113.13
+            },
+            {
+                "id": "xiangtan",
+                "name": "湘潭",
+                "lat": 27.83,
+                "lng": 112.94
+            },
+            {
+                "id": "hengyang",
+                "name": "衡阳",
+                "lat": 26.89,
+                "lng": 112.57
+            },
+            {
+                "id": "shaoyang",
+                "name": "邵阳",
+                "lat": 27.24,
+                "lng": 111.47
+            },
+            {
+                "id": "yueyang",
+                "name": "岳阳",
+                "lat": 29.36,
+                "lng": 113.13
+            },
+            {
+                "id": "changde",
+                "name": "常德",
+                "lat": 29.03,
+                "lng": 111.70
+            },
+            {
+                "id": "zhangjiajie",
+                "name": "张家界",
+                "lat": 29.12,
+                "lng": 110.48
+            },
+            {
+                "id": "yiyang",
+                "name": "益阳",
+                "lat": 28.55,
+                "lng": 112.36
+            },
+            {
+                "id": "chenzhou",
+                "name": "郴州",
+                "lat": 25.77,
+                "lng": 113.01
+            },
+            {
+                "id": "yongzhou",
+                "name": "永州",
+                "lat": 26.44,
+                "lng": 111.61
+            },
+            {
+                "id": "huaihua",
+                "name": "怀化",
+                "lat": 27.55,
+                "lng": 110.00
+            },
+            {
+                "id": "loudi",
+                "name": "娄底",
+                "lat": 27.74,
+                "lng": 112.00
+            },
+            {
+                "id": "xiangxi",
+                "name": "湘西",
+                "lat": 28.31,
+                "lng": 109.74
+            }
+        ]
+    },
+    {
+        "id": "guangdong",
+        "name": "广东",
+        "nameEn": "Guangdong",
+        "type": "province",
+        "lat": 23.13,
+        "lng": 113.26,
+        "cities": [
+            {
+                "id": "guangzhou",
+                "name": "广州",
+                "lat": 23.13,
+                "lng": 113.26
+            },
+            {
+                "id": "shenzhen",
+                "name": "深圳",
+                "lat": 22.54,
+                "lng": 114.06
+            },
+            {
+                "id": "zhuhai",
+                "name": "珠海",
+                "lat": 22.27,
+                "lng": 113.58
+            },
+            {
+                "id": "shantou",
+                "name": "汕头",
+                "lat": 23.35,
+                "lng": 116.68
+            },
+            {
+                "id": "foshan",
+                "name": "佛山",
+                "lat": 23.02,
+                "lng": 113.12
+            },
+            {
+                "id": "shaoguan",
+                "name": "韶关",
+                "lat": 24.81,
+                "lng": 113.60
+            },
+            {
+                "id": "zhanjiang",
+                "name": "湛江",
+                "lat": 21.27,
+                "lng": 110.36
+            },
+            {
+                "id": "zhaoqing",
+                "name": "肇庆",
+                "lat": 23.05,
+                "lng": 112.46
+            },
+            {
+                "id": "jiangmen",
+                "name": "江门",
+                "lat": 22.58,
+                "lng": 113.08
+            },
+            {
+                "id": "maoming",
+                "name": "茂名",
+                "lat": 21.66,
+                "lng": 110.93
+            },
+            {
+                "id": "huizhou",
+                "name": "惠州",
+                "lat": 23.11,
+                "lng": 114.42
+            },
+            {
+                "id": "meizhou",
+                "name": "梅州",
+                "lat": 24.29,
+                "lng": 116.12
+            },
+            {
+                "id": "dongguan",
+                "name": "东莞",
+                "lat": 23.02,
+                "lng": 113.75
+            },
+            {
+                "id": "zhongshan",
+                "name": "中山",
+                "lat": 22.52,
+                "lng": 113.39
+            },
+            {
+                "id": "chaozhou",
+                "name": "潮州",
+                "lat": 23.66,
+                "lng": 116.62
+            },
+            {
+                "id": "jieyang",
+                "name": "揭阳",
+                "lat": 23.55,
+                "lng": 116.37
+            },
+            {
+                "id": "yangjiang",
+                "name": "阳江",
+                "lat": 21.86,
+                "lng": 111.98
+            },
+            {
+                "id": "qingyuan",
+                "name": "清远",
+                "lat": 23.68,
+                "lng": 113.06
+            },
+            {
+                "id": "shanwei",
+                "name": "汕尾",
+                "lat": 22.79,
+                "lng": 115.37
+            },
+            {
+                "id": "heyuan",
+                "name": "河源",
+                "lat": 23.74,
+                "lng": 114.70
+            },
+            {
+                "id": "yunfu",
+                "name": "云浮",
+                "lat": 22.93,
+                "lng": 112.04
+            }
+        ]
+    },
+    {
+        "id": "guangxi",
+        "name": "广西",
+        "nameEn": "Guangxi",
+        "type": "autonomous",
+        "lat": 22.82,
+        "lng": 108.32,
+        "cities": [
+            {
+                "id": "nanning",
+                "name": "南宁",
+                "lat": 22.82,
+                "lng": 108.37
+            },
+            {
+                "id": "liuzhou",
+                "name": "柳州",
+                "lat": 24.33,
+                "lng": 109.43
+            },
+            {
+                "id": "guilin",
+                "name": "桂林",
+                "lat": 25.27,
+                "lng": 110.29
+            },
+            {
+                "id": "wuzhou",
+                "name": "梧州",
+                "lat": 23.47,
+                "lng": 111.28
+            },
+            {
+                "id": "beihai",
+                "name": "北海",
+                "lat": 21.49,
+                "lng": 109.12
+            },
+            {
+                "id": "fangchenggang",
+                "name": "防城港",
+                "lat": 21.69,
+                "lng": 108.35
+            },
+            {
+                "id": "yulin-gx",
+                "name": "玉林",
+                "lat": 22.63,
+                "lng": 110.15
+            },
+            {
+                "id": "baise",
+                "name": "百色",
+                "lat": 23.90,
+                "lng": 106.62
+            },
+            {
+                "id": "hechi",
+                "name": "河池",
+                "lat": 24.69,
+                "lng": 108.06
+            }
+        ]
+    },
+    {
+        "id": "hainan",
+        "name": "海南",
+        "nameEn": "Hainan",
+        "type": "province",
+        "lat": 20.02,
+        "lng": 110.35,
+        "cities": [
+            {
+                "id": "haikou",
+                "name": "海口",
+                "lat": 20.02,
+                "lng": 110.35
+            },
+            {
+                "id": "sanya",
+                "name": "三亚",
+                "lat": 18.25,
+                "lng": 109.50
+            },
+            {
+                "id": "wanning",
+                "name": "万宁",
+                "lat": 18.80,
+                "lng": 110.39
+            },
+            {
+                "id": "qionghai",
+                "name": "琼海",
+                "lat": 19.25,
+                "lng": 110.47
+            },
+            {
+                "id": "danzhou",
+                "name": "儋州",
+                "lat": 19.52,
+                "lng": 109.58
+            }
+        ]
+    },
+    {
+        "id": "sichuan",
+        "name": "四川",
+        "nameEn": "Sichuan",
+        "type": "province",
+        "lat": 30.57,
+        "lng": 104.07,
+        "cities": [
+            {
+                "id": "chengdu",
+                "name": "成都",
+                "lat": 30.57,
+                "lng": 104.07
+            },
+            {
+                "id": "zigong",
+                "name": "自贡",
+                "lat": 29.34,
+                "lng": 104.78
+            },
+            {
+                "id": "panzhihua",
+                "name": "攀枝花",
+                "lat": 26.58,
+                "lng": 101.72
+            },
+            {
+                "id": "luzhou",
+                "name": "泸州",
+                "lat": 28.87,
+                "lng": 105.44
+            },
+            {
+                "id": "deyang",
+                "name": "德阳",
+                "lat": 31.13,
+                "lng": 104.40
+            },
+            {
+                "id": "mianyang",
+                "name": "绵阳",
+                "lat": 31.47,
+                "lng": 104.74
+            },
+            {
+                "id": "guangyuan",
+                "name": "广元",
+                "lat": 32.44,
+                "lng": 105.84
+            },
+            {
+                "id": "suining",
+                "name": "遂宁",
+                "lat": 30.53,
+                "lng": 105.59
+            },
+            {
+                "id": "neijiang",
+                "name": "内江",
+                "lat": 29.58,
+                "lng": 105.06
+            },
+            {
+                "id": "leshan",
+                "name": "乐山",
+                "lat": 29.57,
+                "lng": 103.77
+            },
+            {
+                "id": "nanchong",
+                "name": "南充",
+                "lat": 30.84,
+                "lng": 106.11
+            },
+            {
+                "id": "meishan",
+                "name": "眉山",
+                "lat": 30.08,
+                "lng": 103.85
+            },
+            {
+                "id": "yibin",
+                "name": "宜宾",
+                "lat": 28.75,
+                "lng": 104.64
+            },
+            {
+                "id": "guangan",
+                "name": "广安",
+                "lat": 30.47,
+                "lng": 106.63
+            },
+            {
+                "id": "dazhou",
+                "name": "达州",
+                "lat": 31.21,
+                "lng": 107.50
+            },
+            {
+                "id": "yaan",
+                "name": "雅安",
+                "lat": 30.01,
+                "lng": 103.00
+            },
+            {
+                "id": "bazhong",
+                "name": "巴中",
+                "lat": 31.87,
+                "lng": 106.77
+            },
+            {
+                "id": "aba",
+                "name": "阿坝",
+                "lat": 31.90,
+                "lng": 102.22
+            },
+            {
+                "id": "ganzi",
+                "name": "甘孜",
+                "lat": 30.05,
+                "lng": 101.96
+            },
+            {
+                "id": "liangshan",
+                "name": "凉山",
+                "lat": 27.88,
+                "lng": 102.27
+            }
+        ]
+    },
+    {
+        "id": "guizhou",
+        "name": "贵州",
+        "nameEn": "Guizhou",
+        "type": "province",
+        "lat": 26.65,
+        "lng": 106.63,
+        "cities": [
+            {
+                "id": "guiyang",
+                "name": "贵阳",
+                "lat": 26.65,
+                "lng": 106.63
+            },
+            {
+                "id": "liupanshui",
+                "name": "六盘水",
+                "lat": 26.59,
+                "lng": 104.83
+            },
+            {
+                "id": "zunyi",
+                "name": "遵义",
+                "lat": 27.73,
+                "lng": 106.93
+            },
+            {
+                "id": "anshun",
+                "name": "安顺",
+                "lat": 26.25,
+                "lng": 105.95
+            },
+            {
+                "id": "bijie",
+                "name": "毕节",
+                "lat": 27.30,
+                "lng": 105.29
+            },
+            {
+                "id": "tongren",
+                "name": "铜仁",
+                "lat": 27.72,
+                "lng": 109.19
+            },
+            {
+                "id": "qianxinan",
+                "name": "黔西南",
+                "lat": 25.09,
+                "lng": 104.90
+            },
+            {
+                "id": "qiandongnan",
+                "name": "黔东南",
+                "lat": 26.50,
+                "lng": 107.98
+            },
+            {
+                "id": "qiannan",
+                "name": "黔南",
+                "lat": 26.26,
+                "lng": 107.52
+            }
+        ]
+    },
+    {
+        "id": "yunnan",
+        "name": "云南",
+        "nameEn": "Yunnan",
+        "type": "province",
+        "lat": 25.04,
+        "lng": 102.71,
+        "cities": [
+            {
+                "id": "kunming",
+                "name": "昆明",
+                "lat": 25.04,
+                "lng": 102.71
+            },
+            {
+                "id": "qujing",
+                "name": "曲靖",
+                "lat": 25.50,
+                "lng": 103.80
+            },
+            {
+                "id": "yuxi-yn",
+                "name": "玉溪",
+                "lat": 24.35,
+                "lng": 102.55
+            },
+            {
+                "id": "baoshan",
+                "name": "保山",
+                "lat": 25.11,
+                "lng": 99.17
+            },
+            {
+                "id": "zhaotong",
+                "name": "昭通",
+                "lat": 27.34,
+                "lng": 103.72
+            },
+            {
+                "id": "lijiang",
+                "name": "丽江",
+                "lat": 26.87,
+                "lng": 100.23
+            },
+            {
+                "id": "puer",
+                "name": "普洱",
+                "lat": 22.79,
+                "lng": 100.97
+            },
+            {
+                "id": "lincang",
+                "name": "临沧",
+                "lat": 23.88,
+                "lng": 100.09
+            },
+            {
+                "id": "dali",
+                "name": "大理",
+                "lat": 25.59,
+                "lng": 100.23
+            },
+            {
+                "id": "dehong",
+                "name": "德宏",
+                "lat": 24.43,
+                "lng": 98.58
+            },
+            {
+                "id": "xishuangbanna",
+                "name": "西双版纳",
+                "lat": 22.01,
+                "lng": 100.80
+            },
+            {
+                "id": "chuxiong",
+                "name": "楚雄",
+                "lat": 25.03,
+                "lng": 101.55
+            },
+            {
+                "id": "honghe",
+                "name": "红河",
+                "lat": 23.37,
+                "lng": 103.38
+            },
+            {
+                "id": "wenshan",
+                "name": "文山",
+                "lat": 23.37,
+                "lng": 104.24
+            },
+            {
+                "id": "shangri-la",
+                "name": "香格里拉",
+                "lat": 27.83,
+                "lng": 99.71
+            }
+        ]
+    },
+    {
+        "id": "xizang",
+        "name": "西藏",
+        "nameEn": "Tibet",
+        "type": "autonomous",
+        "lat": 29.65,
+        "lng": 91.11,
+        "cities": [
+            {
+                "id": "lhasa",
+                "name": "拉萨",
+                "lat": 29.65,
+                "lng": 91.11
+            },
+            {
+                "id": "shigatse",
+                "name": "日喀则",
+                "lat": 29.27,
+                "lng": 88.88
+            },
+            {
+                "id": "chamdo",
+                "name": "昌都",
+                "lat": 31.14,
+                "lng": 97.17
+            },
+            {
+                "id": "linzhi",
+                "name": "林芝",
+                "lat": 29.65,
+                "lng": 94.36
+            },
+            {
+                "id": "shannan",
+                "name": "山南",
+                "lat": 29.24,
+                "lng": 91.77
+            },
+            {
+                "id": "nagqu",
+                "name": "那曲",
+                "lat": 31.48,
+                "lng": 92.05
+            },
+            {
+                "id": "ali",
+                "name": "阿里",
+                "lat": 32.50,
+                "lng": 80.11
+            }
+        ]
+    },
+    {
+        "id": "shaanxi",
+        "name": "陕西",
+        "nameEn": "Shaanxi",
+        "type": "province",
+        "lat": 34.26,
+        "lng": 108.94,
+        "cities": [
+            {
+                "id": "xian",
+                "name": "西安",
+                "lat": 34.26,
+                "lng": 108.94
+            },
+            {
+                "id": "baoji",
+                "name": "宝鸡",
+                "lat": 34.36,
+                "lng": 107.24
+            },
+            {
+                "id": "xianyang",
+                "name": "咸阳",
+                "lat": 34.33,
+                "lng": 108.71
+            },
+            {
+                "id": "tongchuan",
+                "name": "铜川",
+                "lat": 34.90,
+                "lng": 108.95
+            },
+            {
+                "id": "weinan",
+                "name": "渭南",
+                "lat": 34.50,
+                "lng": 109.51
+            },
+            {
+                "id": "yanan",
+                "name": "延安",
+                "lat": 36.59,
+                "lng": 109.49
+            },
+            {
+                "id": "hanzhong",
+                "name": "汉中",
+                "lat": 33.07,
+                "lng": 107.03
+            },
+            {
+                "id": "yulin-sx",
+                "name": "榆林",
+                "lat": 38.28,
+                "lng": 109.73
+            },
+            {
+                "id": "ankang",
+                "name": "安康",
+                "lat": 32.68,
+                "lng": 109.03
+            },
+            {
+                "id": "shangluo",
+                "name": "商洛",
+                "lat": 33.87,
+                "lng": 109.94
+            }
+        ]
+    },
+    {
+        "id": "gansu",
+        "name": "甘肃",
+        "nameEn": "Gansu",
+        "type": "province",
+        "lat": 36.06,
+        "lng": 103.83,
+        "cities": [
+            {
+                "id": "lanzhou",
+                "name": "兰州",
+                "lat": 36.06,
+                "lng": 103.83
+            },
+            {
+                "id": "jiayuguan",
+                "name": "嘉峪关",
+                "lat": 39.77,
+                "lng": 98.29
+            },
+            {
+                "id": "jinchang",
+                "name": "金昌",
+                "lat": 38.50,
+                "lng": 102.19
+            },
+            {
+                "id": "baiyin",
+                "name": "白银",
+                "lat": 36.54,
+                "lng": 104.14
+            },
+            {
+                "id": "tianshui",
+                "name": "天水",
+                "lat": 34.58,
+                "lng": 105.72
+            },
+            {
+                "id": "wuwei",
+                "name": "武威",
+                "lat": 37.93,
+                "lng": 102.64
+            },
+            {
+                "id": "zhangye",
+                "name": "张掖",
+                "lat": 38.93,
+                "lng": 100.45
+            },
+            {
+                "id": "pingliang",
+                "name": "平凉",
+                "lat": 35.54,
+                "lng": 106.67
+            },
+            {
+                "id": "jiuquan",
+                "name": "酒泉",
+                "lat": 39.73,
+                "lng": 98.51
+            },
+            {
+                "id": "dunhuang",
+                "name": "敦煌",
+                "lat": 40.14,
+                "lng": 94.66
+            }
+        ]
+    },
+    {
+        "id": "qinghai",
+        "name": "青海",
+        "nameEn": "Qinghai",
+        "type": "province",
+        "lat": 36.62,
+        "lng": 101.78,
+        "cities": [
+            {
+                "id": "xining",
+                "name": "西宁",
+                "lat": 36.62,
+                "lng": 101.78
+            },
+            {
+                "id": "haidong",
+                "name": "海东",
+                "lat": 36.50,
+                "lng": 102.10
+            },
+            {
+                "id": "haibei",
+                "name": "海北",
+                "lat": 36.96,
+                "lng": 100.90
+            },
+            {
+                "id": "huangnan",
+                "name": "黄南",
+                "lat": 35.52,
+                "lng": 102.02
+            },
+            {
+                "id": "hainan-qh",
+                "name": "海南州",
+                "lat": 36.28,
+                "lng": 100.62
+            },
+            {
+                "id": "guoluo",
+                "name": "果洛",
+                "lat": 34.47,
+                "lng": 100.24
+            },
+            {
+                "id": "yushu",
+                "name": "玉树",
+                "lat": 33.00,
+                "lng": 97.01
+            },
+            {
+                "id": "haixi",
+                "name": "海西",
+                "lat": 37.37,
+                "lng": 97.37
+            }
+        ]
+    },
+    {
+        "id": "ningxia",
+        "name": "宁夏",
+        "nameEn": "Ningxia",
+        "type": "autonomous",
+        "lat": 38.47,
+        "lng": 106.27,
+        "cities": [
+            {
+                "id": "yinchuan",
+                "name": "银川",
+                "lat": 38.47,
+                "lng": 106.27
+            },
+            {
+                "id": "shizuishan",
+                "name": "石嘴山",
+                "lat": 38.98,
+                "lng": 106.38
+            },
+            {
+                "id": "wuzhong",
+                "name": "吴忠",
+                "lat": 37.99,
+                "lng": 106.20
+            },
+            {
+                "id": "guyuan",
+                "name": "固原",
+                "lat": 36.00,
+                "lng": 106.24
+            },
+            {
+                "id": "zhongwei",
+                "name": "中卫",
+                "lat": 37.50,
+                "lng": 105.20
+            }
+        ]
+    },
+    {
+        "id": "xinjiang",
+        "name": "新疆",
+        "nameEn": "Xinjiang",
+        "type": "autonomous",
+        "lat": 43.79,
+        "lng": 87.63,
+        "cities": [
+            {
+                "id": "urumqi",
+                "name": "乌鲁木齐",
+                "lat": 43.79,
+                "lng": 87.63
+            },
+            {
+                "id": "karamay",
+                "name": "克拉玛依",
+                "lat": 45.58,
+                "lng": 84.87
+            },
+            {
+                "id": "turpan",
+                "name": "吐鲁番",
+                "lat": 42.95,
+                "lng": 89.19
+            },
+            {
+                "id": "hami",
+                "name": "哈密",
+                "lat": 42.82,
+                "lng": 93.52
+            },
+            {
+                "id": "aksu",
+                "name": "阿克苏",
+                "lat": 41.17,
+                "lng": 80.26
+            },
+            {
+                "id": "kashgar",
+                "name": "喀什",
+                "lat": 39.47,
+                "lng": 75.99
+            },
+            {
+                "id": "hotan",
+                "name": "和田",
+                "lat": 37.11,
+                "lng": 79.93
+            },
+            {
+                "id": "changji",
+                "name": "昌吉",
+                "lat": 44.01,
+                "lng": 87.31
+            },
+            {
+                "id": "yili",
+                "name": "伊犁",
+                "lat": 43.92,
+                "lng": 81.32
+            },
+            {
+                "id": "altay",
+                "name": "阿勒泰",
+                "lat": 47.85,
+                "lng": 88.14
+            },
+            {
+                "id": "korla",
+                "name": "库尔勒",
+                "lat": 41.76,
+                "lng": 86.15
+            }
+        ]
+    },
+    {
+        "id": "hongkong",
+        "name": "香港",
+        "nameEn": "Hong Kong",
+        "type": "sar",
+        "lat": 22.40,
+        "lng": 114.11,
+        "cities": [
+            {
+                "id": "hongkong-city",
+                "name": "香港",
+                "lat": 22.40,
+                "lng": 114.11
+            }
+        ]
+    },
+    {
+        "id": "macau",
+        "name": "澳门",
+        "nameEn": "Macau",
+        "type": "sar",
+        "lat": 22.20,
+        "lng": 113.55,
+        "cities": [
+            {
+                "id": "macau-city",
+                "name": "澳门",
+                "lat": 22.20,
+                "lng": 113.55
+            }
+        ]
+    },
+    {
+        "id": "taiwan",
+        "name": "台湾",
+        "nameEn": "Taiwan",
+        "type": "province",
+        "lat": 23.70,
+        "lng": 120.96,
+        "cities": [
+            {
+                "id": "taipei",
+                "name": "台北",
+                "lat": 25.03,
+                "lng": 121.57
+            },
+            {
+                "id": "kaohsiung",
+                "name": "高雄",
+                "lat": 22.63,
+                "lng": 120.30
+            },
+            {
+                "id": "taichung",
+                "name": "台中",
+                "lat": 24.15,
+                "lng": 120.67
+            },
+            {
+                "id": "tainan",
+                "name": "台南",
+                "lat": 22.99,
+                "lng": 120.21
+            },
+            {
+                "id": "hsinchu",
+                "name": "新竹",
+                "lat": 24.80,
+                "lng": 120.97
+            },
+            {
+                "id": "hualien",
+                "name": "花莲",
+                "lat": 23.99,
+                "lng": 121.60
+            },
+            {
+                "id": "taitung",
+                "name": "台东",
+                "lat": 22.76,
+                "lng": 121.14
+            }
+        ]
+    }
+]

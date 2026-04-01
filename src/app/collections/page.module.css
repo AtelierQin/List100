@@ -1,0 +1,133 @@
+/* ==================== Collections — Atelier Qin ==================== */
+
+.main {
+    padding-top: 48px;
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+}
+
+.sectionLabel {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 4px;
+    font-family: var(--font-family-mono);
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--color-text-light);
+    margin-bottom: 28px;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card {
+    display: block;
+    background: rgba(24, 24, 27, 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+
+.card:hover {
+    border-color: var(--color-border-hover);
+    background: rgba(24, 24, 27, 0.8);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+}
+
+.cardAccent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.card:hover .cardAccent {
+    opacity: 1;
+}
+
+/* Signal accent overrides */
+.purple .cardAccent {
+    background: rgba(168, 85, 247, 0.7);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+.amber .cardAccent {
+    background: rgba(245, 158, 11, 0.7);
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+}
+
+.blue .cardAccent {
+    background: rgba(59, 130, 246, 0.7);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+.cardContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 20px 20px 22px;
+}
+
+.cardIcon {
+    font-size: 28px;
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+.cardTitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 3px;
+    letter-spacing: 0.08em;
+    font-family: var(--font-family);
+}
+
+.cardDesc {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+/* ==================== Sub-page Placeholders ==================== */
+
+.placeholder {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text-headline, #fff);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}

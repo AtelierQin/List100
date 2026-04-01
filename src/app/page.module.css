@@ -1,0 +1,401 @@
+/* ==================== Landing — Mission Control Dashboard ==================== */
+
+.main {
+    padding-top: 48px;
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.dashboardContainer {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px var(--spacing-md) 60px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* ==================== Hero ==================== */
+
+.heroSection {
+    margin-bottom: 40px;
+}
+
+.heroTitle {
+    font-family: var(--font-family);
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-headline);
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.heroSubtitle {
+    font-family: var(--font-family);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 360px;
+}
+
+/* ==================== Stats Strip — Data Rows ==================== */
+
+.statsStrip {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    margin-bottom: 40px;
+    background: rgba(24, 24, 27, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-card);
+}
+
+/* Top accent line */
+.statsStrip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--color-border-hover), transparent);
+    opacity: 0.4;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.15s ease-out;
+}
+
+.statItem:last-child {
+    border-bottom: none;
+}
+
+.statItem:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.statLabel {
+    font-family: var(--font-family);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex: 1;
+}
+
+.statValueGroup {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    justify-content: flex-end;
+    min-width: 100px;
+    text-align: right;
+}
+
+.statValue {
+    font-family: var(--font-family-mono);
+    font-size: 1.25rem;
+    color: var(--color-accent);
+    line-height: 1;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    min-width: 2ch;
+    text-align: right;
+}
+
+.statUnit {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    min-width: 60px;
+    text-align: left;
+}
+
+/* ==================== Focus Section ==================== */
+
+.focusSection {
+    max-width: 100%;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0;
+}
+
+.sectionTitle {
+    font-family: var(--font-family);
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.sectionLink {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sectionLink:hover {
+    color: var(--color-text-primary);
+}
+
+.arrow {
+    transition: transform 0.2s ease-out;
+}
+
+.sectionLink:hover .arrow {
+    transform: translateX(3px);
+}
+
+.focusList {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(24, 24, 27, 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-card);
+}
+
+.focusList::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--color-border-hover), transparent);
+    opacity: 0.3;
+}
+
+.goalRow {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.15s ease-out, padding-left 0.15s ease-out;
+    gap: 12px;
+    position: relative;
+    cursor: pointer;
+}
+
+.goalRow:last-child {
+    border-bottom: none;
+}
+
+.goalRow:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 20px;
+}
+
+.goalRow::after {
+    content: '→';
+    position: absolute;
+    right: 16px;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity 0.15s, transform 0.15s;
+    font-size: 12px;
+    transform: translateX(-4px);
+}
+
+.goalRow:hover::after {
+    opacity: 0.5;
+    transform: translateX(0);
+}
+
+.goalNumber {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    width: 20px;
+    flex-shrink: 0;
+    font-weight: 500;
+    opacity: 0.6;
+}
+
+.goalContent {
+    flex-grow: 1;
+    font-family: var(--font-family);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.goalMeta {
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.emptyState {
+    justify-content: center;
+    padding: 32px 16px;
+    color: var(--color-text-muted);
+}
+
+.emptyState .goalNumber {
+    display: none;
+}
+
+/* ==================== All Goals ==================== */
+
+.allGoalsSection {
+    margin-top: 48px;
+}
+
+.allGoalsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(24, 24, 27, 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-card);
+}
+
+.allGoalsList::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--color-border-hover), transparent);
+    opacity: 0.3;
+}
+
+.allGoalItem {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.15s ease-out;
+    gap: 10px;
+}
+
+.allGoalItem:last-child {
+    border-bottom: none;
+}
+
+.allGoalItem:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.allGoalNumber {
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    color: var(--color-text-muted);
+    width: 20px;
+    flex-shrink: 0;
+    font-weight: 500;
+    opacity: 0.4;
+}
+
+.allGoalText {
+    flex-grow: 1;
+    font-family: var(--font-family);
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.completed {
+    opacity: 0.5;
+}
+
+.completed .allGoalText {
+    text-decoration: line-through;
+    text-decoration-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+}
+
+.completed .allGoalNumber {
+    opacity: 0.3;
+}
+
+.checkmark {
+    font-size: 11px;
+    color: var(--color-success);
+    font-weight: 600;
+    flex-shrink: 0;
+    font-family: var(--font-family-mono);
+}
+
+.emptyGoal {
+    font-style: italic;
+    color: var(--color-text-light);
+    opacity: 0.5;
+}
+
+/* ==================== Responsive ==================== */
+
+@media (max-width: 768px) {
+    .dashboardContainer {
+        padding: 32px 16px 60px;
+    }
+
+    .heroTitle {
+        font-size: 1.8rem;
+    }
+
+    .statItem {
+        padding: 10px 12px;
+    }
+
+    .goalRow {
+        padding: 12px 12px;
+    }
+
+    .goalContent {
+        font-size: 13px;
+    }
+
+    .allGoalsSection {
+        margin-top: 36px;
+    }
+
+    .allGoalItem {
+        padding: 8px 12px;
+    }
+
+    .allGoalText {
+        font-size: 12px;
+    }
+}

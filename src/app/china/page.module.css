@@ -1,0 +1,4 @@
+/* China Map Page — imports shared map styles */
+@import url("../../components/map.module.css");
+
+/* Page-specific overrides (if any) go here */

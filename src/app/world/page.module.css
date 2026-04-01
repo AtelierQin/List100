@@ -1,0 +1,36 @@
+/* Placeholder page — Atelier Qin */
+
+.main {
+    padding-top: 48px;
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 80px 24px;
+}
+
+.placeholder {
+    text-align: center;
+}
+
+.icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text-headline);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
