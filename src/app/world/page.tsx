@@ -38,7 +38,7 @@ export default function WorldPage() {
             }
             return true;
         });
-    }, [countries, visited, filter, searchQuery]);
+    }, [visited, filter, searchQuery]);
 
     const markers: MapMarker[] = useMemo(() => {
         return filtered
@@ -93,8 +93,22 @@ export default function WorldPage() {
                     const data = JSON.parse(e.target?.result as string);
                     if (Array.isArray(data.visited)) {
                         setVisited((prev) => {
-                            const merged = new Set([...prev, ...data.visited]);
-                            return Array.from(merged);
+                            // Deduplicate by ID
+                            const map = new Map();
+                            
+                            // Process existing
+                            prev.forEach(item => {
+                                const id = typeof item === 'object' && item !== null ? (item as Record<string, unknown>).id : item;
+                                map.set(id, item);
+                            });
+                            
+                            // Process incoming (will override duplicates)
+                            data.visited.forEach((item: Record<string, unknown>) => {
+                                const id = typeof item === 'object' && item !== null ? item.id : item;
+                                map.set(id, item);
+                            });
+                            
+                            return Array.from(map.values());
                         });
                     }
                 } catch {

@@ -37,10 +37,12 @@ export function Navbar() {
     }, []);
 
     // Close mobile menu on route change
-    useEffect(() => {
+    const [prevPathname, setPrevPathname] = useState(pathname);
+    if (prevPathname !== pathname) {
+        setPrevPathname(pathname);
         setMobileOpen(false);
         setOpenDropdown(null);
-    }, [pathname]);
+    }
 
     const isActive = (href: string) => pathname === href;
     const isGroupActive = (items: { href: string }[]) =>

@@ -36,6 +36,7 @@ interface ChinaSidebarProps {
     expandedProvinces: Set<string>;
     toggleProvince: (id: string) => void;
     handleCityClick: (city: City & { province: string; provinceId: string; provinceType: string }) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mapRef: React.MutableRefObject<any>;
     TYPE_LABELS: Record<string, string>;
 }

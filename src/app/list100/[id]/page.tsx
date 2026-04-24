@@ -6,6 +6,10 @@ import Link from "next/link";
 import { useGoals, useIsMounted, type Goal } from "@/lib/data";
 import styles from "./page.module.css";
 
+function generateId(): string {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
 export default function GoalDetailPage() {
     const isMounted = useIsMounted();
     const params = useParams();
@@ -46,7 +50,7 @@ export default function GoalDetailPage() {
 
     const addMilestone = () => {
         if (!msInput.trim()) return;
-        const newMs = { id: Date.now().toString(), text: msInput, dueDate: msDate, completed: false };
+        const newMs = { id: generateId(), text: msInput, dueDate: msDate, completed: false };
         updateGoal({ milestones: [...(goal.milestones || []), newMs] });
         setMsInput("");
         setMsDate("");
@@ -59,7 +63,7 @@ export default function GoalDetailPage() {
 
     const addHabit = () => {
         if (!habitInput.trim()) return;
-        const newHabit = { id: Date.now().toString(), title: habitInput, frequency: "daily" as const, completedDates: [] };
+        const newHabit = { id: generateId(), title: habitInput, frequency: "daily" as const, completedDates: [] };
         updateGoal({ habits: [...(goal.habits || []), newHabit] });
         setHabitInput("");
     };

@@ -5,21 +5,19 @@ import { useState, useEffect, useCallback, useSyncExternalStore, useMemo } from 
 // ==================== localStorage Hook ====================
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
-    const [storedValue, setStoredValue] = useState<T>(initialValue);
-
-    // Load from localStorage after mount
-    useEffect(() => {
+    const [storedValue, setStoredValue] = useState<T>(() => {
         if (typeof window !== "undefined") {
             try {
                 const item = window.localStorage.getItem(key);
                 if (item) {
-                    setStoredValue(JSON.parse(item));
+                    return JSON.parse(item);
                 }
             } catch (error) {
                 console.warn(`Error reading localStorage key "${key}":`, error);
             }
         }
-    }, [key]);
+        return initialValue;
+    });
 
     const setValue = useCallback(
         (value: T | ((prev: T) => T)) => {
@@ -54,12 +52,14 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
 
 // ==================== Utilities ====================
 
+const emptySubscribe = () => () => {};
+
 export function useIsMounted() {
-    const [isMounted, setIsMounted] = useState(false);
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-    return isMounted;
+    return useSyncExternalStore(
+        emptySubscribe,
+        () => true,
+        () => false
+    );
 }
 
 // ==================== Data Types ====================
@@ -130,7 +130,7 @@ export interface VisitRecord {
 }
 
 // Convert legacy number[] or mixed arrays to VisitRecord[]
-function migrateVisitData(data: any[]): VisitRecord[] {
+function migrateVisitData(data: unknown[]): VisitRecord[] {
     if (!Array.isArray(data)) return [];
     return data.map(item => {
         if (typeof item === 'number') return { id: item };
@@ -139,7 +139,7 @@ function migrateVisitData(data: any[]): VisitRecord[] {
 }
 
 export function useVisited5A() {
-    const [rawVisited, setVisited] = useLocalStorage<any[]>("visited_5a", []);
+    const [rawVisited, setVisited] = useLocalStorage<unknown[]>("visited_5a", []);
 
     const visitedList = useMemo(() => migrateVisitData(rawVisited), [rawVisited]);
     const visitedSet = useMemo(() => new Set(visitedList.map(v => v.id)), [visitedList]);
@@ -173,7 +173,7 @@ export function useVisited5A() {
 }
 
 export function useVisitedWorld() {
-    const [rawVisited, setVisited] = useLocalStorage<any[]>(STORAGE_KEYS.WORLD, []);
+    const [rawVisited, setVisited] = useLocalStorage<unknown[]>(STORAGE_KEYS.WORLD, []);
 
     const visitedList = useMemo(() => migrateVisitData(rawVisited), [rawVisited]);
     const visitedSet = useMemo(() => new Set(visitedList.map(v => v.id)), [visitedList]);

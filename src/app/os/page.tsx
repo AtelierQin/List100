@@ -45,13 +45,16 @@ export default function OSPage() {
                 const data = JSON.parse(content);
                 const toImport: Record<string, string> = {};
 
-                const migrateGoals = (items: any[]) => {
-                    return items.map(item => ({
-                        ...item,
-                        id: String(item.id),
-                        milestones: item.milestones || [],
-                        habits: item.habits || []
-                    }));
+                const migrateGoals = (items: unknown[]) => {
+                    return items.map(item => {
+                        const obj = item as Record<string, unknown>;
+                        return {
+                            ...obj,
+                            id: String(obj.id),
+                            milestones: obj.milestones || [],
+                            habits: obj.habits || []
+                        };
+                    });
                 };
 
                 const mapLegacyKey = (key: string) => {

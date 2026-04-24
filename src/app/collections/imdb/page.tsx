@@ -32,7 +32,7 @@ export default function IMDbPage() {
 
             return matchesGenre && matchesStatus;
         });
-    }, [filterGenre, filterStatus, items, isMarked]);
+    }, [filterGenre, filterStatus, isMarked]);
 
     const stats = getStats(imdbData.length);
 

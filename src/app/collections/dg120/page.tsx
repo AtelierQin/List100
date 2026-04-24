@@ -7,7 +7,7 @@ import localStyles from "./dg120.module.css";
 import React, { useMemo, useState } from "react";
 
 export default function DG120Page() {
-    const { items, isMarked, markItem, unmarkItem, getStats } = useCollectionStore("dg120");
+    const { isMarked, markItem, unmarkItem, getStats } = useCollectionStore("dg120");
     const [filterCategory, setFilterCategory] = useState<string>("");
     const [filterStatus, setFilterStatus] = useState<string>("");
 
@@ -34,7 +34,7 @@ export default function DG120Page() {
 
             return matchesCat && matchesStatus;
         });
-    }, [filterCategory, filterStatus, items, isMarked]); // depend on items to re-render when marked status changes
+    }, [filterCategory, filterStatus, isMarked]); // depend on items to re-render when marked status changes
 
     const stats = getStats(dg120Data.length);
 

@@ -7,7 +7,7 @@ import localStyles from "./books.module.css";
 import React, { useMemo, useState } from "react";
 
 export default function BooksPage() {
-    const { items, isMarked, markItem, unmarkItem, getStats } = useCollectionStore("books");
+    const { isMarked, markItem, unmarkItem, getStats } = useCollectionStore("books");
     const [filterCategory, setFilterCategory] = useState<string>("");
     const [filterStatus, setFilterStatus] = useState<string>("");
 
@@ -31,7 +31,7 @@ export default function BooksPage() {
 
             return matchesCategory && matchesStatus;
         });
-    }, [filterCategory, filterStatus, items, isMarked]);
+    }, [filterCategory, filterStatus, isMarked]);
 
     const stats = getStats(booksData.length);
 

@@ -43,6 +43,9 @@ const allCities = provinces.flatMap((p) =>
     p.cities.map((c) => ({ ...c, province: p.name, provinceId: p.id, provinceType: p.type }))
 );
 
+// Pre-build O(1) lookup map for cities to provinces
+const cityToProvinceMap = new Map(allCities.map(c => [c.id, c.provinceId]));
+
 type Filter = "all" | "visited" | "unvisited";
 type ViewMode = "city" | "province";
 
@@ -187,7 +190,24 @@ export default function ChinaPage() {
                 try {
                     const data = JSON.parse(e.target?.result as string);
                     if (Array.isArray(data.visitedCities)) {
-                        setVisitedCities(data.visitedCities);
+                        setVisitedCities((prev) => {
+                            // Deduplicate by ID
+                            const map = new Map();
+                            
+                            // Process existing
+                            prev.forEach(item => {
+                                const id = typeof item === 'object' && item !== null ? (item as Record<string, unknown>).id : item;
+                                map.set(id, item);
+                            });
+                            
+                            // Process incoming (will override duplicates)
+                            data.visitedCities.forEach((item: Record<string, unknown>) => {
+                                const id = typeof item === 'object' && item !== null ? item.id : item;
+                                map.set(id, item);
+                            });
+                            
+                            return Array.from(map.values());
+                        });
                     }
                 } catch { /* ignore */ }
             };
@@ -199,8 +219,6 @@ export default function ChinaPage() {
     // Stats
     const totalCities = allCities.length;
     const visitedCount = visitedSet.size;
-// Pre-build O(1) lookup map for cities to provinces
-const cityToProvinceMap = new Map(allCities.map(c => [c.id, c.provinceId]));
 
     const visitedProvinceCount = useMemo(() => {
         const provSet = new Set<string>();

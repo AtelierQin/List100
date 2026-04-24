@@ -2,15 +2,22 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useDashboardStats, useGoals, useIsMounted, type Goal } from "@/lib/data";
+import { useDashboardStats, useGoals, useIsMounted } from "@/lib/data";
 import styles from "./page.module.css";
 
 function AnimatedValue({ value }: { value: number }) {
   const [display, setDisplay] = useState(0);
 
+  const [prevValue, setPrevValue] = useState(value);
+  if (prevValue !== value) {
+      setPrevValue(value);
+      if (value === 0) {
+          setDisplay(0);
+      }
+  }
+
   useEffect(() => {
     if (value === 0) {
-      setDisplay(0);
       return;
     }
 
@@ -44,11 +51,7 @@ export default function LandingPage() {
   const isMounted = useIsMounted();
   const stats = useDashboardStats();
   const { goals } = useGoals();
-  const [greeting, setGreeting] = useState("Welcome");
-
-  useEffect(() => {
-    setGreeting(getGreeting());
-  }, []);
+  const [greeting] = useState(() => getGreeting());
 
   const activeGoals = useMemo(() => {
     return [...goals]
