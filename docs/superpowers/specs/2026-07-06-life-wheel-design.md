@@ -183,7 +183,7 @@ interface Summary {
 | `byArea` | 同上 |
 | `onAreaClick` | 同上 |
 
-每张卡：彩色顶条 + 区域名 + 进度条 + "X/Y 已完成" + "Z 待办"。Total=0 时显示"+ 添加"按钮（链接 `/list100?prefillTag=<id>`，不实现 query 解析，只需链接到 list100 即可）。
+每张卡：彩色顶条 + 区域名 + 进度条 + "X/Y 已完成" + "Z 待办"。Total=0 时显示"+ 添加"按钮，点击跳到 `/list100`（v1 不预填 tag，链接占位；后续版本可在 list100 页面解析查询参数预填）。
 
 ### 8.4 `InsightPanel`
 
@@ -226,7 +226,7 @@ interface Summary {
 | 所有 goal 无可命中 tag | 顶部显式 CTA"建议 tag"（v1 只显示数量，不实现自动建议） |
 | 部分 goal 无可命中 tag | 显示"⚠️ N 个未分类"折叠卡，列出 goal 标题 |
 | 区域 100% 完成 | 区域卡显示金色 ✦；雷达多边形顶点越界用 ✦ 替代数字 |
-| 区域 0 个 goal | 雷达轴虚线；区域卡显示"+ 添加"按钮 |
+| 区域 0 个 goal | 雷达轴虚线；区域卡显示"+ 添加"按钮，点击跳到 `/list100`（v1 不预填 tag，链接占位 + 鼓励用户在该页打 tag）|
 | localStorage 数据损坏 | `JSON.parse` 失败兜底为空数组 + console.warn |
 | 移动端宽度 < 768px | 网格降为 1 列；雷达图缩到 280px |
 
@@ -254,7 +254,7 @@ interface Summary {
 - `npm run typecheck` 必须通过（8 个组件 Props 接口 0 个 `any`）
 - `npm run build` 必须全绿；新增路由 `/life-wheel` 必须出现在 SSG 列表中
 - 8 个组件 Props 都通过 TS interface 强类型
-- radar SVG 元素 ≤ 30 个
+- 雷达 SVG 节点（多边形顶点数）≤ 8 个；整体 DOM 节点 ≤ 80
 
 ### 12.3 可访问性
 
