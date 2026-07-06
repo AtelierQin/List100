@@ -19,21 +19,24 @@ export function generateId(): string {
 // ==================== localStorage Hook ====================
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
-    const [storedValue, setStoredValue] = useState<T>(initialValue);
-
-    // Load from localStorage after mount so SSR and first client render match.
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            try {
-                const item = window.localStorage.getItem(key);
-                if (item) {
-                    setStoredValue(JSON.parse(item));
-                }
-            } catch (error) {
-                console.warn(`Error reading localStorage key "${key}":`, error);
+    // Lazy initializer reads localStorage synchronously on first render so the
+    // hook returns the persisted value immediately — no second-render flash.
+    // Safe to call during SSR: window guard returns initialValue, which is what
+    // any server render would produce anyway. Data-driven pages skip SSR via
+    // `next/dynamic({ ssr: false })`, so this initializer only ever runs on
+    // the client in practice.
+    const [storedValue, setStoredValue] = useState<T>(() => {
+        if (typeof window === "undefined") return initialValue;
+        try {
+            const item = window.localStorage.getItem(key);
+            if (item !== null) {
+                return JSON.parse(item) as T;
             }
+        } catch (error) {
+            console.warn(`Error reading localStorage key "${key}":`, error);
         }
-    }, [key]);
+        return initialValue;
+    });
 
     const setValue = useCallback(
         (value: T | ((prev: T) => T)) => {
