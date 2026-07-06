@@ -2,22 +2,38 @@
 
 import { useState, useEffect, useCallback, useSyncExternalStore, useMemo } from "react";
 
+// ==================== Utilities ====================
+
+/**
+ * Generate a collision-resistant client-side id.
+ * Prefers `crypto.randomUUID()` when available (modern browsers + Node 19+),
+ * otherwise falls back to a Date.now()+Math.random() combination.
+ */
+export function generateId(): string {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+    }
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
 // ==================== localStorage Hook ====================
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
-    const [storedValue, setStoredValue] = useState<T>(() => {
+    const [storedValue, setStoredValue] = useState<T>(initialValue);
+
+    // Load from localStorage after mount so SSR and first client render match.
+    useEffect(() => {
         if (typeof window !== "undefined") {
             try {
                 const item = window.localStorage.getItem(key);
                 if (item) {
-                    return JSON.parse(item);
+                    setStoredValue(JSON.parse(item));
                 }
             } catch (error) {
                 console.warn(`Error reading localStorage key "${key}":`, error);
             }
         }
-        return initialValue;
-    });
+    }, [key]);
 
     const setValue = useCallback(
         (value: T | ((prev: T) => T)) => {

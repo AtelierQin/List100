@@ -19,6 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // `suppressHydrationWarning` here is needed because browser extensions
+    // (e.g. immersive-translate) inject attributes like
+    // `data-immersive-translate-page-theme` into <html> before React loads.
+    // Per React docs the attribute only silences mismatches on the element
+    // it's set on, so it does NOT mask real divergence in descendants.
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />

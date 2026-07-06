@@ -46,15 +46,25 @@ export default function OSPage() {
                 const toImport: Record<string, string> = {};
 
                 const migrateGoals = (items: unknown[]) => {
-                    return items.map(item => {
-                        const obj = item as Record<string, unknown>;
-                        return {
-                            ...obj,
-                            id: String(obj.id),
-                            milestones: obj.milestones || [],
-                            habits: obj.habits || []
-                        };
-                    });
+                    // Drop entries that lack an id — otherwise String(undefined)
+                    // would produce id "undefined", creating orphan goals that
+                    // inflate stats and can never be reached by id-based routes.
+                    return items
+                        .filter((item) =>
+                            item !== null &&
+                            typeof item === "object" &&
+                            (item as Record<string, unknown>).id !== undefined &&
+                            (item as Record<string, unknown>).id !== null
+                        )
+                        .map(item => {
+                            const obj = item as Record<string, unknown>;
+                            return {
+                                ...obj,
+                                id: String(obj.id),
+                                milestones: Array.isArray(obj.milestones) ? obj.milestones : [],
+                                habits: Array.isArray(obj.habits) ? obj.habits : []
+                            };
+                        });
                 };
 
                 const mapLegacyKey = (key: string) => {

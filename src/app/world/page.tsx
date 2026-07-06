@@ -93,21 +93,26 @@ export default function WorldPage() {
                     const data = JSON.parse(e.target?.result as string);
                     if (Array.isArray(data.visited)) {
                         setVisited((prev) => {
-                            // Deduplicate by ID
-                            const map = new Map();
-                            
-                            // Process existing
-                            prev.forEach(item => {
-                                const id = typeof item === 'object' && item !== null ? (item as Record<string, unknown>).id : item;
+                            // Deduplicate by ID. Coerce ids to string so 5 and "5"
+                            // collapse to one entry instead of producing duplicates.
+                            // Skip items with no id — they would otherwise all
+                            // collide under key `undefined` and silently drop data.
+                            const map = new Map<string, unknown>();
+                            const recordId = (item: unknown): string | null => {
+                                if (item === null || item === undefined) return null;
+                                if (typeof item === 'object') {
+                                    const id = (item as Record<string, unknown>).id;
+                                    return id == null ? null : String(id);
+                                }
+                                return String(item);
+                            };
+                            const put = (item: unknown) => {
+                                const id = recordId(item);
+                                if (id === null) return;
                                 map.set(id, item);
-                            });
-                            
-                            // Process incoming (will override duplicates)
-                            data.visited.forEach((item: Record<string, unknown>) => {
-                                const id = typeof item === 'object' && item !== null ? item.id : item;
-                                map.set(id, item);
-                            });
-                            
+                            };
+                            prev.forEach(put);
+                            data.visited.forEach(put);
                             return Array.from(map.values());
                         });
                     }

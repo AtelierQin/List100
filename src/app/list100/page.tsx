@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef } from "react";
 import Link from "next/link";
-import { useGoals, useIsMounted, type Goal } from "@/lib/data";
+import { useGoals, useIsMounted, type Goal, generateId } from "@/lib/data";
 import styles from "./page.module.css";
 
 const TAG_COLORS: Record<string, { bg: string; color: string; border: string }> = {
@@ -20,9 +20,43 @@ function getTagColor(tag: string) {
     return TAG_COLORS[tag] || { bg: "rgba(255, 255, 255, 0.05)", color: "#a1a1aa", border: "rgba(255, 255, 255, 0.1)" };
 }
 
-function generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
+// ── Inline SVG icons (no emojis per design system rule "No Emoji as Structural Icons") ──
+
+const IconPlus = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+);
+
+const IconTarget = () => (
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="12" cy="12" r="2" fill="currentColor" />
+    </svg>
+);
+
+const IconClipboard = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="8" y="2" width="8" height="4" rx="1" />
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    </svg>
+);
+
+const IconPin = ({ pinned }: { pinned: boolean }) => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill={pinned ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 17v5" />
+        <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+    </svg>
+);
+
+const IconClose = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+);
 
 export default function List100Page() {
     const isMounted = useIsMounted();
@@ -211,7 +245,8 @@ export default function List100Page() {
 
                             <section className={styles.controlsSection}>
                                 <button className={styles.btnPrimary} onClick={addItem}>
-                                    <span className={styles.btnIcon}>+</span> Add Goal
+                                    <IconPlus />
+                                    <span>Add Goal</span>
                                 </button>
 
                                 {/* Status Filter */}
@@ -297,11 +332,12 @@ export default function List100Page() {
                                 <ul className={styles.todoList}>
                                     {filteredGoals.length === 0 ? (
                                         <li className={styles.emptyState}>
-                                            <div className={styles.emptyStateIcon}>🎯</div>
+                                            <div className={styles.emptyStateIcon}><IconTarget /></div>
                                             <h3>No goals yet</h3>
                                             <p>Start by adding your first life goal</p>
                                             <button className={styles.btnPrimary} onClick={addItem}>
-                                                <span className={styles.btnIcon}>+</span> Add Goal
+                                                <IconPlus />
+                                                <span>Add Goal</span>
                                             </button>
                                         </li>
                                     ) : (
@@ -418,18 +454,20 @@ function TodoItem({
                 </div>
             </div>
             <div className={styles.itemActions}>
-                <Link href={`/list100/${goal.id}`} className={styles.goalLink} title="View details">
-                    📋
+                <Link href={`/list100/${goal.id}`} className={styles.goalLink} title="View details" aria-label="View goal details">
+                    <IconClipboard />
                 </Link>
                 <button
                     className={`${styles.pinBtn} ${goal.pinned ? styles.pinBtnPinned : ""}`}
                     onClick={() => onTogglePin(goal.id)}
                     title={goal.pinned ? "Unpin" : "Pin"}
+                    aria-label={goal.pinned ? "Unpin goal" : "Pin goal"}
+                    aria-pressed={goal.pinned ?? false}
                 >
-                    📌
+                    <IconPin pinned={goal.pinned ?? false} />
                 </button>
-                <button className={styles.deleteBtn} onClick={() => onDelete(goal.id)} title="Delete">
-                    ×
+                <button className={styles.deleteBtn} onClick={() => onDelete(goal.id)} title="Delete" aria-label="Delete goal">
+                    <IconClose />
                 </button>
             </div>
         </li>

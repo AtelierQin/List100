@@ -8,20 +8,14 @@ import styles from "./page.module.css";
 function AnimatedValue({ value }: { value: number }) {
   const [display, setDisplay] = useState(0);
 
-  const [prevValue, setPrevValue] = useState(value);
-  if (prevValue !== value) {
-      setPrevValue(value);
-      if (value === 0) {
-          setDisplay(0);
-      }
-  }
-
   useEffect(() => {
     if (value === 0) {
+      setDisplay(0);
       return;
     }
 
     let startTime: number | null = null;
+    let rafId = 0;
     const duration = 1500;
 
     function step(timestamp: number) {
@@ -29,11 +23,12 @@ function AnimatedValue({ value }: { value: number }) {
       const progress = Math.min((timestamp - startTime) / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 4);
       setDisplay(Math.floor(value * ease));
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) rafId = requestAnimationFrame(step);
       else setDisplay(value);
     }
 
-    requestAnimationFrame(step);
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
   }, [value]);
 
   return <>{display}</>;

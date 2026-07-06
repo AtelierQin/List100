@@ -7,6 +7,9 @@ import localStyles from "./imdb.module.css";
 import React, { useMemo, useState } from "react";
 
 export default function IMDbPage() {
+    // Note: IMDb still destructures `items` (sibling pages books/dg120 do not)
+    // because `avgRating` below depends on it. Don't drop it during future
+    // cleanup that unifies collection-page destructures.
     const { items, isMarked, markItem, unmarkItem, getStats } = useCollectionStore("imdb");
     const [filterGenre, setFilterGenre] = useState<string>("");
     const [filterStatus, setFilterStatus] = useState<string>("");

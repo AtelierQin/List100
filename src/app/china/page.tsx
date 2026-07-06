@@ -190,24 +190,9 @@ export default function ChinaPage() {
                 try {
                     const data = JSON.parse(e.target?.result as string);
                     if (Array.isArray(data.visitedCities)) {
-                        setVisitedCities((prev) => {
-                            // Deduplicate by ID
-                            const map = new Map();
-                            
-                            // Process existing
-                            prev.forEach(item => {
-                                const id = typeof item === 'object' && item !== null ? (item as Record<string, unknown>).id : item;
-                                map.set(id, item);
-                            });
-                            
-                            // Process incoming (will override duplicates)
-                            data.visitedCities.forEach((item: Record<string, unknown>) => {
-                                const id = typeof item === 'object' && item !== null ? item.id : item;
-                                map.set(id, item);
-                            });
-                            
-                            return Array.from(map.values());
-                        });
+                        // Full overwrite: importing a file replaces local state.
+                        // Use the OS page "Clear All Data" first if you want a partial subset.
+                        setVisitedCities(data.visitedCities);
                     }
                 } catch { /* ignore */ }
             };

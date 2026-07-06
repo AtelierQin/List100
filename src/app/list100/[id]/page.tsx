@@ -3,12 +3,8 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useGoals, useIsMounted, type Goal } from "@/lib/data";
+import { useGoals, useIsMounted, type Goal, generateId } from "@/lib/data";
 import styles from "./page.module.css";
-
-function generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2);
-}
 
 export default function GoalDetailPage() {
     const isMounted = useIsMounted();
