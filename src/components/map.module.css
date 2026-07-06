@@ -145,20 +145,21 @@
     background-color: var(--color-surface-deep);
     border: 1px solid var(--color-border);
     color: var(--color-text-primary);
-    padding: 8px 12px;
+    padding: 0 12px;
+    min-height: 36px;
     font-family: var(--font-family-mono);
     font-size: 12px;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     outline: none;
-    transition: all 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .searchInput:focus {
     border-color: var(--color-accent);
     background-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
 }
 
 .searchInput::placeholder {
@@ -175,13 +176,19 @@
     background: transparent;
     border: 1px solid var(--color-border);
     color: var(--color-text-muted);
-    padding: 4px 8px;
+    padding: 0 12px;
+    min-height: 32px;
     font-family: var(--font-family-mono);
     font-size: 10px;
     cursor: pointer;
     text-transform: uppercase;
-    border-radius: 4px;
-    transition: all 0.2s;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.filterBtn:active {
+    transform: scale(var(--press-scale));
 }
 
 .filterBtn:hover {
@@ -200,8 +207,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-top: 12px;
-    padding-top: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
     border-top: 1px solid var(--color-border-light);
 }
 
@@ -209,17 +216,23 @@
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     color: var(--color-text-muted);
-    padding: 6px 0;
+    padding: 0 12px;
+    min-height: var(--touch-target-min);
     font-family: var(--font-family-mono);
     font-size: 10px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    border-radius: 2px;
-    transition: all 0.2s;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.actionBtnSmall:active {
+    transform: scale(var(--press-scale));
 }
 
 .actionBtnSmall:hover {
@@ -246,13 +259,20 @@
 }
 
 .listItem {
-    padding: 10px 16px;
+    padding: 0 16px;
+    min-height: var(--touch-target-min);
     border-bottom: 1px solid var(--color-border-light);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background-color 0.15s;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.listItem:active {
+    background-color: var(--color-surface-hover);
 }
 
 .listItem:hover {
@@ -403,19 +423,26 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--color-border-light);
     color: var(--color-text-primary);
-    width: 32px;
-    height: 32px;
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 20;
-    transition: all 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
     font-family: var(--font-family-mono);
-    border-radius: 2px;
+    border-radius: var(--border-radius);
+    font-size: 18px;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.closeBtn:active {
+    transform: scale(var(--press-scale));
 }
 
 .closeBtn:hover {
@@ -495,7 +522,8 @@
 
 .markBtn {
     width: 100%;
-    padding: 12px;
+    padding: 0 16px;
+    min-height: var(--touch-target-min);
     background-color: transparent;
     border: 1px solid var(--color-border-hover);
     color: var(--color-text-primary);
@@ -505,8 +533,13 @@
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    transition: all 0.2s;
-    border-radius: 2px;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+    border-radius: var(--border-radius);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.markBtn:active {
+    transform: scale(var(--press-scale));
 }
 
 .markBtn:hover {

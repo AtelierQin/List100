@@ -74,16 +74,19 @@ export function Navbar() {
                                 e.stopPropagation();
                                 setOpenDropdown(openDropdown === "tours" ? null : "tours");
                             }}
+                            aria-expanded={openDropdown === "tours"}
+                            aria-haspopup="menu"
                         >
                             Tours
                         </button>
-                        <div className={styles.dropdownMenu}>
+                        <div className={styles.dropdownMenu} role="menu">
                             {tourItems.map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}
                                     className={`${styles.dropdownItem} ${isActive(item.href) ? styles.active : ""}`}
                                     onClick={() => setOpenDropdown(null)}
+                                    role="menuitem"
                                 >
                                     {item.label}
                                 </Link>
@@ -99,16 +102,19 @@ export function Navbar() {
                                 e.stopPropagation();
                                 setOpenDropdown(openDropdown === "collections" ? null : "collections");
                             }}
+                            aria-expanded={openDropdown === "collections"}
+                            aria-haspopup="menu"
                         >
                             Collections
                         </button>
-                        <div className={styles.dropdownMenu}>
+                        <div className={styles.dropdownMenu} role="menu">
                             {collectionItems.map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}
                                     className={`${styles.dropdownItem} ${isActive(item.href) ? styles.active : ""}`}
                                     onClick={() => setOpenDropdown(null)}
+                                    role="menuitem"
                                 >
                                     {item.label}
                                 </Link>
@@ -128,16 +134,24 @@ export function Navbar() {
                 <button
                     className={`${styles.mobileMenuBtn} ${mobileOpen ? styles.open : ""}`}
                     onClick={() => setMobileOpen(!mobileOpen)}
-                    aria-label="Menu"
+                    aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={mobileOpen}
+                    aria-controls="mobile-menu"
                 >
-                    <span />
-                    <span />
-                    <span />
+                    <span className={styles.mobileMenuBtnInner}>
+                        <span />
+                        <span />
+                        <span />
+                    </span>
                 </button>
             </div>
 
             {/* Mobile Menu */}
-            <div className={`${styles.mobileMenu} ${mobileOpen ? styles.mobileMenuActive : ""}`}>
+            <div
+                id="mobile-menu"
+                className={`${styles.mobileMenu} ${mobileOpen ? styles.mobileMenuActive : ""}`}
+                role="menu"
+            >
                 <Link href="/list100" className={styles.mobileNavLink}>List100</Link>
                 <Link href="/world" className={styles.mobileNavLink}>World Map</Link>
                 <Link href="/china" className={styles.mobileNavLink}>China Map</Link>

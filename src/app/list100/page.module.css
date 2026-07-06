@@ -122,21 +122,27 @@
 /* ==================== Buttons ==================== */
 
 .btnPrimary {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 8px 14px;
+    gap: 8px;
+    padding: 0 16px;
+    min-height: var(--touch-target-min);
     background: var(--color-accent);
-    color: var(--color-bg);
+    color: var(--color-text-on-primary);
     border: none;
-    border-radius: var(--border-radius-sm);
-    font-size: 12px;
+    border-radius: var(--border-radius);
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s ease-out;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
     font-family: inherit;
     letter-spacing: 0.01em;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btnPrimary:active {
+    transform: scale(var(--press-scale));
 }
 
 .btnPrimary:hover {
@@ -144,30 +150,37 @@
 }
 
 .btnIcon {
-    font-size: 14px;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btnSecondary {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 10px;
+    padding: 0 14px;
+    min-height: var(--touch-target-min);
     background: transparent;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
-    font-size: 11px;
+    border-radius: var(--border-radius);
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.15s ease-out;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btnSecondary:active {
+    transform: scale(var(--press-scale));
 }
 
 .btnSecondary:hover {
     background: rgba(255, 255, 255, 0.03);
     border-color: var(--color-border-hover);
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
 }
 
 /* ==================== Filters ==================== */
@@ -599,70 +612,105 @@
 
 .goalLink {
     cursor: pointer;
-    transition: all 0.15s ease-out;
-    padding: 4px 5px;
-    border-radius: 3px;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+    /* 44×44 hit area; visual content stays small via inline-flex centering */
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
     border: 1px solid transparent;
-    display: inline-block;
     text-decoration: none;
-    font-size: 13px;
-    opacity: 0;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.15s, background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
 }
 
-.todoItem:hover .goalLink {
-    opacity: 0.5;
+.todoItem:hover .goalLink,
+.todoItem:focus-within .goalLink {
+    opacity: 0.7;
 }
 
 .goalLink:hover {
-    opacity: 1 !important;
+    opacity: 1;
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+.goalLink:active {
+    transform: scale(var(--press-scale));
 }
 
 .pinBtn {
     background: none;
-    border: none;
-    color: var(--color-text-light);
+    border: 1px solid transparent;
+    color: var(--color-text-muted);
     cursor: pointer;
-    font-size: 13px;
-    padding: 4px;
-    border-radius: 3px;
-    transition: all 0.15s ease-out;
-    opacity: 0;
-    line-height: 1;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s, transform 0.15s;
+    opacity: 0.5;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.todoItem:hover .pinBtn,
+.todoItem:focus-within .pinBtn {
+    opacity: 0.7;
 }
 
 .pinBtn:hover {
     background: rgba(255, 255, 255, 0.05);
-    opacity: 1 !important;
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    opacity: 1;
+}
+
+.pinBtn:active {
+    transform: scale(var(--press-scale));
 }
 
 .pinBtnPinned {
-    opacity: 0.5;
+    color: var(--color-accent);
+    opacity: 0.9;
 }
 
 .deleteBtn {
     background: none;
-    border: none;
-    color: var(--color-text-light);
+    border: 1px solid transparent;
+    color: var(--color-text-muted);
     cursor: pointer;
-    font-size: 16px;
-    padding: 4px;
-    border-radius: 3px;
-    transition: all 0.15s ease-out;
-    opacity: 0;
-    align-self: center;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s, transform 0.15s;
+    opacity: 0.5;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.todoItem:hover .pinBtn,
-.todoItem:hover .deleteBtn {
-    opacity: 0.4;
+.todoItem:hover .deleteBtn,
+.todoItem:focus-within .deleteBtn {
+    opacity: 0.7;
 }
 
 .deleteBtn:hover {
     background: var(--color-danger-light);
+    border-color: var(--color-danger);
     color: var(--color-danger);
-    opacity: 1 !important;
+    opacity: 1;
+}
+
+.deleteBtn:active {
+    transform: scale(var(--press-scale));
 }
 
 /* ==================== Empty State ==================== */

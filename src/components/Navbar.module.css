@@ -5,19 +5,19 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(9, 9, 11, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--color-overlay);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
     border-bottom: 1px solid var(--color-border);
     z-index: 1001;
-    transition: var(--transition);
+    transition: background-color var(--transition);
 }
 
 .navContainer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    height: 48px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,8 +30,11 @@
     text-decoration: none;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    transition: var(--transition);
+    transition: color var(--transition);
     font-family: var(--font-family-mono);
+    padding: 6px 8px;
+    margin: -6px -8px;
+    border-radius: var(--border-radius-sm);
 }
 
 .logo:hover {
@@ -40,7 +43,7 @@
 
 .navLinks {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     align-items: center;
 }
 
@@ -49,17 +52,22 @@
     text-decoration: none;
     font-size: 12px;
     font-weight: 500;
-    padding: 6px 12px;
-    border-radius: var(--border-radius-sm);
-    transition: var(--transition);
+    padding: 0 12px;
+    border-radius: var(--border-radius);
+    transition: color var(--transition), background-color var(--transition);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
-    height: 30px;
+    min-height: 36px;
     box-sizing: border-box;
     letter-spacing: 0.01em;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.navLink:active {
+    transform: scale(var(--press-scale));
 }
 
 .navLink:hover {
@@ -70,17 +78,6 @@
 .navLink.active {
     color: var(--color-accent);
     background: var(--color-accent-light);
-}
-
-.navLink.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 25%;
-    right: 25%;
-    height: 2px;
-    background: var(--color-accent);
-    border-radius: 1px;
 }
 
 /* ==================== Dropdown ==================== */
@@ -95,21 +92,27 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 4px;
     cursor: pointer;
     color: var(--color-text-muted);
     font-size: 12px;
     font-weight: 500;
-    padding: 6px 12px;
-    border-radius: var(--border-radius-sm);
-    transition: var(--transition);
+    padding: 0 12px;
+    border-radius: var(--border-radius);
+    transition: color var(--transition), background-color var(--transition);
     border: none;
     background: transparent;
     font-family: inherit;
     line-height: 1;
-    height: 30px;
+    min-height: 36px;
     box-sizing: border-box;
     letter-spacing: 0.01em;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dropdownToggle:active {
+    transform: scale(var(--press-scale));
 }
 
 .dropdownToggle:hover {
@@ -122,30 +125,36 @@
     background: var(--color-accent-light);
 }
 
-.dropdownToggle.active::after {
+/* Caret that rotates with state */
+.dropdownToggle::before {
     content: '';
-    position: absolute;
-    bottom: 0;
-    left: 25%;
-    right: 25%;
-    height: 2px;
-    background: var(--color-accent);
-    border-radius: 1px;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translate(-1px, -1px);
+    transition: transform var(--transition);
+    opacity: 0.7;
+}
+
+.dropdownToggle.active::before {
+    transform: rotate(-135deg) translate(-1px, -1px);
 }
 
 .dropdownMenu {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 8px);
     left: 0;
     background: var(--color-surface-elevated);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-elevated);
-    min-width: 180px;
-    padding: 4px;
+    min-width: 200px;
+    padding: 6px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-6px);
+    transform: translateY(-6px) scale(0.98);
     transition: opacity 0.18s ease-out, transform 0.18s ease-out, visibility 0.18s;
     z-index: 1000;
 }
@@ -153,13 +162,16 @@
 .dropdownActive .dropdownMenu {
     opacity: 1;
     visibility: visible;
-    transform: translateY(4px);
+    transform: translateY(0) scale(1);
 }
 
 .dropdownItem {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     width: 100%;
-    padding: 8px 12px;
+    padding: 9px 12px;
     color: var(--color-text-secondary);
     text-decoration: none;
     font-size: 12px;
@@ -167,9 +179,15 @@
     border: none;
     background: transparent;
     text-align: left;
-    transition: var(--transition);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
     cursor: pointer;
     border-radius: var(--border-radius-sm);
+    min-height: 36px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dropdownItem:active {
+    transform: scale(0.98);
 }
 
 .dropdownItem:hover {
@@ -186,15 +204,36 @@
 
 .mobileMenuBtn {
     display: none;
+    align-items: center;
+    justify-content: center;
+    /* 44×44 touch target */
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobileMenuBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-border);
+}
+
+.mobileMenuBtn:active {
+    transform: scale(var(--press-scale));
+}
+
+.mobileMenuBtnInner {
+    display: flex;
     flex-direction: column;
     justify-content: space-around;
     width: 20px;
     height: 18px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 101;
 }
 
 .mobileMenuBtn span {
@@ -202,35 +241,41 @@
     height: 1.5px;
     background: var(--color-text-muted);
     border-radius: 1px;
-    transition: all 0.2s ease-out;
+    transition: background-color 0.2s ease-out;
     position: relative;
-    transform-origin: 1px;
+    transform-origin: center;
 }
 
-.mobileMenuBtn.open span:first-child {
-    transform: rotate(45deg);
+.mobileMenuBtn.open span {
+    background: var(--color-text-primary);
 }
 
-.mobileMenuBtn.open span:nth-child(2) {
+/* The open-state transforms target the spans directly */
+.mobileMenuBtn.open .mobileMenuBtnInner span:first-child {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobileMenuBtn.open .mobileMenuBtnInner span:nth-child(2) {
     opacity: 0;
     transform: translateX(20px);
 }
 
-.mobileMenuBtn.open span:nth-child(3) {
-    transform: rotate(-45deg);
+.mobileMenuBtn.open .mobileMenuBtnInner span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 .mobileMenu {
     position: fixed;
-    top: 48px;
+    top: 52px;
     left: 0;
     right: 0;
-    background: rgba(9, 9, 11, 0.98);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: var(--color-overlay);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
     border-bottom: 1px solid var(--color-border);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    padding: 8px;
+    /* Keep padding constant; animate max-height + opacity for smooth open/close */
+    padding: 0;
     flex-direction: column;
     gap: 2px;
     z-index: 99;
@@ -238,26 +283,32 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-out, padding 0.3s ease-out;
-    padding-top: 0;
-    padding-bottom: 0;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-out;
 }
 
 .mobileMenuActive {
-    max-height: 400px;
+    max-height: 80vh;
     opacity: 1;
-    padding: 8px;
+    padding: 10px 10px 14px;
 }
 
 .mobileNavLink {
-    display: block;
-    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
     border-radius: var(--border-radius);
     color: var(--color-text-secondary);
     text-decoration: none;
     font-weight: 500;
-    font-size: 13px;
-    transition: background 0.15s, color 0.15s;
+    font-size: 14px;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    min-height: var(--touch-target-min);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobileNavLink:active {
+    transform: scale(var(--press-scale));
+    color: var(--color-text-primary);
 }
 
 .mobileNavLink:hover {
