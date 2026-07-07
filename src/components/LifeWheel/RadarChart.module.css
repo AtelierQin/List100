@@ -46,12 +46,13 @@
     outline: none;
 }
 
-.labelGroup:focus-visible {
-    /* Pulse the parent group's text via outline on the inner <text>. */
-}
-
 .labelGroup:focus-visible .labelText {
     fill: var(--color-focus-ring);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    paint-order: stroke fill;
+    stroke: var(--color-focus-ring);
+    stroke-width: 2;
 }
 
 .labelText {

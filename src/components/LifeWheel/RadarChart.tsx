@@ -51,6 +51,8 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
         .map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`)
         .join(" ");
 
+    const hasData = dataPoints.some((p) => p.score > 0);
+
     // Concentric guide rings at 25/50/75/100 %.
     const rings = [25, 50, 75, 100].map((pct) => {
         const r = (pct / 100) * MAX_RADIUS;
@@ -69,7 +71,7 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
                 viewBox={`0 0 ${SIZE} ${SIZE}`}
                 className={styles.svg}
                 role="img"
-                aria-label="Life Wheel radar chart of 8 life areas"
+                aria-label={`Life Wheel radar chart of ${LIFE_AREAS.length} life areas`}
             >
                 {/* Guide rings */}
                 {rings.map((ring) => (
@@ -94,7 +96,9 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
                 ))}
 
                 {/* Data polygon (filled) */}
-                <polygon points={polygonPoints} className={styles.dataPolygon} />
+                {hasData && (
+                    <polygon points={polygonPoints} className={styles.dataPolygon} />
+                )}
 
                 {/* Data dots */}
                 {dataPoints.map((p) => (
@@ -126,12 +130,22 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
                                 }
                             }}
                         >
+                            {/* Invisible hit area for accessible click target (≥ 44px) */}
+                            <rect
+                                x={axis.labelX - 30}
+                                y={axis.labelY - 16}
+                                width={60}
+                                height={32}
+                                fill="transparent"
+                                pointerEvents="all"
+                            />
                             <text
                                 x={axis.labelX}
                                 y={axis.labelY}
                                 className={styles.labelText}
                                 textAnchor="middle"
                                 dominantBaseline="middle"
+                                pointerEvents="none"
                             >
                                 {axis.label}
                             </text>
@@ -141,6 +155,7 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
                                 className={styles.scoreText}
                                 textAnchor="middle"
                                 dominantBaseline="middle"
+                                pointerEvents="none"
                             >
                                 {total === 0 ? "—" : `${score}%`}
                             </text>
