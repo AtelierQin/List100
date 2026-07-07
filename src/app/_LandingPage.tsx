@@ -3,8 +3,6 @@
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useDashboardStats, useGoals } from "@/lib/data";
-import { useLifeWheel } from "@/lib/lifeWheel";
-import { LifeWheel } from "@/components/LifeWheel";
 import styles from "./page.module.css";
 
 function AnimatedValue({ value }: { value: number }) {
@@ -49,7 +47,6 @@ export default function LandingPage() {
   // so it only ever renders on the client where localStorage is available immediately.
   const stats = useDashboardStats();
   const { goals } = useGoals();
-  const wheelSummary = useLifeWheel(goals);
   const [greeting] = useState(() => getGreeting());
 
   const activeGoals = useMemo(() => {
@@ -128,9 +125,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        {/* Life Wheel — 8-area radar of goal completion balance */}
-        <LifeWheel summary={wheelSummary} />
 
         {/* Current Focus */}
         <section className={styles.focusSection}>

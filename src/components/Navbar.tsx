@@ -7,6 +7,7 @@ import styles from "./Navbar.module.css";
 
 const navItems = [
     { href: "/list100", label: "List100" },
+    { href: "/life-wheel", label: "Wheel" },
 ];
 
 const tourItems = [
@@ -153,6 +154,7 @@ export function Navbar() {
                 role="menu"
             >
                 <Link href="/list100" className={styles.mobileNavLink}>List100</Link>
+                <Link href="/life-wheel" className={styles.mobileNavLink}>Life Wheel</Link>
                 <Link href="/world" className={styles.mobileNavLink}>World Map</Link>
                 <Link href="/china" className={styles.mobileNavLink}>China Map</Link>
                 <Link href="/os" className={styles.mobileNavLink}>OS</Link>
