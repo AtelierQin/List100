@@ -1,0 +1,81 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    overflow: visible;
+}
+
+.ring {
+    stroke: var(--color-border);
+    stroke-width: 1;
+    opacity: 0.4;
+}
+
+.axis {
+    stroke: var(--color-border);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+    opacity: 0.5;
+}
+
+.dataPolygon {
+    fill: var(--color-accent);
+    fill-opacity: 0.18;
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+}
+
+.dataDot {
+    fill: var(--color-accent);
+    stroke: var(--color-bg);
+    stroke-width: 1.5;
+}
+
+.labelGroup {
+    cursor: pointer;
+    outline: none;
+}
+
+.labelGroup:focus-visible {
+    /* Pulse the parent group's text via outline on the inner <text>. */
+}
+
+.labelGroup:focus-visible .labelText {
+    fill: var(--color-focus-ring);
+}
+
+.labelText {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    font-weight: 500;
+    fill: var(--color-text-primary);
+    letter-spacing: 0.04em;
+    transition: fill 0.15s ease-out;
+}
+
+.labelGroup:hover .labelText {
+    fill: var(--color-accent);
+}
+
+.scoreText {
+    font-family: var(--font-family-mono);
+    font-size: 10px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .labelText {
+        transition: none;
+    }
+}
