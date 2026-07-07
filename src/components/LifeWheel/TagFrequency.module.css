@@ -1,0 +1,63 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 16px;
+}
+
+.tag {
+    font-family: var(--font-family-mono);
+    color: var(--color-text-primary);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    line-height: 1.2;
+}
+
+.tagCount {
+    font-size: 0.55em;
+    color: var(--color-text-muted);
+}
+
+.untaggedNote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--color-warning);
+    margin: 0;
+}
+
+.untaggedDot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-warning);
+}
+
+.empty {
+    font-family: var(--font-family-mono);
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+code {
+    font-family: var(--font-family-mono);
+    font-size: 0.95em;
+    padding: 1px 6px;
+    background: var(--color-surface-deep, rgba(0, 0, 0, 0.2));
+    border-radius: 4px;
+}
