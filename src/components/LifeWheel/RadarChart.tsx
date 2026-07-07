@@ -130,12 +130,12 @@ export function RadarChart({ byArea, onAreaClick }: Props) {
                                 }
                             }}
                         >
-                            {/* Invisible hit area for accessible click target (≥ 44px) */}
+                            {/* Invisible hit area for accessible click target (≥ 44×44) */}
                             <rect
-                                x={axis.labelX - 30}
-                                y={axis.labelY - 16}
-                                width={60}
-                                height={32}
+                                x={axis.labelX - 32}
+                                y={axis.labelY - 24}
+                                width={64}
+                                height={48}
                                 fill="transparent"
                                 pointerEvents="all"
                             />

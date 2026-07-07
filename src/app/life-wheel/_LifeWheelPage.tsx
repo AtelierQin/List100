@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useGoals } from "@/lib/data";
 import { useLifeWheelSummary } from "@/lib/lifeWheel";
 import { RadarChart, AreaGrid, InsightPanel, TagFrequency } from "@/components/LifeWheel";
-import type { LifeAreaId } from "@/lib/constants";
 import styles from "./page.module.css";
 
 function CompassMark() {
@@ -47,7 +45,6 @@ export default function LifeWheelPage() {
     // is available immediately on first render — no isMounted guard needed.
     const { goals } = useGoals();
     const summary = useLifeWheelSummary(goals);
-    const [focusedArea, setFocusedArea] = useState<LifeAreaId | null>(null);
 
     // Cold start: zero goals → onboarding hero only.
     if (goals.length === 0) {
@@ -97,12 +94,7 @@ export default function LifeWheelPage() {
                 {showRadar ? (
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Distribution</h2>
-                        <RadarChart
-                            byArea={summary.byArea}
-                            onAreaClick={(id) =>
-                                setFocusedArea(focusedArea === id ? null : id)
-                            }
-                        />
+                        <RadarChart byArea={summary.byArea} />
                     </section>
                 ) : (
                     <section className={styles.section}>
@@ -116,20 +108,8 @@ export default function LifeWheelPage() {
 
                 {/* SECTION 3 · AreaGrid */}
                 <section className={styles.section}>
-                    <div className={styles.sectionHeader}>
-                        <h2 className={styles.sectionTitle}>By area</h2>
-                        {focusedArea && (
-                            <span className={styles.focusChip}>
-                                Focused: {focusedArea} · click again to clear
-                            </span>
-                        )}
-                    </div>
-                    <AreaGrid
-                        byArea={summary.byArea}
-                        onAreaClick={(id) =>
-                            setFocusedArea(focusedArea === id ? null : id)
-                        }
-                    />
+                    <h2 className={styles.sectionTitle}>By area</h2>
+                    <AreaGrid byArea={summary.byArea} />
                 </section>
 
                 {/* SECTION 4 · Insights */}

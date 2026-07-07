@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { LIFE_AREAS, type LifeAreaId } from "@/lib/constants";
-import { tierForScore, type LifeAreaScore } from "@/lib/lifeWheel";
+import type { LifeAreaScore } from "@/lib/lifeWheel";
 import styles from "./AreaGrid.module.css";
 
 interface Props {
@@ -15,16 +15,11 @@ export function AreaGrid({ byArea, onAreaClick }: Props) {
         <div className={styles.grid}>
             {LIFE_AREAS.map((area) => {
                 const score = byArea[area.id];
-                const tier = tierForScore(score.score, score.total);
                 const isComplete = score.total > 0 && score.score === 100;
-                return (
-                    <button
-                        key={area.id}
-                        type="button"
-                        className={`${styles.card} ${styles[`tier_${tier}`]}`}
-                        onClick={() => onAreaClick?.(area.id)}
-                        style={{ "--area-color": area.color } as React.CSSProperties}
-                    >
+                const cardStyle = { "--area-color": area.color } as React.CSSProperties;
+
+                const body = (
+                    <>
                         <span className={styles.accent} aria-hidden="true" />
                         <span className={styles.label}>
                             {area.label}
@@ -33,21 +28,27 @@ export function AreaGrid({ byArea, onAreaClick }: Props) {
                         <span className={styles.percentage}>
                             {score.total === 0 ? "—" : `${score.score}%`}
                         </span>
-                        <span className={styles.bar} aria-hidden="true">
+                        <div
+                            className={styles.bar}
+                            role="progressbar"
+                            aria-valuenow={score.score}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-label={
+                                score.total === 0
+                                    ? `${area.label} completion: no goals yet`
+                                    : `${area.label} completion: ${score.score}%`
+                            }
+                        >
                             <span
                                 className={styles.barFill}
                                 style={{ width: `${score.score}%` }}
+                                aria-hidden="true"
                             />
-                        </span>
+                        </div>
                         <span className={styles.meta}>
                             {score.total === 0 ? (
-                                <Link
-                                    href="/list100"
-                                    className={styles.addLink}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    + Add goal
-                                </Link>
+                                <span className={styles.addLink}>+ Add goal</span>
                             ) : (
                                 <>
                                     {score.completed}/{score.total} done
@@ -57,6 +58,31 @@ export function AreaGrid({ byArea, onAreaClick }: Props) {
                                 </>
                             )}
                         </span>
+                    </>
+                );
+
+                if (score.total === 0) {
+                    return (
+                        <Link
+                            key={area.id}
+                            href="/list100"
+                            className={styles.card}
+                            style={cardStyle}
+                        >
+                            {body}
+                        </Link>
+                    );
+                }
+
+                return (
+                    <button
+                        key={area.id}
+                        type="button"
+                        className={styles.card}
+                        onClick={() => onAreaClick?.(area.id)}
+                        style={cardStyle}
+                    >
+                        {body}
                     </button>
                 );
             })}

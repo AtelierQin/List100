@@ -200,7 +200,7 @@ interface Summary {
 | `tagCounts` | `Map<string, number>` |
 | `untaggedCount` | `number` |
 
-词云：tag 字号 = `Math.max(0.75, Math.min(2, Math.log(count + 1)))`。
+词云：tag 字号（em） = `Math.max(0.85, Math.min(2, Math.log(count + 1) / Math.log(maxCount + 1)))`，其中 `maxCount` 是当前可见 tag 中最大命中数；最小字号下限 0.85（避免过小不可读），最大 2.0。当 `maxCount <= 1` 时退化为 0.85 不变体。
 
 ## 9. 页面 layout（_LifeWheelPage.tsx）
 
@@ -259,7 +259,7 @@ interface Summary {
 ### 12.3 可访问性
 
 - Tab 顺序与视觉顺序一致
-- 雷达图每条轴带 `aria-label="Career: 25% complete"`
+- 雷达图每条轴带 `aria-label="${axis.label}: ${score}%, ${total} goals"`（例：`Career: 80%, 4 goals`）。当 `total === 0` 时仍带有 "X%" 后缀但无 goals 计数（实现中始终输出 "0 goals"）。这一可读形式兼顾屏幕阅读器用户识别命中度与数据规模。
 - 进度条用 `role="progressbar"` + `aria-valuenow`
 - 颜色对比度 ≥ 4.5:1（WCAG AA）
 

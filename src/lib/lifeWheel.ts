@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Goal, Milestone, Habit } from "./data";
+import type { Goal, Habit } from "./data";
 import { LIFE_AREAS, LIFE_AREA_IDS, type LifeAreaId } from "./constants";
 
 /**
@@ -83,8 +83,8 @@ interface InternalAccumulator {
     matchedTagCounts: Map<string, number>;
 }
 
-function emptyArea(): LifeAreaScore {
-    return { score: 0, total: 0, completed: 0, pending: 0, color: "", label: "" };
+function emptyArea(): Pick<LifeAreaScore, "score" | "total" | "completed" | "pending"> {
+    return { score: 0, total: 0, completed: 0, pending: 0 };
 }
 
 function buildAccumulator(): InternalAccumulator {
