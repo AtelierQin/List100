@@ -105,6 +105,16 @@
     --spacing-2xl: 64px;
     --spacing-3xl: 96px;
 
+    /* ── Page chrome ── */
+    --navbar-height: 52px;
+    --page-top-offset: 52px;
+    --content-max-width: 1200px;
+    --content-narrow: 720px;
+
+    /* ── Domain-specific ── */
+    --color-map-bg: #1a1a1a;
+    /* Leaflet map base — slightly lifted from --color-bg so tiles show separation */
+
     /* ── Touch targets (Apple HIG / Material) ── */
     --touch-target-min: 44px;
 
@@ -427,6 +437,9 @@ a:hover {
     border: 0;
 }
 
+/* ==================== Shared UI Primitives ==================== */
+/* Use these in every page so buttons/cards/labels stay aligned. */
+
 /* ── Touch-friendly button base ── */
 .btn-base {
     display: inline-flex;
@@ -458,10 +471,23 @@ a:hover {
 }
 
 .btn-primary {
-    composes: btn-base;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: var(--touch-target-min);
+    padding: 0 16px;
     background: var(--color-accent);
     color: var(--color-text-on-primary);
-    border-color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition), border-color var(--transition), transform var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -469,28 +495,224 @@ a:hover {
     border-color: var(--color-accent-hover);
 }
 
+.btn-primary:active:not(:disabled) {
+    transform: scale(var(--press-scale));
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .btn-secondary {
-    composes: btn-base;
-    background: var(--color-surface);
-    color: var(--color-text-primary);
-    border-color: var(--color-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: var(--touch-target-min);
+    padding: 0 14px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-secondary:hover:not(:disabled) {
     background: var(--color-surface-hover);
     border-color: var(--color-border-hover);
+    color: var(--color-text-primary);
+}
+
+.btn-secondary:active:not(:disabled) {
+    transform: scale(var(--press-scale));
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .btn-ghost {
-    composes: btn-base;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    padding: 0 16px;
     background: transparent;
     color: var(--color-text-secondary);
-    border-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-ghost:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-surface-hover);
     color: var(--color-text-primary);
+}
+
+.btn-ghost:active:not(:disabled) {
+    transform: scale(var(--press-scale));
+}
+
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: var(--touch-target-min);
+    padding: 0 14px;
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: var(--color-danger);
+    color: var(--color-text-on-primary);
+}
+
+/* ── Page shell — applied to every page's <main> wrapper ── */
+.page-main {
+    min-height: 100vh;
+    background: var(--color-bg);
+    padding-top: var(--page-top-offset);
+}
+
+.page-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-2xl);
+}
+
+.page-container-narrow {
+    max-width: var(--content-narrow);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-2xl);
+}
+
+/* ── Section label (small-caps eyebrow) — used across all modules ── */
+.section-eyebrow {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0;
+}
+
+/* ── Module card — shared surface for sidebar/listContainer/timelineSection ── */
+.module-card {
+    background: var(--color-surface-translucent);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.module-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--color-border-hover), transparent);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* ── Stat strip — shared by Landing, World, China, LifeWheel ── */
+.stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--color-border-light);
+    min-height: 44px;
+    transition: background-color var(--transition-fast);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-row:hover {
+    background: var(--color-surface-hover);
+}
+
+.stat-label {
+    font-family: var(--font-family);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex: 1;
+}
+
+.stat-value {
+    font-family: var(--font-family-mono);
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.stat-unit {
+    font-family: var(--font-family-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+    margin-left: 6px;
+    text-align: left;
+}
+
+/* ── Toast — shared by List100, OS ── */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: var(--color-surface-elevated);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: var(--shadow-elevated);
+    z-index: 9999;
+    animation: slideUp 0.25s ease-out;
+    font-family: var(--font-family-mono);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 /* ==================== Footer ==================== */
@@ -504,9 +726,9 @@ a:hover {
 }
 
 .footer .container {
-    max-width: 800px;
+    max-width: var(--content-narrow);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 var(--spacing-md);
 }
 
 .footer p {
@@ -523,6 +745,6 @@ a:hover {
     }
 
     .footer .container {
-        padding: 0 16px;
+        padding: 0 var(--spacing-sm);
     }
 }

@@ -1,13 +1,13 @@
 /* ==================== Landing — Mission Control Dashboard ==================== */
 
 .main {
-    padding-top: 48px;
+    padding-top: var(--page-top-offset);
     min-height: 100vh;
     background: var(--color-bg);
 }
 
 .dashboardContainer {
-    max-width: 640px;
+    max-width: var(--content-narrow);
     margin: 0 auto;
     padding: 40px var(--spacing-md) 60px;
     animation: fadeIn 0.3s ease-out;

@@ -14,10 +14,10 @@
 }
 
 .navContainer {
-    max-width: 1200px;
+    max-width: var(--content-max-width);
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    height: 52px;
+    height: var(--navbar-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -266,7 +266,7 @@
 
 .mobileMenu {
     position: fixed;
-    top: 52px;
+    top: var(--navbar-height);
     left: 0;
     right: 0;
     background: var(--color-overlay);

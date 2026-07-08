@@ -243,18 +243,31 @@ export default function WorldPage() {
 
             {/* Detail Modal */}
             {activeCountry && (
-                <div className={styles.modal} onClick={() => setActiveId(null)}>
+                <div
+                    className={styles.modal}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="world-modal-title"
+                    onClick={() => setActiveId(null)}
+                >
                     <div
                         className={styles.modalContent}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <button className={styles.closeBtn} onClick={() => setActiveId(null)}>
-                            ✕
+                        <button
+                            className={styles.closeBtn}
+                            onClick={() => setActiveId(null)}
+                            aria-label="Close detail"
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
                         </button>
                         <div className={styles.modalInfo} style={{ gridColumn: "1 / -1" }}>
                             <div>
                                 <span className={styles.modalId}>{String(activeCountry.id).padStart(2, "0")}</span>
-                                <h2 className={styles.modalTitle}>{activeCountry.name}</h2>
+                                <h2 id="world-modal-title" className={styles.modalTitle}>{activeCountry.name}</h2>
                                 <span className={styles.modalLocation}>REGION: {activeCountry.region}</span>
                             </div>
 
@@ -287,9 +300,7 @@ export default function WorldPage() {
                                     className={`${styles.markBtn} ${visited.has(activeCountry.id) ? styles.markBtnVisited : ""}`}
                                     onClick={() => toggle(activeCountry.id)}
                                 >
-                                    {visited.has(activeCountry.id)
-                                        ? "VISITED ✓"
-                                        : "MARK AS VISITED"}
+                                    {visited.has(activeCountry.id) ? "VISITED" : "MARK AS VISITED"}
                                 </button>
                             </div>
                         </div>

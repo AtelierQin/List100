@@ -25,12 +25,12 @@
     padding: 14px 14px 16px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-lg, 12px);
+    border-radius: var(--border-radius-lg);
     text-align: left;
     cursor: pointer;
     min-height: 110px;
     overflow: hidden;
-    transition: transform 0.15s ease-out, border-color 0.15s ease-out;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
     font-family: inherit;
     color: inherit;
 }
@@ -80,7 +80,7 @@
 }
 
 .spark {
-    color: #fbbf24; /* amber-400 */
+    color: var(--color-warning);
     font-size: 13px;
 }
 
@@ -96,8 +96,8 @@
     display: block;
     width: 100%;
     height: 4px;
-    background: var(--color-surface-deep, rgba(0, 0, 0, 0.2));
-    border-radius: 999px;
+    background: var(--color-surface-deep);
+    border-radius: var(--border-radius-full);
     overflow: hidden;
 }
 

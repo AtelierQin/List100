@@ -1,15 +1,15 @@
 /* ==================== Goal Detail — Atelier Qin ==================== */
 
 .main {
-    padding-top: 48px;
+    padding-top: var(--page-top-offset);
     min-height: 100vh;
     background: var(--color-bg);
 }
 
 .container {
-    max-width: 580px;
+    max-width: var(--content-narrow);
     margin: 0 auto;
-    padding: 32px 24px 80px;
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-3xl);
 }
 
 .backLink {

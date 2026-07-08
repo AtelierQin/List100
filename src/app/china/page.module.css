@@ -1,4 +1,6 @@
-/* China Map Page — imports shared map styles */
-@import url("../../components/map.module.css");
+/* China page uses components/map.module.css. This file kept for module contract only. */
 
-/* Page-specific overrides (if any) go here */
+.main {
+    min-height: 100vh;
+    background: var(--color-bg);
+}

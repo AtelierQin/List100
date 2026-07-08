@@ -6,18 +6,18 @@ import { useGoals, type Goal, generateId } from "@/lib/data";
 import styles from "./page.module.css";
 
 const TAG_COLORS: Record<string, { bg: string; color: string; border: string }> = {
-    Travel: { bg: "rgba(59, 130, 246, 0.1)", color: "#60a5fa", border: "rgba(59, 130, 246, 0.3)" },
-    Career: { bg: "rgba(245, 158, 11, 0.1)", color: "#fbbf24", border: "rgba(245, 158, 11, 0.3)" },
-    Health: { bg: "rgba(16, 185, 129, 0.1)", color: "#34d399", border: "rgba(16, 185, 129, 0.3)" },
-    Learning: { bg: "rgba(168, 85, 247, 0.1)", color: "#c084fc", border: "rgba(168, 85, 247, 0.3)" },
-    Finance: { bg: "rgba(239, 68, 68, 0.1)", color: "#f87171", border: "rgba(239, 68, 68, 0.3)" },
+    Travel: { bg: "var(--color-info-light)", color: "var(--color-info)", border: "rgba(59, 130, 246, 0.3)" },
+    Career: { bg: "var(--color-warning-light)", color: "var(--color-warning)", border: "rgba(245, 158, 11, 0.3)" },
+    Health: { bg: "var(--color-success-light)", color: "var(--color-success)", border: "rgba(16, 185, 129, 0.3)" },
+    Learning: { bg: "var(--color-purple-light)", color: "var(--color-purple)", border: "rgba(168, 85, 247, 0.3)" },
+    Finance: { bg: "var(--color-danger-light)", color: "var(--color-danger)", border: "rgba(239, 68, 68, 0.3)" },
     Social: { bg: "rgba(236, 72, 153, 0.1)", color: "#f472b6", border: "rgba(236, 72, 153, 0.3)" },
     Creative: { bg: "rgba(251, 146, 60, 0.1)", color: "#fb923c", border: "rgba(251, 146, 60, 0.3)" },
     Personal: { bg: "rgba(99, 102, 241, 0.1)", color: "#818cf8", border: "rgba(99, 102, 241, 0.3)" },
 };
 
 function getTagColor(tag: string) {
-    return TAG_COLORS[tag] || { bg: "rgba(255, 255, 255, 0.05)", color: "#a1a1aa", border: "rgba(255, 255, 255, 0.1)" };
+    return TAG_COLORS[tag] || { bg: "var(--color-surface-hover)", color: "var(--color-text-secondary)", border: "var(--color-border)" };
 }
 
 // ── Inline SVG icons (no emojis per design system rule "No Emoji as Structural Icons") ──
@@ -26,6 +26,17 @@ const IconPlus = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
         <line x1="12" y1="5" x2="12" y2="19" />
         <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+);
+
+const IconGrip = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+        <circle cx="9" cy="6" r="1.4" />
+        <circle cx="15" cy="6" r="1.4" />
+        <circle cx="9" cy="12" r="1.4" />
+        <circle cx="15" cy="12" r="1.4" />
+        <circle cx="9" cy="18" r="1.4" />
+        <circle cx="15" cy="18" r="1.4" />
     </svg>
 );
 
@@ -363,7 +374,11 @@ export default function List100Page() {
 
             {/* Toast */}
             {toast && (
-                <div className={`${styles.toast} ${styles[`toast${toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}`] || ""}`}>
+                <div
+                    role="status"
+                    aria-live="polite"
+                    className={`toast ${styles[`toast${toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}`] || ""}`}
+                >
                     {toast.message}
                 </div>
             )}
@@ -396,7 +411,7 @@ function TodoItem({
 
     return (
         <li className={`${styles.todoItem} ${goal.pinned ? styles.pinned : ""}`}>
-            <span className={styles.dragHandle}>⋮⋮</span>
+            <span className={styles.dragHandle} aria-label="Drag to reorder"><IconGrip /></span>
             <span className={styles.todoNumber}>{String(number).padStart(2, "0")}</span>
             <div
                 className={`${styles.todoCheckbox} ${goal.completed ? styles.checked : ""}`}

@@ -185,7 +185,11 @@ export default function LandingPage() {
                 >
                   <span className={styles.allGoalNumber}>{String(index + 1).padStart(2, "0")}</span>
                   <span className={styles.allGoalText}>
-                    {goal.completed && <span className={styles.checkmark}>✓</span>}
+                    {goal.completed && (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: "var(--color-success)", flexShrink: 0 }}>
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    )}
                     {goal.text?.trim() ? goal.text : <span className={styles.emptyGoal}>Empty goal</span>}
                   </span>
                 </div>

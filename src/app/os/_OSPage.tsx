@@ -184,7 +184,7 @@ export default function OSPage() {
                     </div>
                 </section>
 
-                <section className={styles.timelineSection}>
+                <section className={styles.section}>
                     <h2 className={styles.sectionTitle}>Yearly Roadmap</h2>
                     {sortedYears.length > 0 ? (
                         <div className={styles.timelineYears}>
@@ -214,7 +214,7 @@ export default function OSPage() {
                     )}
                 </section>
 
-                <div className={styles.section}>
+                <section className={styles.section}>
                     <h2 className={styles.sectionTitle}>Data Management</h2>
                     <p className={styles.sectionDesc}>
                         Your progress in List100 is saved entirely in your browser&apos;s local storage.
@@ -227,7 +227,7 @@ export default function OSPage() {
                                 <h3>Export Backup</h3>
                                 <p>Save a JSON file containing all your marked progress across all collections.</p>
                             </div>
-                            <button className={styles.btn} onClick={handleExportData}>Download Backup</button>
+                            <button className="btn-primary" onClick={handleExportData}>Download Backup</button>
                         </div>
 
                         <div className={styles.actionGroup}>
@@ -243,7 +243,7 @@ export default function OSPage() {
                                     style={{ display: "none" }}
                                     onChange={handleImportData}
                                 />
-                                <label htmlFor="import-file" className={styles.btn}>Select Backup File</label>
+                                <label htmlFor="import-file" className="btn-secondary">Select Backup File</label>
                             </div>
                         </div>
 
@@ -252,16 +252,20 @@ export default function OSPage() {
                                 <h3 className={styles.dangerText}>Danger Zone</h3>
                                 <p>Permanently delete all local progress data.</p>
                             </div>
-                            <button className={`${styles.btn} ${styles.btnDanger}`} onClick={handleClearData}>Clear All Data</button>
+                            <button className="btn-danger" onClick={handleClearData}>Clear All Data</button>
                         </div>
                     </div>
 
                     {importStatus && (
-                        <div className={`${styles.statusMsg} ${importStatus.includes("Failed") ? styles.errorMsg : styles.successMsg}`}>
+                        <div
+                            role="status"
+                            aria-live="polite"
+                            className={`${styles.statusMsg} ${importStatus.includes("Failed") ? styles.errorMsg : styles.successMsg}`}
+                        >
                             {importStatus}
                         </div>
                     )}
-                </div>
+                </section>
             </div>
         </main>
     );

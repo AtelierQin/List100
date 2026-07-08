@@ -29,19 +29,32 @@ export function ChinaCityModal({
     TYPE_LABELS
 }: ChinaCityModalProps) {
     return (
-        <div className={styles.modal} onClick={() => setActiveCity(null)}>
+        <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="china-modal-title"
+            onClick={() => setActiveCity(null)}
+        >
             <div
                 className={styles.modalContent}
                 onClick={(e) => e.stopPropagation()}
                 style={{ gridTemplateColumns: "1fr" }}
             >
-                <button className={styles.closeBtn} onClick={() => setActiveCity(null)}>
-                    ✕
+                <button
+                    className={styles.closeBtn}
+                    onClick={() => setActiveCity(null)}
+                    aria-label="Close detail"
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
                 </button>
                 <div className={styles.modalInfo}>
                     <div>
                         <span className={styles.modalId}>{activeCity.name}</span>
-                        <h2 className={styles.modalTitle}>{activeCity.name}</h2>
+                        <h2 id="china-modal-title" className={styles.modalTitle}>{activeCity.name}</h2>
                         <span className={styles.modalLocation}>
                             <span className={styles.modalLocationLabel}>PROVINCE:</span>
                             {activeCity.province} · {TYPE_LABELS[activeCity.provinceType] || ""}
@@ -81,7 +94,7 @@ export function ChinaCityModal({
                             onClick={() => toggleCity(activeCity.id)}
                         >
                             {visitedSet.has(activeCity.id)
-                                ? "VISITED / 已到达 ✓"
+                                ? "VISITED / 已到达"
                                 : "MARK AS VISITED / 标记已到达"}
                         </button>
                     </div>
