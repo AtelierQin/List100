@@ -48,9 +48,10 @@ It is built using **Next.js (App Router)**, **React 19**, and **Tailwind CSS 4.0
 
 ### Architecture & File Structure
 - `src/app/*`: Next.js App Router entry points (pages, layouts, etc.)
-- `src/components/*`: Reusable UI components.
-- `src/lib/*`: Utility logic, data fetching, global stores (`data.ts`).
-- `src/data/*`: Static configuration JSON files (e.g., `china-provinces.json`).
+- `src/components/*`: Reusable UI components (including `LifeWheel/` sub-components).
+- `src/lib/*`: Utility logic, data hooks, constants (`data.ts`, `lifeWheel.ts`, `constants.ts`, `export.ts`).
+- `src/data/*`: Static configuration JSON files (e.g., `china-provinces.json`, `countries.json`, `imdb.json`, `dg120.json`, `books.json`).
+- `src/types/*`: TypeScript type declarations (e.g., `json.d.ts` for JSON module imports).
 
 ### Data Management
 - **Persistence**: `localStorage` via custom hooks in `src/lib/data.ts`.

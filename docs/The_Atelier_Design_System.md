@@ -1,4 +1,4 @@
-# 🎨 The Atelier Qin Design System (v1.0)
+# 🎨 The Atelier Qin Design System (v2.0)
 > *Engineering Taste. Crafting Silence. Building Truth.*
 
 ## 1. Core Philosophy (核心哲学)
@@ -122,5 +122,5 @@ Follow these strict design guidelines:
 4.  **Philosophy**:
     -   **Density**: Prefer compact, information-dense layouts over whitespace-heavy ones.
     -   **Rawness**: Show the data. Don't hide complexity, organize it.
-    -   **Animation**: Use `framer-motion` for fast, crisp transitions (duration: 0.2s, ease: easeOut). No bouncy/springy animations.
+    -   **Animation**: Use CSS transitions via `globals.css` tokens (`--transition-fast`, `--transition`) for fast, crisp transitions (duration: 0.15–0.2s, ease-out). No bouncy/springy animations. Avoid JS animation libraries unless absolutely necessary.
 ```

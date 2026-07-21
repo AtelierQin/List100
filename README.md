@@ -177,7 +177,6 @@ FutureCast-List100/
 ├── AGENTS.md                     # Guide for AI Agents
 ├── next.config.ts
 ├── postcss.config.mjs
-├── tailwind.config.js
 ├── tsconfig.json
 └── README.md                     # This file
 ```

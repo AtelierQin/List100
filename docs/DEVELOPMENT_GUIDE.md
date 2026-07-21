@@ -2,295 +2,202 @@
 
 ## Project Overview
 
-FutureCast List100 is a web application for managing life goals, resources, and travel experiences. The project follows modern web development practices with a clean, organized structure.
+FutureCast List100 is a personal life-design PWA built with **Next.js 16 (App Router)**, **React 19**, **TypeScript 5**, and **Tailwind CSS 4**. It tracks life goals (List100), travel (World + China maps), cultural collections (IMDb, DG120, Books), and life-balance analytics (Life Wheel) — all persisted client-side via `localStorage`. There is no backend.
+
+## Prerequisites
+
+- Node.js 18+ (recommended: latest LTS)
+- npm (comes with Node)
+- A modern browser (Chrome, Firefox, Safari, Edge)
 
 ## Development Setup
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Local web server (optional, for development)
-- Text editor or IDE
+```bash
+# Install dependencies
+npm install
 
-### Local Development
-1. Clone or download the project
-2. Open `landing.html` in your browser
-3. For local server development:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using PHP
-   php -S localhost:8000
-   ```
+# Start dev server (http://localhost:3000)
+npm run dev
 
-## File Organization
+# Type-check
+npx tsc --noEmit
 
-### HTML Pages
-Each page is self-contained with its own CSS and JavaScript:
-- `landing.html` - Project introduction and navigation
-- `list100.html` - Main goal management application
-- `OS.html` - Resource management with List100 goals integration
-- `world.html` - World travel tracking
-- `china.html` - China travel tracking
-- `goal-detail.html` - Individual goal details
-- `imdb-top-250.html` - IMDb Top 250 collection tracking
-- `dg120.html` - DG 120 collection tracking
+# Lint
+npm run lint
 
-### CSS Architecture
-- `global.css` - Base styles, design system, and shared components
-- `assets/css/base/` - Foundation styles and variables
-- `assets/css/components/` - Modular component styles for reusability
-- Page-specific CSS files for unique styling
-- Modular approach for maintainability
+# Production build
+npm run build
+npm run start
+```
 
-### JavaScript Modules
-- **Core Modules**: `assets/js/core/` (Storage, Utils, CollectionPage base class)
-- **Components**: `assets/js/components/` (Modal, Filters, ListRenderer, Toast)
-- **Page Logic**: Page-specific scripts inherit from `CollectionPage` or use components compositionally
-- `CollectionPage` provides a standard foundation for data-driven pages (IMDb, Books, etc.)
-- No external dependencies - pure vanilla JavaScript
-- ES6+ features used throughout (classes, async/await, arrow functions)
-- Local storage for data persistence with multiple backup strategies
-- Cross-page data synchronization via storage events
+## Architecture
 
-## Coding Standards
+### App Router (`src/app/`)
 
-### HTML
-- Semantic HTML5 elements
-- Accessible markup (ARIA labels, proper headings)
-- Clean, indented structure
-- Meaningful class names
+Each route is a directory containing up to three files:
 
-### CSS
-- CSS custom properties for theming
-- Mobile-first responsive design
-- Consistent naming conventions
-- Modular component approach
+| File | Purpose |
+|---|---|
+| `page.tsx` | Server component that dynamically imports the client page |
+| `_*Page.tsx` | Client component (the actual UI) — prefixed with `_` to signal "client-only" |
+| `page.module.css` | Scoped styles for this route |
 
-### JavaScript
-- ES6+ syntax
-- Class-based architecture
-- Async/await for asynchronous operations
-- Comprehensive error handling
-- Local storage management
+Pages that depend on `localStorage` are loaded via `next/dynamic({ ssr: false })` in their `page.tsx` wrapper. This prevents hydration mismatches since server and client renders would differ.
+
+**Example pattern:**
+
+```tsx
+// src/app/list100/page.tsx (server component)
+import dynamic from "next/dynamic";
+const List100Page = dynamic(() => import("./_List100Page"), { ssr: false });
+export default function Page() { return <List100Page />; }
+```
+
+### Components (`src/components/`)
+
+Reusable UI components live here. They are client components (`"use client"` at top) and use CSS Modules for scoped styling. Co-locate `*.module.css` alongside each `.tsx` file.
+
+- `Navbar.tsx` / `Navbar.module.css` — Fixed top navigation
+- `MapView.tsx` / `map.module.css` — Shared Leaflet wrapper (used by World and China)
+- `ChinaSidebar.tsx`, `ChinaCityModal.tsx` — China-specific UI
+- `LifeWheel/` — Sub-components: `RadarChart.tsx`, `AreaGrid.tsx`, `InsightPanel.tsx`, `DistributionChart.tsx`, `TagFrequency.tsx`, barrel-exported via `index.ts`
+
+### Data Layer (`src/lib/`)
+
+| File | Purpose |
+|---|---|
+| `data.ts` | Core localStorage hooks (`useGoals`, `useVisitedWorld`, `useVisitedChina`, `useImdbWatched`, `useDg120Listened`, `useBooksRead`, etc.) and `generateId()` |
+| `lifeWheel.ts` | `useLifeWheelSummary` — aggregates goals into 8 life areas for radar visualization |
+| `constants.ts` | `LIFE_AREAS` taxonomy and other shared constants |
+| `export.ts` | JSON backup/import helpers for per-module and global data export |
+
+The central hook is `useLocalStorage<T>(key, initialValue)` — it reads from `localStorage` on mount (lazy initializer), writes on set, and listens for `storage` events for cross-tab sync.
+
+### Static Data (`src/data/`)
+
+JSON files consumed by pages via `import`:
+
+- `countries.json` — world countries with coordinates
+- `china-provinces.json` — Chinese provinces with cities
+- `china5a.json` — 5A scenic spots
+- `imdb.json`, `imdb-top250-tv.json` — film/TV data
+- `dg120.json` — Deutsche Grammophon recordings
+- `books.json` — Tsinghua reading list
+
+### Types (`src/types/`)
+
+- `json.d.ts` — Module declarations for JSON imports (satisfies `resolveJsonModule` in tsconfig)
+
+### Path Aliases
+
+`@/*` maps to `src/*` (configured in `tsconfig.json`). Use `@/lib/data`, `@/components/Navbar`, etc.
 
 ## Data Management
 
-### Storage Strategy
-- Primary: localStorage for persistence
-- Backup: Multiple backup locations
-- Export: JSON file downloads
-- Import: File upload and parsing
+### localStorage Keys
 
-### Data Structure
+| Key | Data |
+|---|---|
+| `list100-items` | Goals array (`Goal[]`) |
+| `visited_world` | Visited country IDs (`string[]`) |
+| `china-visited-cities-v2` | Visited city IDs (`string[]`) |
+| `imdb-250-watched` | Watched IMDb IDs (`string[]`) |
+| `dg120-listened` | Listened DG120 IDs (`string[]`) |
+| `thu-books-read` | Read book IDs (`string[]`) |
 
-#### List100 Goals
-```javascript
-{
-  "items": [
-    {
-      "id": timestamp,
-      "text": "Goal title",
-      "description": "Goal description",
-      "tags": ["tag1", "tag2"],
-      "completed": false,
-      "pinned": false,
-      "customOrder": 0,
-      "createdAt": "ISO date string",
-      "completedAt": "ISO date string",
-      "lastModified": "ISO date string",
-      "progress": 0-100  // Stored but not displayed in UI
-    }
-  ],
-  "lastUpdated": "ISO date string"
-}
-```
+### Cross-Tab Sync
 
-#### OS Resources
-```javascript
-{
-  "resources": [
-    {
-      "id": timestamp,
-      "title": "Resource title",
-      "url": "https://example.com",
-      "description": "Resource description",
-      "category": "tool|news|article|database",
-      "tags": ["tag1", "tag2"],
-      "favicon": "🌐",
-      "dateAdded": "ISO date string"
-    }
-  ]
-}
-```
+The `useLocalStorage` hook listens for the browser's native `storage` event. When a tab writes to `localStorage`, other tabs re-render automatically.
 
-## Adding New Features
+### JSON Export/Import
 
-### New Page
-1. Create HTML file in root directory (e.g., `newpage.html`)
-2. Create corresponding CSS in `assets/css/` (e.g., `newpage.css`)
-3. Create corresponding JS in `assets/js/` (e.g., `newpage.js`)
-   - If creating a data collection page, extend `CollectionPage` to inherit standard functionality
-4. Update navigation dropdown in all existing pages
-5. Update documentation (README.md, FILE_STRUCTURE.md)
-6. Test across all browsers and devices
+Each module page supports exporting its data as a JSON file. The OS page (`/os`) provides global export (all keys) and global import with legacy format detection. Helpers live in `src/lib/export.ts`.
 
-### New Component
-1. Add styles to appropriate CSS file or create shared component CSS
-2. Create JavaScript class or functions (consider reusable components like `dropdown.js`)
-3. Bind events and interactions
-4. Test across all browsers
-5. Document component usage if reusable
+## Design System
 
-### Data Synchronization
-When adding features that share data:
-1. Use consistent localStorage keys
-2. Implement storage event listeners for cross-page sync
-3. Handle data conflicts and merging
-4. Provide backup and recovery mechanisms
-5. Test data flow between pages
+The single source of truth is `src/app/globals.css` — the **Atelier Qin v2.0** design system. It defines all CSS custom properties (colors, spacing, typography, radii, shadows) and shared utility classes (`.btn-primary`, `.module-card`, `.section-eyebrow`, etc.).
 
-## Performance Considerations
+Key principles:
+- Dark-first Zinc palette with Signal accent colors (emerald, amber, red, blue, purple)
+- Geist Sans / Geist Mono font stack
+- 4/8px spacing scale
+- Every page uses `.page-main` + `.page-container` for consistent chrome alignment
 
-### Loading
-- Minimize HTTP requests
-- Optimize CSS and JavaScript
-- Use efficient selectors
-- Lazy load when appropriate
+See `README.md` (Design System section) for the full token tables and component patterns.
 
-### Storage
-- Efficient localStorage usage
-- Regular cleanup of old data
-- Compression for large datasets
-- Backup strategies
+## Coding Standards
 
-## Browser Compatibility
+### TypeScript
 
-### Supported Features
-- CSS Grid and Flexbox
-- ES6+ JavaScript
-- Local Storage
-- File API
-- Modern event handling
+- Strict mode is enabled — no `any`, no `@ts-ignore`, no `@ts-expect-error`
+- Use `interface` for data shapes (see `Goal`, `Milestone`, `Habit` in `data.ts`)
+- Prefer explicit return types on exported functions
 
-### Fallbacks
-- Graceful degradation for older browsers
-- Progressive enhancement approach
-- Feature detection over browser detection
+### React
+
+- All files accessing `localStorage` or DOM APIs must have `"use client"` at the top
+- Use the provided hooks from `src/lib/data.ts` — do not read/write `localStorage` directly
+- Prefer `useCallback` and `useMemo` for derived/computed values
+- Use `next/dynamic({ ssr: false })` for any page that depends on `localStorage`
+
+### Naming
+
+- **Variables/functions**: `camelCase`
+- **Components**: `PascalCase`
+- **Files**: `PascalCase.tsx` for components, `camelCase.ts` for utilities
+- **CSS Modules**: `*.module.css`, class names in `camelCase`
+
+### Styling
+
+- CSS Modules for scoped component styles
+- Tailwind CSS utilities as supplement for one-off adjustments
+- Use design tokens (`var(--color-*)`, `var(--spacing-*)`, etc.) — never raw hex values
+- Use shared utility classes from `globals.css` instead of re-implementing common patterns
+
+### Accessibility
+
+- Focus rings: `2px solid var(--color-focus-ring)` on `:focus-visible`
+- Touch targets: minimum 44x44px (`var(--touch-target-min)`)
+- `@media (prefers-reduced-motion: reduce)` is globally applied — respect it
+- Icon-only buttons require `aria-label`
+- Modals use `role="dialog"` + `aria-modal` + `aria-labelledby`
+- Toasts use `aria-live="polite"`
+
+### Icons
+
+Use inline SVG (Lucide/Heroicons style: 1.5-2.5px stroke, `stroke-linecap: round`). Emojis are permitted only as decorative inline characters (e.g., pin badges), never as structural navigation or control icons.
+
+## Hydration Safety
+
+Because `localStorage` is only available in the browser, any data-dependent rendering must handle the server/client mismatch:
+
+1. **Preferred**: Wrap the page in `next/dynamic({ ssr: false })` — the component only renders on the client
+2. **Alternative**: Use the lazy initializer pattern in `useLocalStorage` (reads `localStorage` synchronously on first client render, returns `initialValue` during SSR)
+3. **Avoid**: Reading `localStorage` in `useEffect` without a loading state — this causes a flash of empty content
 
 ## Testing
 
-### Manual Testing
-- Test all features in supported browsers
-- Verify responsive design on different screen sizes
-- Test data import/export functionality
-- Verify localStorage persistence
+There is no test framework installed. Verification relies on:
 
-### Automated Testing
-- Consider adding unit tests for JavaScript functions
-- Integration tests for data flow
-- Performance testing for large datasets
+1. **Type checking**: `npx tsc --noEmit`
+2. **Linting**: `npm run lint` (ESLint with `eslint-config-next/core-web-vitals` + `eslint-config-next/typescript`, flat config in `eslint.config.mjs`)
+3. **Build**: `npm run build` — catches import errors, type issues, and Next.js-specific problems
+4. **Manual browser testing**: Open the relevant page, interact, verify persistence across reload
+5. **Cross-tab sync**: Open two tabs, make a change in one, verify it appears in the other
+
+## Browser Support
+
+- Modern evergreen browsers: Chrome, Firefox, Safari, Edge
+- Required: CSS Grid, Flexbox, ES6+, `localStorage`, `crypto.randomUUID()`
+- No IE11 or legacy browser support
 
 ## Deployment
 
-### Static Hosting
-The project can be deployed to any static hosting service:
-- GitHub Pages
-- Netlify
-- Vercel
-- Traditional web hosting
+**Recommended**: Vercel (zero-config for Next.js)
 
-### Build Process
-No build process required - pure HTML/CSS/JavaScript:
-1. Upload all files maintaining directory structure
-2. Ensure proper MIME types for JSON files
-3. Configure server for SPA routing if needed
-
-## Recent Updates and Changes
-
-### File Naming Standardization (Latest)
-- Renamed `links.css` → `OS.css`
-- Renamed `links.js` → `OS.js`
-- All page files now follow consistent naming: `pagename.html` + `pagename.css` + `pagename.js`
-
-### UI Simplification
-- Removed progress bars from goal detail page
-- Removed progress percentages from OS page goal cards
-- Cleaner, more focused interface
-- Progress data still stored for potential future use
-
-### OS and List100 Integration
-- OS page now displays List100 goals alongside resources
-- Unified tag and category filtering system
-- Real-time synchronization via localStorage events
-- Single search box for both resources and goals
-- Goals grouped by status: Pinned, Active, Completed
-
-### Component Architecture
-- Added reusable `dropdown.js` component
-- Consistent navigation across all pages
-- Modular CSS with shared design system
-
-## Maintenance
-
-### Regular Tasks
-- Update documentation when adding features
-- Review and optimize performance
-- Test new browser versions
-- Backup user data strategies
-- Clean up old localStorage backups periodically
-
-### Version Control
-- Use semantic versioning
-- Tag releases
-- Maintain changelog
-- Document breaking changes
-- Keep README.md and docs up to date
-
-## Key Features Implementation
-
-### OS and List100 Synchronization
-The OS page displays List100 goals alongside resources:
-- **Data Loading**: Loads from localStorage first, falls back to JSON file
-- **Real-time Sync**: Uses storage events to detect changes
-- **Unified Filtering**: Category and tag filters work across both resources and goals
-- **Search Integration**: Single search box searches both resources and goals
-
-### Progress Tracking (Removed from UI)
-- Progress values are still stored in data for future use
-- UI no longer displays progress bars or percentages
-- Simplified design focuses on completion status only
-
-### File Naming Convention
-All page-related files use consistent naming:
-- HTML: `pagename.html` or `page-name.html`
-- CSS: `pagename.css` or `page-name.css`
-- JS: `pagename.js` or `page-name.js`
-
-Example: `OS.html` → `OS.css` → `OS.js`
-
-## Troubleshooting
-
-### Common Issues
-1. **Data not saving**: Check localStorage availability and quota
-2. **Styles not loading**: Verify CSS file paths and names match exactly
-3. **JavaScript errors**: Check browser console for detailed error messages
-4. **Import/export issues**: Verify JSON format and file structure
-5. **Cross-page sync not working**: Check storage event listeners and localStorage keys
-6. **File not found (404)**: Ensure file names match exactly (case-sensitive)
-
-### Debug Mode
-Enable debug logging by adding to localStorage:
-```javascript
-localStorage.setItem('debug', 'true');
+```bash
+npm run build   # produces .next/ output
+npm run start   # starts production server
 ```
 
-### Data Recovery
-If data is lost or corrupted:
-1. Check `list100-backup-1` and `list100-backup-2` in localStorage
-2. Look for historical backups (`list100-history-*`)
-3. Use the "Recover Data" button in List100 page
-4. Import from previously exported JSON files
+Also works on any Node.js hosting (Railway, Render, etc.) or as a static export if you configure `next.config.ts` with `output: "export"`.
